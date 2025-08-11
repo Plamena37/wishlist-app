@@ -11,6 +11,6 @@ export interface CardItem {
   id: string
   name: string
   link?: string
-  price: number
+  price?: number | null
   reservedBy: null | string
 }

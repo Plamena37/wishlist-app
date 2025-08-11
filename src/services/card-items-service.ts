@@ -1,17 +1,29 @@
 import { db } from '@/firebase.config'
-import { CARDS_COLLECTION } from '@/lib/constants'
-import { CardItem } from '@/lib/types/Cards'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { nanoid } from 'nanoid'
+import { CardItem } from '@/lib/types/Cards'
+import { CARDS_COLLECTION } from '@/lib/constants'
 
-export const addCardItem = async (cardId: string, newItem: CardItem) => {
+export const addCardItem = async (
+  cardId: string,
+  newItemData: Omit<CardItem, 'id' | 'reservedBy'>
+) => {
   const cardRef = doc(db, CARDS_COLLECTION, cardId)
   const cardSnap = await getDoc(cardRef)
   if (!cardSnap.exists()) throw new Error('Card not found')
 
   const currentItems = cardSnap.data().items || []
-  const updatedItems = [...currentItems, newItem]
 
+  const newItem = {
+    id: nanoid(),
+    reservedBy: null,
+    ...newItemData,
+  }
+
+  const updatedItems = [...currentItems, newItem]
   await updateDoc(cardRef, { items: updatedItems })
+
+  return newItem
 }
 
 // Update an existing item inside card.items by id
@@ -30,6 +42,8 @@ export const updateCardItem = async (
   )
 
   await updateDoc(cardRef, { items: updatedItems })
+
+  return updatedItems.find((i: CardItem) => i.id === itemId)!
 }
 
 // Delete an item from card.items by id

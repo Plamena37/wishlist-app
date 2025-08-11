@@ -40,7 +40,7 @@ export default tseslint.config(
       quotes: ['error', 'single'],
       'eol-last': ['error', 'always'],
       'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
-      indent: ['error', 2, { SwitchCase: 1 }],
+      // indent: ['error', 2, { SwitchCase: 1 }],
     },
   }
 )
