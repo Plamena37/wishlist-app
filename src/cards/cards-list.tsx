@@ -1,10 +1,9 @@
-import { useCallback } from 'react'
 import { Link } from 'react-router'
 import { ROUTES } from '@/router/constants/app-routes'
 import { Card } from '@/lib/types/Cards'
 import { useAuth } from '@/auth/hooks/useAuth'
-import { useCardsContext } from '@/cards/hooks/useCards'
-import { Button } from '@/components/ui/button'
+import { DeleteCardDialog } from '@/cards/delete-card-dialog'
+import { EditCardDialog } from '@/cards/edit-card-dialog'
 
 interface CardsListProps {
   cards: Card[]
@@ -12,14 +11,6 @@ interface CardsListProps {
 
 export const CardsList = ({ cards }: CardsListProps) => {
   const { user } = useAuth()
-  const { removeCard } = useCardsContext()
-
-  const handleDeleteCard = useCallback(
-    (cardId: string) => () => {
-      removeCard(cardId)
-    },
-    [removeCard]
-  )
 
   return (
     <ul>
@@ -38,20 +29,11 @@ export const CardsList = ({ cards }: CardsListProps) => {
           </Link>
 
           {card.ownerId === user?.uid && (
-            <>
-              <Button
-                variant="outline"
-                // onClick={() => console.log(card.id)}
-              >
-                Edit
-              </Button>
-              <Button
-                variant="dark"
-                onClick={handleDeleteCard(card.id)}
-              >
-                Delete
-              </Button>
-            </>
+            <div className="flex gap-2 mt-2">
+              <EditCardDialog card={card} />
+
+              <DeleteCardDialog card={card} />
+            </div>
           )}
         </div>
       ))}

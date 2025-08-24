@@ -48,7 +48,13 @@ export const createCard = async (data: Omit<Card, 'id' | 'items'>) => {
 }
 
 export const updateCard = async (cardId: string, data: Partial<Card>) => {
-  await updateDoc(doc(db, CARDS_COLLECTION, cardId), data)
+  const cardRef = doc(db, CARDS_COLLECTION, cardId)
+  await updateDoc(cardRef, data)
+
+  const snap = await getDoc(cardRef)
+  if (!snap.exists()) throw new Error('Card not found')
+
+  return { id: snap.id, ...snap.data() } as Card
 }
 
 export const deleteCard = async (cardId: string) => {

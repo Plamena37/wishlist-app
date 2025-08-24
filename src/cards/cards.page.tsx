@@ -3,6 +3,7 @@ import { ROUTES } from '@/router/constants/app-routes'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { CardsList } from '@/cards/cards-list'
 import { AddCardForm } from '@/cards/add-card-form'
+import { AddCardItemForm } from '@/card/add-card-item-form'
 
 const CardsPage = () => {
   const { cards, loading, error } = useCardsContext()
@@ -15,6 +16,7 @@ const CardsPage = () => {
       <Link to={ROUTES.HOME}>Go to Home</Link>
 
       <AddCardForm />
+      <AddCardItemForm />
 
       <CardsList cards={cards} />
     </>

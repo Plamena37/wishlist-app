@@ -1,13 +1,15 @@
 import React, { createContext, useState, useEffect } from 'react'
 import { User } from 'firebase/auth'
-import { EditCardItemFormData } from '@/card/schemas/card-item.schema'
 import { Card, CardItem } from '@/lib/types/Cards'
+import { EditCardItemFormData } from '@/card/schemas/card-item.schema'
+import { EditCardFormData } from '@/cards/schemas/card.schema'
 import { addItem, deleteItem, updateItem } from '@/card/services/card-service'
 import {
   createCard,
   deleteCard,
   getAllPublicCards,
   getCard,
+  updateCard,
 } from '@/cards/services/cards-service'
 
 type CardsContextType = {
@@ -34,6 +36,7 @@ type CardsContextType = {
     newCard: Omit<Card, 'id' | 'ownerId'>,
     userId: string
   ) => Promise<void>
+  editCard: (cardId: string, data: EditCardFormData) => Promise<void>
   removeCard: (cardId: string) => Promise<void>
 }
 
@@ -69,17 +72,18 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchCards()
   }, [])
 
-  const getCardById = async (cardId: string) => {
-    const cardData = await getCard(cardId)
-    setCard(cardData)
-  }
-
   // CARD ITEMS****************************************************
   const addCardItem = async (cardId: string, newItem: Omit<CardItem, 'id'>) => {
     const addedItem = await addItem(cardId, newItem)
     setCard((prev) =>
       prev?.id === cardId
-        ? { ...prev, items: [...(prev.items ?? []), addedItem] }
+        ? {
+            ...prev,
+            items: [
+              ...(prev.items ?? []).filter((i) => i.id !== addedItem.id),
+              addedItem,
+            ],
+          }
         : prev
     )
   }
@@ -145,12 +149,31 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
   }
 
   // CARDS****************************************************
+  const getCardById = async (cardId: string) => {
+    const cardData = await getCard(cardId)
+    setCard(cardData)
+  }
+
   const addCard = async (
-    newCard: Omit<Card, 'id' | 'ownerId'>,
+    card: Omit<Card, 'id' | 'ownerId'>,
     userId: string
   ) => {
-    const addedCard = await createCard({ ...newCard, ownerId: userId })
+    const addedCard = await createCard({ ...card, ownerId: userId })
     setCards((prev) => [...prev, addedCard])
+  }
+
+  const editCard = async (cardId: string, data: EditCardFormData) => {
+    const updatedCard: Partial<Card> = {}
+
+    if (data.title) updatedCard.title = data.title
+    if (data.description) updatedCard.description = data.description
+    if (data.isPublic) updatedCard.isPublic = data.isPublic
+    // if (data?.items) updatedCard.items = data.items
+
+    const card = await updateCard(cardId, updatedCard)
+
+    setCards((prev) => prev.map((c) => (c.id === card.id ? card : c)))
+    setCard(card)
   }
 
   const removeCard = async (cardId: string) => {
@@ -184,6 +207,7 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
         loadingCardItem,
         errorCardItem,
         addCard,
+        editCard,
         removeCard,
       }}
     >

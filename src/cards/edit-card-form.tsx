@@ -1,39 +1,43 @@
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
+import { Card } from '@/lib/types/Cards'
+import { useCardsContext } from './hooks/useCards'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useAuth } from '@/auth/hooks/useAuth'
-import { useCardsContext } from '@/cards/hooks/useCards'
-import { AddCardFormData, addCardSchema } from '@/cards/schemas/card.schema'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
+import { EditCardFormData, editCardSchema } from './schemas/card.schema'
 
-export const AddCardForm = () => {
-  const { addCard } = useCardsContext()
-  const { user } = useAuth()
+interface EditCardFormProps {
+  card: Card
+  onClose: () => void
+}
+
+export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
+  const { editCard } = useCardsContext()
 
   const {
     register,
     handleSubmit,
-    reset,
+
     formState: { errors: addErrors },
     watch,
     setValue,
-  } = useForm<AddCardFormData>({
-    resolver: zodResolver(addCardSchema),
+  } = useForm<EditCardFormData>({
+    resolver: zodResolver(editCardSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      isPublic: true,
+      title: card?.title || '',
+      description: card?.description || '',
+      isPublic: card?.isPublic || true,
     },
   })
 
   const isPublic = watch('isPublic')
 
-  const onSubmit = async (data: AddCardFormData) => {
-    addCard(data, user?.uid || '')
-    reset()
+  const onSubmit = async (data: EditCardFormData) => {
+    editCard(card.id, data)
+    onClose()
   }
 
   return (
@@ -74,7 +78,7 @@ export const AddCardForm = () => {
         type="submit"
         // disabled={loadingCardItem}
       >
-        Add Item
+        Edit
       </Button>
     </form>
   )
