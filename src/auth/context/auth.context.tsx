@@ -1,13 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react'
-import {
-  getAuth,
-  signInAnonymously,
-  onAuthStateChanged,
-  User,
-} from 'firebase/auth'
-import { app } from '@/firebase.config'
-
-const auth = getAuth(app)
+import { signInAnonymously, onAuthStateChanged, User } from 'firebase/auth'
+import { auth } from '@/firebase.config'
 
 type AuthContextType = {
   user: User | null
@@ -27,10 +20,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (!firebaseUser) {
-        await signInAnonymously(auth)
-      } else {
+      if (firebaseUser) {
         setUser(firebaseUser)
+      } else {
+        await signInAnonymously(auth)
       }
       setLoading(false)
     })
