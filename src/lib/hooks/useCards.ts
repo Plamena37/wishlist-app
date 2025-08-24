@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Card } from '@/lib/types/Cards'
-import { getAllPublicCards } from '@/services/cards-service'
+import { getAllPublicCards } from '@/cards/services/cards-service'
 
 export const useCards = () => {
   const [cards, setCards] = useState<Card[]>([])

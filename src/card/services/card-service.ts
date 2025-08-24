@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid'
 import { CardItem } from '@/lib/types/Cards'
 import { CARDS_COLLECTION } from '@/lib/constants'
 
-export const addCardItem = async (
+export const addItem = async (
   cardId: string,
   newItemData: Omit<CardItem, 'id' | 'reservedBy'>
 ) => {
@@ -16,7 +16,7 @@ export const addCardItem = async (
 
   const newItem = {
     id: nanoid(),
-    reservedBy: null,
+    reservedBy: '',
     ...newItemData,
   }
 
@@ -26,8 +26,7 @@ export const addCardItem = async (
   return newItem
 }
 
-// Update an existing item inside card.items by id
-export const updateCardItem = async (
+export const updateItem = async (
   cardId: string,
   itemId: string,
   updatedFields: Partial<CardItem>
@@ -46,8 +45,7 @@ export const updateCardItem = async (
   return updatedItems.find((i: CardItem) => i.id === itemId)!
 }
 
-// Delete an item from card.items by id
-export const deleteCardItem = async (cardId: string, itemId: string) => {
+export const deleteItem = async (cardId: string, itemId: string) => {
   const cardRef = doc(db, CARDS_COLLECTION, cardId)
   const cardSnap = await getDoc(cardRef)
   if (!cardSnap.exists()) throw new Error('Card not found')

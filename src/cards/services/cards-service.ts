@@ -7,6 +7,7 @@ import {
   updateDoc,
   deleteDoc,
   getDocs,
+  addDoc,
 } from 'firebase/firestore'
 import { CARDS_COLLECTION } from '@/lib/constants'
 import { Card } from '@/lib/types/Cards'
@@ -30,15 +31,21 @@ export const getAllPublicCards = async () => {
   return publicCards
 }
 
-export const getCard = async (cardId: string) => {
+export const getCard = async (cardId: string): Promise<Card | null> => {
   const docRef = doc(db, CARDS_COLLECTION, cardId)
   const docSnap = await getDoc(docRef)
-  if (!docSnap.exists()) return null
-  return { id: docSnap.id, ...docSnap.data() }
+  if (docSnap.exists()) {
+    return { id: docSnap.id, ...docSnap.data() } as Card
+  }
+  return null
 }
 
-export const createCard = async (cardId: string, data: Card) => {
-  await setDoc(doc(db, CARDS_COLLECTION, cardId), data)
+export const createCard = async (data: Omit<Card, 'id' | 'items'>) => {
+  const docRef = await addDoc(collection(db, CARDS_COLLECTION), {
+    ...data,
+    items: [],
+  })
+  return { id: docRef.id, ...data, items: [] }
 }
 
 export const updateCard = async (cardId: string, data: Partial<Card>) => {
