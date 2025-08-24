@@ -79,7 +79,7 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
     const addedItem = await addItem(cardId, newItem)
     setCard((prev) =>
       prev?.id === cardId
-        ? { ...prev, items: [...prev.items, addedItem] }
+        ? { ...prev, items: [...(prev.items ?? []), addedItem] }
         : prev
     )
   }
@@ -103,7 +103,7 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
       const item = await updateItem(card.id, itemId, updatedItem)
       setCard({
         ...card,
-        items: card.items.map((i) => (i.id === itemId ? item : i)),
+        items: (card.items ?? []).map((i) => (i.id === itemId ? item : i)),
       })
 
       cancelEdit?.()
@@ -121,7 +121,10 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
       await deleteItem(cardId, itemId)
       setCard((prev) =>
         prev?.id === cardId
-          ? { ...prev, items: prev.items.filter((item) => item.id !== itemId) }
+          ? {
+              ...prev,
+              items: (prev.items ?? []).filter((item) => item.id !== itemId),
+            }
           : prev
       )
     } catch (err: Error | unknown) {

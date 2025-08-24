@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { AddCardFormData, addCardSchema } from '@/cards/schemas/card.schema'
 import { Input } from '@/components/ui/input'
@@ -7,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
-import { useAuth } from '@/auth/hooks/useAuth'
 
 export const AddCardForm = () => {
   const { addCard } = useCardsContext()
@@ -25,23 +25,16 @@ export const AddCardForm = () => {
     defaultValues: {
       title: '',
       description: '',
-      isPublic: false,
+      isPublic: true,
     },
   })
 
-  const onAddItem = async (data: AddCardFormData) => {
-    console.log(data)
+  const isPublic = watch('isPublic')
 
-    addCard(data, user?.uid)
-    // addCardItem(card?.id ?? '', {
-    //   title: data.title,
-    //   description: data.description || '',
-    //   isPublic: data.isPublic,
-    // })
+  const onAddItem = async (data: AddCardFormData) => {
+    addCard(data, user?.uid || '')
     resetAddForm()
   }
-
-  const isPublic = watch('isPublic')
 
   return (
     <form onSubmit={handleSubmit(onAddItem)}>
