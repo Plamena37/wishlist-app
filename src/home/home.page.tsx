@@ -1,7 +1,14 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router'
 import { ROUTES } from '@/router/constants/app-routes'
 import { Button } from '@/components/ui/button'
-import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
+import {
+  getRedirectResult,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+  signOut,
+} from 'firebase/auth'
 import { auth } from '@/firebase.config'
 import { useAuth } from '@/auth/hooks/useAuth'
 
@@ -10,8 +17,33 @@ const HomePage = () => {
 
   const handleGoogle = async () => {
     const provider = new GoogleAuthProvider()
-    await signInWithPopup(auth, provider)
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+
+    try {
+      if (isMobile) {
+        // On mobile, use redirect
+        await signInWithRedirect(auth, provider)
+      } else {
+        // On desktop, use popup
+        await signInWithPopup(auth, provider)
+      }
+    } catch (err) {
+      console.error('Google sign-in error:', err)
+    }
   }
+
+  // Handle redirect result after coming back to the app (mobile)
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result?.user) {
+          console.info('Signed in via redirect:', result.user)
+        }
+      })
+      .catch((error) => {
+        console.error('Redirect sign-in error:', error)
+      })
+  }, [])
 
   const handleSignOut = async () => {
     await signOut(auth)
