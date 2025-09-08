@@ -9,7 +9,7 @@ import {
   addDoc,
 } from 'firebase/firestore'
 import { CARDS_COLLECTION } from '@/lib/constants'
-import { Card } from '@/lib/types/Cards'
+import { Card, NewCard } from '@/lib/types/Cards'
 
 const cardsCollection = collection(db, 'cards')
 
@@ -39,11 +39,8 @@ export const getCard = async (cardId: string): Promise<Card | null> => {
   return null
 }
 
-export const createCard = async (data: Omit<Card, 'id' | 'items'>) => {
-  const docRef = await addDoc(collection(db, CARDS_COLLECTION), {
-    ...data,
-    items: [],
-  })
+export const createCard = async (data: NewCard & { ownerId: string }) => {
+  const docRef = await addDoc(collection(db, CARDS_COLLECTION), data)
   return { id: docRef.id, ...data, items: [] }
 }
 

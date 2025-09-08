@@ -75,6 +75,14 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
       )}
 
       <Button
+        type="button"
+        variant="outline"
+        onClick={onClose}
+      >
+        Close
+      </Button>
+
+      <Button
         type="submit"
         // disabled={loadingCardItem}
       >

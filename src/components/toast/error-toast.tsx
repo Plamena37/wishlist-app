@@ -1,39 +1,50 @@
-import { cn } from '@/lib/utils'
+import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faCircleStop,
-  faFileExcel,
-  // faExclamationCircle,
-} from '@fortawesome/free-regular-svg-icons'
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
+import { cn } from '@/lib/utils'
 import { Text } from '@/components/ui/text'
 
 interface ErrorToastProps {
   open: boolean
   message: string
-  onClose: () => void
+  duration?: number
+  onClose?: () => void
   className?: string
 }
 
 export const ErrorToast = ({
   open,
   message,
+  duration = 4000,
   onClose,
   className,
   ...props
 }: ErrorToastProps) => {
-  if (!open) return null
+  const [visible, setVisible] = useState(open)
+
+  useEffect(() => {
+    setVisible(open)
+    if (open) {
+      const timer = setTimeout(() => {
+        setVisible(false)
+        onClose?.()
+      }, duration)
+      return () => clearTimeout(timer)
+    }
+  }, [open, duration, onClose])
+
+  if (!visible) return null
 
   return (
     <div
       className={cn(
-        'flex items-center gap-2 bg-red-200 px-8 py-[11px] w-full h-10',
-
+        'flex items-center justify-center gap-2 rounded-lg bg-red-200 shadow-[0px_4px_8px_rgba(0,0,0,0.25)] px-4 py-2 min-h-10 mx-auto w-[18%]',
         className
       )}
       {...props}
     >
       <FontAwesomeIcon
-        icon={faFileExcel}
+        icon={faExclamationCircle}
         className="text-blue-900"
         style={{
           width: '16px',
@@ -44,13 +55,13 @@ export const ErrorToast = ({
 
       <Text
         className="text-sm text-blue-900"
-        variant={'body'}
+        variant={'subtext'}
         data-testid="error-toast-message"
       >
         {message}
       </Text>
 
-      <FontAwesomeIcon
+      {/* <FontAwesomeIcon
         icon={faCircleStop}
         className="text-blue-900 ml-auto cursor-pointer"
         onClick={onClose}
@@ -59,7 +70,7 @@ export const ErrorToast = ({
           height: '18px',
         }}
         data-testid="error-toast-close-icon"
-      />
+      /> */}
     </div>
   )
 }

@@ -5,6 +5,8 @@ import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { AddCardItemForm } from './add-card-item-form'
 import { CardItemsList } from './card-items-list'
+import { SuccessToast } from '@/components/toast/success-toast'
+import { ErrorToast } from '@/components/toast/error-toast'
 
 export default function CardPage() {
   const { cardId } = useParams()
@@ -14,7 +16,10 @@ export default function CardPage() {
     checkUserCanEditCard,
     canEditCard,
     loading,
-    error,
+    errorCardItem,
+    successCardItem,
+    clearSuccessCardItem,
+    clearErrorCardItem,
   } = useCardsContext()
   const { user } = useAuth()
 
@@ -28,7 +33,6 @@ export default function CardPage() {
   const [editingItemId, setEditingItemId] = useState<string | null>(null)
 
   if (loading) return <p>Loading...</p>
-  if (error) return <p>Error: {error.message}</p>
 
   if (!card) return null
 
@@ -42,6 +46,21 @@ export default function CardPage() {
         editingItemId={editingItemId}
         setEditingItemId={setEditingItemId}
       />
+
+      {successCardItem?.status && (
+        <SuccessToast
+          open={successCardItem.status}
+          message={successCardItem.message}
+          onClose={clearSuccessCardItem}
+        />
+      )}
+      {errorCardItem?.status && (
+        <ErrorToast
+          open={errorCardItem.status}
+          message={errorCardItem.message}
+          onClose={clearErrorCardItem}
+        />
+      )}
     </div>
   )
 }

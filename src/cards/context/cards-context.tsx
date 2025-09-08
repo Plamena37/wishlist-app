@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react'
 import { User } from 'firebase/auth'
-import { Card, CardItem } from '@/lib/types/Cards'
+import { Card, CardItem, NewCard } from '@/lib/types/Cards'
 import { EditCardItemFormData } from '@/card/schemas/card-item.schema'
 import { EditCardFormData } from '@/cards/schemas/card.schema'
 import { addItem, deleteItem, updateItem } from '@/card/services/card-service'
@@ -11,12 +11,17 @@ import {
   getCard,
   updateCard,
 } from '@/cards/services/cards-service'
+import { nanoid } from 'nanoid'
+
+type ResultState = {
+  status: boolean
+  message: string
+}
 
 type CardsContextType = {
   cards: Card[]
   card: Card | null
   loading: boolean
-  error: Error | null
   canEditCard: boolean
   canReserveCardItem: boolean
   checkUserCanEditCard: (user: User | null) => void
@@ -31,13 +36,17 @@ type CardsContextType = {
   ) => void
   deleteCardItem: (cardId: string, itemId: string) => Promise<void>
   loadingCardItem: boolean
-  errorCardItem: Error | null
-  addCard: (
-    newCard: Omit<Card, 'id' | 'ownerId'>,
-    userId: string
-  ) => Promise<void>
+  addCard: (newCard: NewCard, userId: string) => Promise<void>
   editCard: (cardId: string, data: EditCardFormData) => Promise<void>
   removeCard: (cardId: string) => Promise<void>
+  successCard: ResultState | null
+  successCardItem: ResultState | null
+  errorCard: ResultState | null
+  errorCardItem: ResultState | null
+  clearSuccessCard: () => void
+  clearSuccessCardItem: () => void
+  clearErrorCard: () => void
+  clearErrorCardItem: () => void
 }
 
 export const CardsContext = createContext<CardsContextType | undefined>(
@@ -50,12 +59,22 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [cards, setCards] = useState<Card[]>([])
   const [card, setCard] = useState<Card | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
   const [loadingCardItem, setLoadingCardItem] = useState(false)
-  const [errorCardItem, setErrorCardItem] = useState<Error | null>(null)
 
   const [canEditCard, setCanEditCard] = useState<boolean>(false)
   const [canReserveCardItem, setCanReserveCardItem] = useState<boolean>(false)
+
+  const [successCard, setSuccessCard] = useState<ResultState | null>(null)
+  const [successCardItem, setSuccessCardItem] = useState<ResultState | null>(
+    null
+  )
+  const [errorCard, setErrorCard] = useState<ResultState | null>(null)
+  const [errorCardItem, setErrorCardItem] = useState<ResultState | null>(null)
+
+  const clearSuccessCard = () => setSuccessCard(null)
+  const clearSuccessCardItem = () => setSuccessCardItem(null)
+  const clearErrorCard = () => setErrorCard(null)
+  const clearErrorCardItem = () => setErrorCardItem(null)
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -63,7 +82,10 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
         const data = await getAllPublicCards()
         setCards(data)
       } catch (err) {
-        setError(err as Error)
+        setErrorCard({
+          status: true,
+          message: (err as Error).message || 'Something went wrong',
+        })
       } finally {
         setLoading(false)
       }
@@ -74,18 +96,29 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // CARD ITEMS****************************************************
   const addCardItem = async (cardId: string, newItem: Omit<CardItem, 'id'>) => {
-    const addedItem = await addItem(cardId, newItem)
-    setCard((prev) =>
-      prev?.id === cardId
-        ? {
-            ...prev,
-            items: [
-              ...(prev.items ?? []).filter((i) => i.id !== addedItem.id),
-              addedItem,
-            ],
-          }
-        : prev
-    )
+    try {
+      const addedItem = await addItem(cardId, newItem)
+      setCard((prev) =>
+        prev?.id === cardId
+          ? {
+              ...prev,
+              items: [
+                ...(prev.items ?? []).filter((i) => i.id !== addedItem.id),
+                addedItem,
+              ],
+            }
+          : prev
+      )
+      setSuccessCardItem({
+        status: true,
+        message: 'Item added successfully!',
+      })
+    } catch (err) {
+      setErrorCardItem({
+        status: true,
+        message: (err as Error).message || 'Something went wrong',
+      })
+    }
   }
 
   const updateCardItem = async (
@@ -109,10 +142,17 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
         ...card,
         items: (card.items ?? []).map((i) => (i.id === itemId ? item : i)),
       })
+      setSuccessCardItem({
+        status: true,
+        message: 'Item updated successfully!',
+      })
 
       cancelEdit?.()
     } catch (err: Error | unknown) {
-      setErrorCardItem(err as Error)
+      setErrorCardItem({
+        status: true,
+        message: (err as Error).message || 'Something went wrong',
+      })
     } finally {
       setLoadingCardItem(false)
     }
@@ -131,8 +171,15 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
             }
           : prev
       )
+      setSuccessCardItem({
+        status: true,
+        message: 'Item removed successfully!',
+      })
     } catch (err: Error | unknown) {
-      setErrorCardItem(err as Error)
+      setErrorCardItem({
+        status: true,
+        message: (err as Error).message || 'Something went wrong',
+      })
     } finally {
       setLoadingCardItem(false)
     }
@@ -154,26 +201,51 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
     setCard(cardData)
   }
 
-  const addCard = async (
-    card: Omit<Card, 'id' | 'ownerId'>,
-    userId: string
-  ) => {
-    const addedCard = await createCard({ ...card, ownerId: userId })
-    setCards((prev) => [...prev, addedCard])
+  const addCard = async (card: NewCard, userId: string) => {
+    const { items, ...cardData } = card
+
+    const cardItems = items?.map((item) => ({
+      ...item,
+      id: nanoid(),
+      reservedBy: '',
+    }))
+
+    try {
+      const addedCard = await createCard({
+        ...cardData,
+        items: cardItems,
+        ownerId: userId,
+      })
+      setCards((prev) => [...prev, addedCard])
+      setSuccessCard({ status: true, message: 'Card created successfully!' })
+    } catch (err) {
+      setErrorCard({
+        status: true,
+        message: (err as Error).message || 'Something went wrong',
+      })
+    }
   }
 
   const editCard = async (cardId: string, data: EditCardFormData) => {
     const updatedCard: Partial<Card> = {}
 
-    if (data.title) updatedCard.title = data.title
-    if (data.description) updatedCard.description = data.description
-    if (data.isPublic) updatedCard.isPublic = data.isPublic
-    // if (data?.items) updatedCard.items = data.items
+    try {
+      if (data.title) updatedCard.title = data.title
+      if (data.description) updatedCard.description = data.description
+      if (data.isPublic) updatedCard.isPublic = data.isPublic
+      // if (data?.items) updatedCard.items = data.items
 
-    const card = await updateCard(cardId, updatedCard)
+      const card = await updateCard(cardId, updatedCard)
 
-    setCards((prev) => prev.map((c) => (c.id === card.id ? card : c)))
-    setCard(card)
+      setCards((prev) => prev.map((c) => (c.id === card.id ? card : c)))
+      setCard(card)
+      setSuccessCard({ status: true, message: 'Card updated successfully!' })
+    } catch (err) {
+      setErrorCard({
+        status: true,
+        message: (err as Error).message || 'Something went wrong',
+      })
+    }
   }
 
   const removeCard = async (cardId: string) => {
@@ -182,8 +254,12 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       await deleteCard(cardId)
       setCards((prev) => prev.filter((card) => card.id !== cardId))
+      setSuccessCard({ status: true, message: 'Card removed successfully!' })
     } catch (err: Error | unknown) {
-      setErrorCardItem(err as Error)
+      setErrorCard({
+        status: true,
+        message: (err as Error).message || 'Something went wrong',
+      })
     } finally {
       setLoadingCardItem(false)
     }
@@ -195,7 +271,6 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
         cards,
         card,
         loading,
-        error,
         canEditCard,
         canReserveCardItem,
         checkUserCanEditCard,
@@ -205,10 +280,17 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
         deleteCardItem,
         updateCardItem,
         loadingCardItem,
-        errorCardItem,
         addCard,
         editCard,
         removeCard,
+        successCard,
+        successCardItem,
+        errorCard,
+        errorCardItem,
+        clearSuccessCard,
+        clearSuccessCardItem,
+        clearErrorCard,
+        clearErrorCardItem,
       }}
     >
       {children}

@@ -14,3 +14,9 @@ export interface CardItem {
   price?: string | null
   reservedBy: string
 }
+
+export type NewCard = Omit<Card, 'id' | 'ownerId'> & {
+  items?: NewCardItem[]
+}
+
+export type NewCardItem = Omit<CardItem, 'id' | 'reservedBy'>
