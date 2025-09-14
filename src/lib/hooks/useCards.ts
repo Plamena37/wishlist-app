@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Card } from '@/lib/types/Cards'
-import { getAllPublicCards } from '@/cards/services/cards-service'
+import { fetchAllPublicCards } from '@/cards/services/cards-service'
 
 export const useCards = () => {
   const [cards, setCards] = useState<Card[]>([])
@@ -10,7 +10,7 @@ export const useCards = () => {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const data = await getAllPublicCards()
+        const data = await fetchAllPublicCards()
         setCards(data)
       } catch (err) {
         setError(err as Error)

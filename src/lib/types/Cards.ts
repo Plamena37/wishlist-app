@@ -10,7 +10,7 @@ export interface Card {
 export interface CardItem {
   id: string
   name: string
-  link?: string
+  link?: string | null
   price?: string | null
   reservedBy: string
 }

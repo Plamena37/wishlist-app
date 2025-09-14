@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router'
 import { RouterHistoryProvider } from '@/router/context/router-history.context'
+import { AppHeader } from '@/components/app-header/app-header'
 
 export default function DefaultLayout() {
   return (
@@ -9,7 +10,7 @@ export default function DefaultLayout() {
         //          [grid-template-areas:'header_header''sidebar_main''sidebar_footer']"
         className="bg-amber-50"
       >
-        {/* <AppHeader className="[grid-area:header]" /> */}
+        <AppHeader />
         <Outlet />
         {/* {loading && (
           <LoadingOverlay

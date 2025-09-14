@@ -1,14 +1,14 @@
-import { useEffect } from 'react'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { CardsList } from '@/cards/cards-list'
 import { AddCardForm } from '@/cards/add-card-form'
 import { SuccessToast } from '@/components/toast/success-toast'
 import { ErrorToast } from '@/components/toast/error-toast'
+import { useEffect } from 'react'
 
-const CardsPage = () => {
+const MyCardsPage = () => {
   const {
-    getAllPublicCards,
-    publicCards,
+    getMyCards,
+    myCards,
     errorCard,
     successCard,
     clearSuccessCard,
@@ -16,7 +16,7 @@ const CardsPage = () => {
   } = useCardsContext()
 
   useEffect(() => {
-    getAllPublicCards()
+    getMyCards()
   }, [])
 
   return (
@@ -25,7 +25,10 @@ const CardsPage = () => {
         <AddCardForm />
       </div>
 
-      <CardsList cards={publicCards} />
+      <CardsList
+        cards={myCards}
+        myCards
+      />
 
       {successCard?.status && (
         <SuccessToast
@@ -45,4 +48,4 @@ const CardsPage = () => {
   )
 }
 
-export default CardsPage
+export default MyCardsPage

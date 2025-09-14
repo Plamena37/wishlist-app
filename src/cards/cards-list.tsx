@@ -7,9 +7,10 @@ import { EditCardDialog } from '@/cards/edit-card-dialog'
 
 interface CardsListProps {
   cards: Card[]
+  myCards?: boolean
 }
 
-export const CardsList = ({ cards }: CardsListProps) => {
+export const CardsList = ({ cards, myCards = false }: CardsListProps) => {
   const { user } = useAuth()
 
   return (
@@ -20,7 +21,7 @@ export const CardsList = ({ cards }: CardsListProps) => {
           className="border-b border-b-slate-200 py-4"
         >
           <Link
-            to={`${ROUTES.CARDS}/${card.id}`}
+            to={`${myCards ? ROUTES.MY_CARDS : ROUTES.CARDS}/${card.id}`}
             key={card.id}
             className="flex gap-4"
           >

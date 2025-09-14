@@ -22,9 +22,11 @@ export const editCardSchema = z.object({
   items: z
     .array(
       z.object({
+        id: z.string().optional(),
         name: z.string().min(2, 'Item name must be at least 2 characters long'),
         link: z.string().optional().nullable(),
         price: z.string().nullable().optional(),
+        reservedBy: z.string().optional().nullable(),
       })
     )
     .optional(),

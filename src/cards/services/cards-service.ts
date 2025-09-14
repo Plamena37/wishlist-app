@@ -19,7 +19,7 @@ export const getAllCards = async () => {
   return cards
 }
 
-export const getAllPublicCards = async () => {
+export const fetchAllPublicCards = async () => {
   const querySnapshot = await getDocs(cardsCollection)
   const cards = querySnapshot.docs.map((doc) => ({
     id: doc.id,
@@ -28,6 +28,17 @@ export const getAllPublicCards = async () => {
 
   const publicCards = cards.filter((card) => card.isPublic === true)
   return publicCards
+}
+
+export const fetchMyCards = async (userId: string) => {
+  const querySnapshot = await getDocs(cardsCollection)
+  const cards = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Card[]
+
+  const myCards = cards.filter((card) => card.ownerId === userId)
+  return myCards
 }
 
 export const getCard = async (cardId: string): Promise<Card | null> => {

@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
+import { DeleteCardItemDialog } from './delete-card-item-dialog'
 
 interface CardListProps {
   editingItemId: string | null
@@ -28,7 +29,6 @@ export const CardItemsList = ({
     canEditCard,
     checkUserCanReserveCardItem,
     updateCardItem,
-    deleteCardItem,
     loadingCardItem,
   } = useCardsContext()
   const { user } = useAuth()
@@ -74,13 +74,6 @@ export const CardItemsList = ({
       })
     },
     [checkUserCanReserveCardItem, user, setEditingItemId, resetEditForm]
-  )
-
-  const handleDeleteCardItem = useCallback(
-    (cardId: string, itemId: string) => () => {
-      deleteCardItem(cardId, itemId)
-    },
-    [deleteCardItem]
   )
 
   const handleReservedByLabel = (reservedBy: string): string => {
@@ -210,9 +203,11 @@ export const CardItemsList = ({
               {canEditCard && (
                 <div>
                   <Button onClick={handleEditCardItem(item)}>Edit Item</Button>
-                  <Button onClick={handleDeleteCardItem(card.id, item.id)}>
-                    Delete Item
-                  </Button>
+
+                  <DeleteCardItemDialog
+                    cardId={card.id}
+                    item={item}
+                  />
                 </div>
               )}
             </>

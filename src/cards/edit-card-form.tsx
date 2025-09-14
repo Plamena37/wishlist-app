@@ -1,13 +1,15 @@
+import { useFieldArray, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlusCircle, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { Card } from '@/lib/types/Cards'
+import { useCardsContext } from '@/cards/hooks/useCards'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
-import { Card } from '@/lib/types/Cards'
-import { useCardsContext } from './hooks/useCards'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { EditCardFormData, editCardSchema } from './schemas/card.schema'
+import { EditCardFormData, editCardSchema } from '@/cards/schemas/card.schema'
 
 interface EditCardFormProps {
   card: Card
@@ -20,8 +22,8 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
   const {
     register,
     handleSubmit,
-
-    formState: { errors: addErrors },
+    control,
+    formState: { errors },
     watch,
     setValue,
   } = useForm<EditCardFormData>({
@@ -29,8 +31,14 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
     defaultValues: {
       title: card?.title || '',
       description: card?.description || '',
-      isPublic: card?.isPublic || true,
+      isPublic: card?.isPublic ?? true,
+      items: card?.items || [],
     },
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'items',
   })
 
   const isPublic = watch('isPublic')
@@ -41,21 +49,22 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-4"
+    >
       <Input
-        placeholder="Add Card Title..."
+        placeholder="Edit Card Title..."
         {...register('title')}
       />
-      {addErrors.title && (
-        <p style={{ color: 'red' }}>{addErrors.title.message}</p>
-      )}
+      {errors.title && <p className="text-red-500">{errors.title.message}</p>}
 
       <Textarea
-        placeholder="Add Card Description..."
+        placeholder="Edit Card Description..."
         {...register('description')}
       />
-      {addErrors.description && (
-        <p style={{ color: 'red' }}>{addErrors.description.message}</p>
+      {errors.description && (
+        <p className="text-red-500">{errors.description.message}</p>
       )}
 
       <div className="flex items-center space-x-2">
@@ -70,24 +79,97 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
           {isPublic ? 'Public' : 'Private'}
         </Label>
       </div>
-      {addErrors.isPublic && (
-        <p style={{ color: 'red' }}>{addErrors.isPublic.message}</p>
+      {errors.isPublic && (
+        <p className="text-red-500">{errors.isPublic.message}</p>
       )}
 
+      <h4 className="font-semibold">Items:</h4>
+      {fields.map((field, index) => (
+        <div
+          key={field.id}
+          className="flex gap-2 items-start"
+        >
+          <div>
+            <Input
+              placeholder="Item Name"
+              {...register(`items.${index}.name`)}
+            />
+            {errors.items?.[index]?.name && (
+              <p className="text-red-500">
+                {errors.items[index]?.name?.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <Input
+              placeholder="Item Link"
+              {...register(`items.${index}.link`)}
+            />
+            {errors.items?.[index]?.link && (
+              <p className="text-red-500">
+                {errors.items[index]?.link?.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <Input
+              type="number"
+              step="0.01"
+              placeholder="Price"
+              {...register(`items.${index}.price`)}
+            />
+            {errors.items?.[index]?.price && (
+              <p className="text-red-500">
+                {errors.items[index]?.price?.message}
+              </p>
+            )}
+          </div>
+
+          {/* Delete item button */}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => remove(index)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </Button>
+        </div>
+      ))}
+
+      {/* Add item button */}
       <Button
         type="button"
         variant="outline"
-        onClick={onClose}
+        onClick={() =>
+          append({
+            name: '',
+            link: '',
+            price: null,
+          })
+        }
+        disabled={
+          fields.length > 0 && !watch(`items.${fields.length - 1}.name`)
+        }
       >
-        Close
+        <FontAwesomeIcon
+          icon={faPlusCircle}
+          className="mr-2"
+        />
+        Add Item
       </Button>
 
-      <Button
-        type="submit"
-        // disabled={loadingCardItem}
-      >
-        Edit
-      </Button>
+      {/* Action buttons */}
+      <div className="flex gap-2 mt-4">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onClose}
+        >
+          Close
+        </Button>
+        <Button type="submit">Save Changes</Button>
+      </div>
     </form>
   )
 }

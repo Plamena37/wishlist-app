@@ -4,6 +4,7 @@ import DefaultLayout from '@/layouts/default'
 import HomePage from '@/home/home.page'
 import CardPage from '@/card/card.page'
 import CardsPage from '@/cards/cards.page'
+import MyCardsPage from '@/cards/my-cards.page'
 
 export const routes: RouteObject[] = [
   {
@@ -27,6 +28,18 @@ export const routes: RouteObject[] = [
           },
           {
             path: ROUTES.CARD,
+            index: true,
+            element: <CardPage />,
+            // errorElement: <GeneralError />,
+          },
+          {
+            path: ROUTES.MY_CARDS,
+            index: true,
+            element: <MyCardsPage />,
+            // errorElement: <GeneralError />,
+          },
+          {
+            path: ROUTES.MY_CARD,
             index: true,
             element: <CardPage />,
             // errorElement: <GeneralError />,
