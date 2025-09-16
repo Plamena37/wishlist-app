@@ -1,10 +1,13 @@
-import { NavLink, useLocation } from 'react-router'
-import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
-import { auth } from '@/firebase.config'
+import { Link, NavLink, useLocation } from 'react-router'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { ROUTES } from '@/router/constants/app-routes'
+import GoogleColorfull from '@/assets/google-colorfull.svg'
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Text } from '@/components/ui/text'
+import AccountDropdown from '@/components/account-dropdown/account-dropdown'
+import { AccountDropdownLinks } from '@/components/account-dropdown/account-dropdown-links'
+import { Icon } from '@/components/ui/icon'
 
 const navLinks = [
   { to: ROUTES.CARDS, label: 'Home' },
@@ -18,69 +21,66 @@ const getActiveParent = (pathname: string): string | null => {
 }
 
 export const AppHeader = () => {
-  const { user } = useAuth()
+  const { user, signInWithGoogle } = useAuth()
   const { pathname } = useLocation()
+  const links = AccountDropdownLinks()
 
-  const handleGoogleSignIn = async () => {
-    const provider = new GoogleAuthProvider()
-    await signInWithPopup(auth, provider)
-  }
-
-  const handleSignOut = async () => {
-    await signOut(auth)
-  }
-
-  const signInButtonText =
-    !user || user.isAnonymous ? 'Sign In With Google' : 'Sign Out'
-  const handleButtonClick =
-    !user || user.isAnonymous ? handleGoogleSignIn : handleSignOut
-
+  const hideNavButtons = !user || !user.displayName
   const activeParent = getActiveParent(pathname)
 
   return (
-    <header className="w-full border-b shadow-sm bg-white">
-      <nav className="container mx-auto flex items-center justify-between p-2">
-        <Text
-          variant="h3"
-          weight="semibold"
-        >
-          Wishlist App
-        </Text>
+    <header className="bg-purple-800 text-white flex items-center justify-between h-14 w-full shadow-sm ">
+      <nav className="container mx-auto flex items-center justify-between">
+        <Link to={ROUTES.HOME}>
+          <Text
+            variant="h3"
+            className="text-white font-semibold cursor-pointer"
+            weight="semibold"
+          >
+            Wishlist App
+          </Text>
+        </Link>
+
         <ul className="flex items-center gap-6">
           {navLinks.map(({ to, label }) => (
             <li key={to}>
               <NavLink
                 to={to}
-                className={() =>
-                  `hover:text-blue-600 transition ${
-                    activeParent === to ? 'font-semibold text-blue-600' : ''
-                  }`
-                }
+                className={cn(
+                  'hover:text-purple-900 hover:border-purple-900 border-b-2 border-b-transparent transition',
+                  activeParent === to ? 'border-purple-900' : ''
+                )}
               >
                 {label}
               </NavLink>
             </li>
           ))}
-          <li className="flex gap-2 items-center">
-            {user && (
-              <>
-                <img
-                  src={user.photoURL || ''}
-                  alt={user.displayName || 'User'}
-                  className="w-10 h-10 rounded-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-                <p>{user.displayName || 'User'}</p>
-              </>
-            )}
+
+          {!hideNavButtons && <AccountDropdown links={links} />}
+
+          {hideNavButtons && (
             <Button
-              variant="outline"
-              className="p-2 ml-4"
-              onClick={handleButtonClick}
+              variant="primary"
+              className="py-4 px-4 rounded-full bg-gray-50 w-auto"
+              onClick={signInWithGoogle}
             >
-              {signInButtonText}
+              <Icon
+                src={GoogleColorfull}
+                style={{
+                  width: '20px',
+                  height: '20px',
+                }}
+              />
+
+              <Text
+                as="p"
+                variant="body"
+                className="text-purple-900 font-semibold"
+              >
+                Sign In With Google
+              </Text>
             </Button>
-          </li>
+          )}
         </ul>
       </nav>
     </header>

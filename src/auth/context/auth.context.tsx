@@ -1,15 +1,26 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { signInAnonymously, onAuthStateChanged, User } from 'firebase/auth'
+import {
+  signInAnonymously,
+  onAuthStateChanged,
+  User,
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth'
 import { auth } from '@/firebase.config'
 
 type AuthContextType = {
   user: User | null
   loading: boolean
+  signInWithGoogle: () => void
+  signOut: () => void
 }
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
+  signInWithGoogle: () => {},
+  signOut: () => {},
 })
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -31,8 +42,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return () => unsubscribe()
   }, [])
 
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider()
+    await signInWithPopup(auth, provider)
+  }
+
+  const handleSignOut = async () => {
+    await signOut(auth)
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        signInWithGoogle: handleGoogleSignIn,
+        signOut: handleSignOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
