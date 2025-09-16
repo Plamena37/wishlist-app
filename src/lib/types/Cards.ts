@@ -4,6 +4,7 @@ export interface Card {
   title: string
   description?: string
   isPublic: boolean
+  image: string
   items?: CardItem[]
 }
 

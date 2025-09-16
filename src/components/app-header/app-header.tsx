@@ -29,7 +29,7 @@ export const AppHeader = () => {
   const activeParent = getActiveParent(pathname)
 
   return (
-    <header className="bg-purple-800 text-white flex items-center justify-between h-14 w-full shadow-sm ">
+    <header className="bg-purple-800 text-white flex items-center justify-between h-14 w-full shadow-sm z-50">
       <nav className="container mx-auto flex items-center justify-between">
         <Link to={ROUTES.HOME}>
           <Text

@@ -52,7 +52,7 @@ export const getCard = async (cardId: string): Promise<Card | null> => {
 
 export const createCard = async (data: NewCard & { ownerId: string }) => {
   const docRef = await addDoc(collection(db, CARDS_COLLECTION), data)
-  return { id: docRef.id, ...data, items: [] }
+  return { id: docRef.id, ...data }
 }
 
 export const updateCard = async (cardId: string, data: Partial<Card>) => {

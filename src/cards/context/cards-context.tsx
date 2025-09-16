@@ -41,7 +41,7 @@ type CardsContextType = {
   ) => void
   deleteCardItem: (cardId: string, itemId: string) => Promise<void>
   loadingCardItem: boolean
-  addCard: (newCard: NewCard, userId: string) => Promise<void>
+  addCard: (newCard: NewCard, userId: string, image: string) => Promise<void>
   editCard: (cardId: string, data: EditCardFormData) => Promise<void>
   removeCard: (cardId: string) => Promise<void>
   successCard: ResultState | null
@@ -221,7 +221,7 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
     setCard(cardData)
   }
 
-  const addCard = async (card: NewCard, userId: string) => {
+  const addCard = async (card: NewCard, userId: string, image: string) => {
     const { items, ...cardData } = card
 
     const cardItems = items?.map((item) => ({
@@ -235,6 +235,7 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
         ...cardData,
         items: cardItems,
         ownerId: userId,
+        image,
       })
 
       if (addedCard.isPublic) {

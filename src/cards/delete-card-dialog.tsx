@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Card } from '@/lib/types/Cards'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import {
@@ -34,7 +36,12 @@ export const DeleteCardDialog = ({ card }: DeleteCardDialogProps) => {
       onOpenChange={(open) => setDeleteCardId(open ? card.id : null)}
     >
       <DialogTrigger asChild>
-        <Button variant="dark">Delete</Button>
+        <Button
+          variant="outline"
+          className="text-red-600 border-red-600 hover:bg-red-600/10"
+        >
+          <FontAwesomeIcon icon={faTrash} />
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

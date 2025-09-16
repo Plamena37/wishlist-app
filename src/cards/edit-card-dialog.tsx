@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencil } from '@fortawesome/free-solid-svg-icons'
 import { Card } from '@/lib/types/Cards'
 import {
   Dialog,
@@ -23,7 +25,12 @@ export const EditCardDialog = ({ card }: EditCardDialogProps) => {
       onOpenChange={(open) => setOpenCardId(open ? card.id : null)}
     >
       <DialogTrigger asChild>
-        <Button variant="outline">Edit</Button>
+        <Button variant="outline">
+          <FontAwesomeIcon
+            icon={faPencil}
+            className="text-purple-800"
+          />
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

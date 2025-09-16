@@ -1,9 +1,11 @@
-import { Link } from 'react-router'
+import { useNavigate } from 'react-router'
 import { ROUTES } from '@/router/constants/app-routes'
 import { Card } from '@/lib/types/Cards'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { DeleteCardDialog } from '@/cards/delete-card-dialog'
 import { EditCardDialog } from '@/cards/edit-card-dialog'
+import { Text } from '@/components/ui/text'
+import { Button } from '@/components/ui/button'
 
 interface CardsListProps {
   cards: Card[]
@@ -12,30 +14,56 @@ interface CardsListProps {
 
 export const CardsList = ({ cards, myCards = false }: CardsListProps) => {
   const { user } = useAuth()
+  const navigate = useNavigate()
+
+  const navigateTo = (card: Card) => {
+    navigate(`${myCards ? ROUTES.MY_CARDS : ROUTES.CARDS}/${card.id}`)
+  }
 
   return (
-    <ul>
+    <ul className="flex-1 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-6 py-4 justify-items-center max-w-[1240px] mx-auto">
       {cards.map((card) => (
         <div
           key={card.id}
-          className="border-b border-b-slate-200 py-4"
+          className="flex flex-col justify-start items-center gap-4 bg-white shadow-sm rounded-sm p-4 w-[250px] h-[300px] hover:shadow-lg transition-shadow duration-200"
         >
-          <Link
-            to={`${myCards ? ROUTES.MY_CARDS : ROUTES.CARDS}/${card.id}`}
-            key={card.id}
-            className="flex gap-4"
+          <img
+            src={card.image}
+            alt="Card decoration"
+            className="w-20 h-20 object-contain"
+          />
+          <Text
+            as="h5"
+            variant="h5"
+            className="font-semibold text-purple-900"
           >
-            <p>Title: {card.title}</p>
-            <p>Card Owner: {card.ownerId}</p>
-          </Link>
+            {card.title}
+          </Text>
 
-          {card.ownerId === user?.uid && (
-            <div className="flex gap-2 mt-2">
-              <EditCardDialog card={card} />
+          <Text
+            variant="body-sm"
+            className="text-gray-600 text-center"
+          >
+            {card.description && card.description.length > 70
+              ? `${card.description.slice(0, 70)}…`
+              : card.description}
+          </Text>
 
-              <DeleteCardDialog card={card} />
-            </div>
-          )}
+          <div className="flex flex-col justify-self-end gap-2 mt-auto">
+            <Button
+              variant="primary"
+              onClick={() => navigateTo(card)}
+            >
+              View Details
+            </Button>
+
+            {card.ownerId === user?.uid && (
+              <>
+                <EditCardDialog card={card} />
+                <DeleteCardDialog card={card} />
+              </>
+            )}
+          </div>
         </div>
       ))}
     </ul>

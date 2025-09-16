@@ -3,6 +3,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { AddCardFormData, addCardSchema } from '@/cards/schemas/card.schema'
+import Gift from '@/assets/giftbox.png'
+import Cake from '@/assets/cake.png'
+import Confetti from '@/assets/confetti.png'
+import Balloon from '@/assets/balloon.png'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -20,6 +24,12 @@ import {
   FormMessage,
 } from '@/components/form/form'
 import { Text } from '@/components/ui/text'
+
+const cardImages = [Gift, Cake, Confetti, Balloon]
+
+const getRandomCardImage = () => {
+  return cardImages[Math.floor(Math.random() * cardImages.length)]
+}
 
 export const AddCardForm = () => {
   const { addCard } = useCardsContext()
@@ -54,7 +64,7 @@ export const AddCardForm = () => {
   const isPublic = watch('isPublic')
 
   const onSubmit = async (data: AddCardFormData) => {
-    addCard(data as NewCard, user?.uid || '')
+    addCard(data as NewCard, user?.uid || '', getRandomCardImage())
     reset()
   }
 

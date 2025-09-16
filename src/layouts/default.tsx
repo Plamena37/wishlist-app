@@ -17,7 +17,7 @@ export default function DefaultLayout() {
       >
         <AppHeader />
         <main
-          className="[grid-area:main] flex flex-1 flex-col bg-white overflow-hidden min-h-0"
+          className="[grid-area:main] flex flex-1 flex-col bg-gray-200 scrollbar-outlined-inverse overflow-y-auto min-h-0"
           data-testid="main"
         >
           <Outlet />

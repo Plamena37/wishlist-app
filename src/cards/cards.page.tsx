@@ -35,7 +35,7 @@ const HeaderCollapsedChild = () => {
 }
 
 const CardsPage = () => {
-  const [isCollapseOpen, setIsCollapseOpen] = useState(true)
+  const [isCollapseOpen, setIsCollapseOpen] = useState(false)
 
   const {
     getAllPublicCards,
