@@ -19,7 +19,7 @@ export const errorMessages = {
     'Try refreshing this page, checking your internet connection, or refining your search.',
   not_found_title: 'Page not found.',
   not_found_subtitle:
-    "Sorry, we couldn't find the page you are looking for. Try refreshing the page or returning to the previous screen.",
+    'Sorry, we couldn\'t find the page you are looking for. Try refreshing the page or returning to the previous screen.',
   no_results_found: 'No results found.',
   no_cards_found_subtitle:
     'It’s empty here—no one has created a card so far. Start the first card!',
