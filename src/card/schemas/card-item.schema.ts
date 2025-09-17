@@ -10,7 +10,7 @@ export const addCardItemSchema = z.object({
 })
 
 export const editCardItemSchema = z.object({
-  name: z.string().min(2, 'Name too short (min 2)'),
+  name: z.string().min(2, 'Name too short (min 2)').optional(),
   link: z.string().url('Invalid URL').optional().or(z.literal('')),
   price: z
     .string()
