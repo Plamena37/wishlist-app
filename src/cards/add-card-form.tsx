@@ -3,10 +3,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { AddCardFormData, addCardSchema } from '@/cards/schemas/card.schema'
-import Gift from '@/assets/giftbox.png'
-import Cake from '@/assets/cake.png'
-import Confetti from '@/assets/confetti.png'
-import Balloon from '@/assets/balloon.png'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -25,7 +21,12 @@ import {
 } from '@/components/form/form'
 import { Text } from '@/components/ui/text'
 
-const cardImages = [Gift, Cake, Confetti, Balloon]
+const cardImages = [
+  import.meta.env.VITE_CLOUDINARY_FOLDER_URL + '/balloon_ume1we.png',
+  import.meta.env.VITE_CLOUDINARY_FOLDER_URL + '/cake_2_hepdyj.png',
+  import.meta.env.VITE_CLOUDINARY_FOLDER_URL + '/confetti_1_a9sx8z.png',
+  import.meta.env.VITE_CLOUDINARY_FOLDER_URL + '/giftbox_iyqioz.png',
+]
 
 const getRandomCardImage = () => {
   return cardImages[Math.floor(Math.random() * cardImages.length)]
@@ -75,9 +76,9 @@ export const AddCardForm = () => {
           clearErrors()
         }}
         onSubmit={handleSubmit(onSubmit)}
-        className="py-6 px-8 border-b border-gray-400"
+        className="py-4 px-8 border-b border-gray-400"
       >
-        <div className="grid grid-cols-[1fr] mb-6">
+        <div className="grid grid-cols-[1fr]">
           <Text
             as="h4"
             variant="h4"
@@ -151,13 +152,13 @@ export const AddCardForm = () => {
 
           <FormItem className="flex items-center gap-4">
             <FormLabel>
-              <div className="flex items-center gap-x-2">
+              <div className="flex items-center gap-1">
                 <Text
                   as="p"
                   variant="body"
                   className="font-semibold text-purple-900"
                 >
-                  Will Card Be Public
+                  Make Card Public
                 </Text>
               </div>
             </FormLabel>
@@ -307,7 +308,7 @@ export const AddCardForm = () => {
             type="submit"
             variant="primary"
             size="lg"
-            className="w-full mt-4"
+            className="ml-auto"
             // disabled={loadingCardItem}
           >
             Add Card

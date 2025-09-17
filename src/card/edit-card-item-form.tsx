@@ -1,12 +1,14 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Card, CardItem } from '@/lib/types/Cards'
 import { useCardsContext } from '@/cards/hooks/useCards'
-import {
-  AddCardItemFormData,
-  addCardItemSchema,
-} from './schemas/card-item.schema'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+
+import {
+  EditCardItemFormData,
+  editCardItemSchema,
+} from '@/card/schemas/card-item.schema'
 import {
   Form,
   FormControl,
@@ -17,52 +19,49 @@ import {
 } from '@/components/form/form'
 import { Text } from '@/components/ui/text'
 
-export const AddCardItemForm = () => {
-  const { card, addCardItem, loadingCardItem } = useCardsContext()
+interface EditCardItemFormProps {
+  card: Card
+  item: CardItem
+  onClose: () => void
+}
 
-  const form = useForm<AddCardItemFormData>({
-    resolver: zodResolver(addCardItemSchema),
+export const EditCardItemForm = ({
+  card,
+  item,
+  onClose,
+}: EditCardItemFormProps) => {
+  const { updateCardItem } = useCardsContext()
+
+  const form = useForm<EditCardItemFormData>({
+    resolver: zodResolver(editCardItemSchema),
     defaultValues: {
-      itemName: '',
-      itemLink: '',
-      itemPrice: '',
+      name: item?.name || '',
+      link: item?.link || '',
+      price: item?.price || null,
+      reservedBy: item?.reservedBy || '',
     },
   })
 
   const {
     handleSubmit,
-    reset: resetAddForm,
     formState: { errors },
   } = form
 
-  const onAddItem = async (data: AddCardItemFormData) => {
-    addCardItem(card?.id ?? '', {
-      name: data.itemName,
-      link: data.itemLink || '',
-      price: data.itemPrice ? data.itemPrice : null,
-      reservedBy: '',
-    })
-    resetAddForm()
+  const onSubmit = async (data: EditCardItemFormData) => {
+    updateCardItem(card, item.id, data)
+    onClose()
   }
 
   return (
     <Form {...form}>
       <form
-        onSubmit={handleSubmit(onAddItem)}
-        className="py-6 px-8 border-b border-gray-400"
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-4"
       >
         <div className="grid grid-cols-[1fr]">
-          <Text
-            as="h4"
-            variant="h4"
-            className="mb-4 font-semibold text-purple-900"
-          >
-            Add your desired items...
-          </Text>
-
           <FormField
             control={form.control}
-            name="itemName"
+            name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
@@ -74,19 +73,12 @@ export const AddCardItemForm = () => {
                     >
                       Item Title
                     </Text>
-                    <Text
-                      as="p"
-                      variant="body"
-                      className="text-gray-600"
-                    >
-                      (Required)
-                    </Text>
                   </div>
                 </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Enter Item Title"
-                    error={!!errors.itemName}
+                    error={!!errors.name}
                     {...field}
                   />
                 </FormControl>
@@ -97,7 +89,7 @@ export const AddCardItemForm = () => {
 
           <FormField
             control={form.control}
-            name="itemLink"
+            name="link"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
@@ -114,7 +106,7 @@ export const AddCardItemForm = () => {
                 <FormControl>
                   <Input
                     placeholder="Enter Item Link"
-                    error={!!errors.itemLink}
+                    error={!!errors.link}
                     {...field}
                   />
                 </FormControl>
@@ -125,7 +117,7 @@ export const AddCardItemForm = () => {
 
           <FormField
             control={form.control}
-            name="itemPrice"
+            name="price"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
@@ -143,8 +135,9 @@ export const AddCardItemForm = () => {
                   <Input
                     type="number"
                     placeholder="Enter Item Price"
-                    error={!!errors.itemPrice}
+                    error={!!errors.price}
                     {...field}
+                    value={field.value ?? ''}
                   />
                 </FormControl>
                 <FormMessage className="text-red-600 text-sm font-normal" />
@@ -152,12 +145,16 @@ export const AddCardItemForm = () => {
             )}
           />
 
-          <Button
-            type="submit"
-            disabled={loadingCardItem}
-          >
-            Add Item
-          </Button>
+          <div className="flex gap-2 justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+            >
+              Cancel
+            </Button>
+            <Button type="submit">Save</Button>
+          </div>
         </div>
       </form>
     </Form>

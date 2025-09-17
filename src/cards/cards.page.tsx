@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useCardsContext } from '@/cards/hooks/useCards'
+import { errorMessages, loadingMessages } from '@/lib/constants/messages'
 import { CardsList } from '@/cards/cards-list'
 import { AddCardForm } from '@/cards/add-card-form'
-import { SuccessToast } from '@/components/toast/success-toast'
-import { ErrorToast } from '@/components/toast/error-toast'
 import { Collapse } from '@/components/ui/collapsible'
 import { Text } from '@/components/ui/text'
+import { LoadingOverlay } from '@/components/overlay/loading-overlay'
+import { NotFoundCards } from '@/cards/not-found-cards'
 
 const HeaderCollapsedChild = () => {
   return (
@@ -37,14 +38,7 @@ const HeaderCollapsedChild = () => {
 const CardsPage = () => {
   const [isCollapseOpen, setIsCollapseOpen] = useState(false)
 
-  const {
-    getAllPublicCards,
-    publicCards,
-    errorCard,
-    successCard,
-    clearSuccessCard,
-    clearErrorCard,
-  } = useCardsContext()
+  const { getAllPublicCards, publicCards, loading } = useCardsContext()
 
   useEffect(() => {
     getAllPublicCards()
@@ -52,6 +46,15 @@ const CardsPage = () => {
 
   const handleCollapsedChange = (isOpen: boolean) => {
     setIsCollapseOpen(isOpen)
+  }
+
+  if (loading) {
+    return (
+      <LoadingOverlay
+        title={loadingMessages.loading_cards_title}
+        subtitle={loadingMessages.loading_cards_subtitle}
+      />
+    )
   }
 
   return (
@@ -66,21 +69,10 @@ const CardsPage = () => {
         <AddCardForm />
       </Collapse>
 
-      <CardsList cards={publicCards} />
-
-      {successCard?.status && (
-        <SuccessToast
-          open={successCard.status}
-          message={successCard.message}
-          onClose={clearSuccessCard}
-        />
-      )}
-      {errorCard?.status && (
-        <ErrorToast
-          open={errorCard.status}
-          message={errorCard.message}
-          onClose={clearErrorCard}
-        />
+      {publicCards.length === 0 ? (
+        <NotFoundCards subtitle={errorMessages.no_cards_found_subtitle} />
+      ) : (
+        <CardsList cards={publicCards} />
       )}
     </>
   )

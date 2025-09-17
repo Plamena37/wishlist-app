@@ -1,19 +1,16 @@
 import { z } from 'zod'
 
 export const addCardItemSchema = z.object({
-  itemName: z.string().min(2, 'Item name must be at least 2 characters long'),
+  itemName: z.string().min(2, 'Name too short (min 2)'),
   itemLink: z.string().url('Invalid URL').optional().or(z.literal('')),
   itemPrice: z
     .string()
     .optional()
-    .refine(
-      (val) => !val || !isNaN(Number(val)),
-      'Price must be a valid number'
-    ),
+    .refine((val) => !val || !isNaN(Number(val)), 'Price must be a valid'),
 })
 
 export const editCardItemSchema = z.object({
-  name: z.string().optional(),
+  name: z.string().min(2, 'Name too short (min 2)'),
   link: z.string().url('Invalid URL').optional().or(z.literal('')),
   price: z
     .string()
@@ -21,7 +18,7 @@ export const editCardItemSchema = z.object({
     .nullable()
     .refine(
       (val) => val === null || !val || !isNaN(Number(val)),
-      'Price must be a valid number'
+      'Price must be a valid'
     ),
   reservedBy: z.string().optional().or(z.literal('')),
 })

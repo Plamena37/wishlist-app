@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
-import { faCheckSquare } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { cn } from '@/lib/utils'
 
 function Checkbox({
@@ -21,10 +21,13 @@ function Checkbox({
         data-slot="checkbox-indicator"
         className="flex items-center justify-center text-current transition-none"
       >
-        {/* <CheckIcon className="size-3.5" /> */}
         <FontAwesomeIcon
-          icon={faCheckSquare}
-          className="fill-primary absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2"
+          icon={faCheck}
+          className="text-white"
+          style={{
+            width: '10px',
+            height: '10px',
+          }}
         />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>

@@ -1,7 +1,7 @@
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Card } from '@/lib/types/Cards'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { Button } from '@/components/ui/button'
@@ -10,6 +10,15 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { EditCardFormData, editCardSchema } from '@/cards/schemas/card.schema'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/form/form'
+import { Text } from '@/components/ui/text'
 
 interface EditCardFormProps {
   card: Card
@@ -19,14 +28,7 @@ interface EditCardFormProps {
 export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
   const { editCard } = useCardsContext()
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-    watch,
-    setValue,
-  } = useForm<EditCardFormData>({
+  const form = useForm<EditCardFormData>({
     resolver: zodResolver(editCardSchema),
     defaultValues: {
       title: card?.title || '',
@@ -35,6 +37,15 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
       items: card?.items || [],
     },
   })
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = form
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -49,127 +60,182 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4"
-    >
-      <Input
-        placeholder="Edit Card Title..."
-        {...register('title')}
-      />
-      {errors.title && <p className="text-red-500">{errors.title.message}</p>}
-
-      <Textarea
-        placeholder="Edit Card Description..."
-        {...register('description')}
-      />
-      {errors.description && (
-        <p className="text-red-500">{errors.description.message}</p>
-      )}
-
-      <div className="flex items-center space-x-2">
-        <Switch
-          id="switch-isPublic"
-          checked={isPublic}
-          onCheckedChange={(val) => {
-            setValue('isPublic', val, { shouldValidate: true })
-          }}
-        />
-        <Label htmlFor="switch-isPublic">
-          {isPublic ? 'Public' : 'Private'}
-        </Label>
-      </div>
-      {errors.isPublic && (
-        <p className="text-red-500">{errors.isPublic.message}</p>
-      )}
-
-      <h4 className="font-semibold">Items:</h4>
-      {fields.map((field, index) => (
-        <div
-          key={field.id}
-          className="flex gap-2 items-start"
-        >
-          <div>
-            <Input
-              placeholder="Item Name"
-              {...register(`items.${index}.name`)}
-            />
-            {errors.items?.[index]?.name && (
-              <p className="text-red-500">
-                {errors.items[index]?.name?.message}
-              </p>
+    <Form {...form}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="grid grid-cols-[1fr] gap-y-2">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  <div className="mb-1 flex items-center gap-x-2">
+                    <Text
+                      as="p"
+                      variant="body"
+                      className="font-semibold text-purple-900"
+                    >
+                      Card Title
+                    </Text>
+                  </div>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter Card Title"
+                    error={!!errors.title}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-red-600 text-sm font-normal" />
+              </FormItem>
             )}
-          </div>
-          <div>
-            <Input
-              placeholder="Item Link"
-              {...register(`items.${index}.link`)}
-            />
-            {errors.items?.[index]?.link && (
-              <p className="text-red-500">
-                {errors.items[index]?.link?.message}
-              </p>
-            )}
-          </div>
-          <div>
-            <Input
-              type="number"
-              step="0.01"
-              placeholder="Price"
-              {...register(`items.${index}.price`)}
-            />
-            {errors.items?.[index]?.price && (
-              <p className="text-red-500">
-                {errors.items[index]?.price?.message}
-              </p>
-            )}
-          </div>
+          />
 
-          {/* Delete item button */}
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  <div className="mb-1 flex items-center gap-x-2">
+                    <Text
+                      as="p"
+                      variant="body"
+                      className="font-semibold text-purple-900"
+                    >
+                      Card Description
+                    </Text>
+                  </div>
+                </FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Enter Card Description"
+                    error={!!errors.description}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-red-600 text-sm font-normal" />
+              </FormItem>
+            )}
+          />
+
+          <FormItem className="flex items-center gap-4">
+            <FormLabel>
+              <div className="flex items-center gap-1">
+                <Text
+                  as="p"
+                  variant="body"
+                  className="font-semibold text-purple-900"
+                >
+                  Make Card Public
+                </Text>
+              </div>
+            </FormLabel>
+            <FormControl>
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="switch-isPublic"
+                  checked={isPublic}
+                  onCheckedChange={(val) => {
+                    setValue('isPublic', val, { shouldValidate: true })
+                  }}
+                />
+                <Label htmlFor="switch-isPublic">
+                  {isPublic ? 'Public' : 'Private'}
+                </Label>
+              </div>
+            </FormControl>
+            <FormMessage className="text-red-600 text-sm font-normal" />
+          </FormItem>
+
+          <h4 className="font-semibold">Items:</h4>
+          {fields.map((field, index) => (
+            <div
+              key={field.id}
+              className="flex gap-2 items-start"
+            >
+              <div>
+                <Input
+                  placeholder="Item Name"
+                  {...register(`items.${index}.name`)}
+                  error={!!errors.items?.[index]?.name}
+                />
+                <FormMessage className="text-red-600 text-sm font-normal">
+                  {errors.items?.[index]?.name?.message ?? ''}
+                </FormMessage>
+              </div>
+
+              <div>
+                <Input
+                  placeholder="Item Link"
+                  {...register(`items.${index}.link`)}
+                  error={!!errors.items?.[index]?.link}
+                />
+                <FormMessage className="text-red-600 text-sm font-normal">
+                  {errors.items?.[index]?.link?.message ?? ''}
+                </FormMessage>
+              </div>
+              <div>
+                <Input
+                  type="number"
+                  step="0.01"
+                  placeholder="Item Price"
+                  {...register(`items.${index}.price`)}
+                  error={!!errors.items?.[index]?.price}
+                />
+                <FormMessage className="text-red-600 text-sm font-normal">
+                  {errors.items?.[index]?.price?.message ?? ''}
+                </FormMessage>
+              </div>
+
+              {/* Delete item button */}
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-purple-900 self-start"
+                onClick={() => remove(index)}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </Button>
+            </div>
+          ))}
+
+          {/* Add item button */}
           <Button
             type="button"
             variant="outline"
-            size="sm"
-            onClick={() => remove(index)}
+            onClick={() =>
+              append({
+                name: '',
+                link: '',
+                price: null,
+              })
+            }
+            disabled={
+              fields.length > 0 && !watch(`items.${fields.length - 1}.name`)
+            }
           >
-            <FontAwesomeIcon icon={faTrash} />
+            <FontAwesomeIcon
+              icon={faPlus}
+              className="mr-2"
+            />
+            Add Item
           </Button>
+
+          {/* Action buttons */}
+          <div className="flex gap-2 mt-4  justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+            >
+              Close
+            </Button>
+            <Button type="submit">Save Changes</Button>
+          </div>
         </div>
-      ))}
-
-      {/* Add item button */}
-      <Button
-        type="button"
-        variant="outline"
-        onClick={() =>
-          append({
-            name: '',
-            link: '',
-            price: null,
-          })
-        }
-        disabled={
-          fields.length > 0 && !watch(`items.${fields.length - 1}.name`)
-        }
-      >
-        <FontAwesomeIcon
-          icon={faPlusCircle}
-          className="mr-2"
-        />
-        Add Item
-      </Button>
-
-      {/* Action buttons */}
-      <div className="flex gap-2 mt-4">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onClose}
-        >
-          Close
-        </Button>
-        <Button type="submit">Save Changes</Button>
-      </div>
-    </form>
+      </form>
+    </Form>
   )
 }

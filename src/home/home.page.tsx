@@ -1,12 +1,13 @@
-import { Link } from 'react-router'
-import { ROUTES } from '@/router/constants/app-routes'
-import { Button } from '@/components/ui/button'
+import { Link, useNavigate } from 'react-router'
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 import { auth } from '@/firebase.config'
 import { useAuth } from '@/auth/hooks/useAuth'
+import { ROUTES } from '@/router/constants/app-routes'
+import { Button } from '@/components/ui/button'
 
 const HomePage = () => {
   const { user } = useAuth()
+  const navigate = useNavigate()
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider()
@@ -15,6 +16,7 @@ const HomePage = () => {
 
   const handleSignOut = async () => {
     await signOut(auth)
+    navigate(ROUTES.HOME)
   }
 
   const signInButtonText =

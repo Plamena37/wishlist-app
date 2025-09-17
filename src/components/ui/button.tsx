@@ -20,7 +20,7 @@ const buttonVariants = cva(
           'rounded-none bg-purple-300 hover:bg-purple-400 text-purple-900',
         ghost:
           'bg-transparent text-purple-900 hover:text-purple-900/80 focus-visible:ring-0 focus-visible:ring-transparent hover:bg-gray-200 disabled:text-gray-500 disabled:opacity-50',
-        link: 'text-purple-600 underline-offset-4 hover:underline',
+        link: 'text-purple-800 underline-offset-4 hover:underline',
         outline:
           'bg-transparent text-text-primary border border-gray-500 rounded-sm hover:bg-purple-800/10 focus-visible:ring-purple-700',
       },

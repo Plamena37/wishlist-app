@@ -327,3 +327,11 @@ body,
 #root {
   @apply font-sans antialiased w-screen h-screen;
 }
+
+.notistack-MuiContent-success {
+  @apply bg-purple-800 text-white;
+}
+
+.notistack-MuiContent-error {
+  @apply bg-red-600 text-white;
+}

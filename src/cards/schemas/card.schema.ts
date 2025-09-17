@@ -1,13 +1,13 @@
 import { z } from 'zod'
 
 export const addCardSchema = z.object({
-  title: z.string().min(2, 'Card title must be at least 2 characters long'),
+  title: z.string().min(2, 'Name too short (min 2)'),
   description: z.string().optional(),
   isPublic: z.boolean(),
   items: z
     .array(
       z.object({
-        name: z.string().min(2, 'Item name must be at least 2 characters long'),
+        name: z.string().min(2, 'Name too short (min 2)'),
         link: z.string().optional().nullable(),
         price: z.string().nullable().optional(),
       })
@@ -16,14 +16,14 @@ export const addCardSchema = z.object({
 })
 
 export const editCardSchema = z.object({
-  title: z.string().optional(),
+  title: z.string().min(2, 'Name too short (min 2)'),
   description: z.string().optional(),
   isPublic: z.boolean(),
   items: z
     .array(
       z.object({
         id: z.string().optional(),
-        name: z.string().min(2, 'Item name must be at least 2 characters long'),
+        name: z.string().min(2, 'Name too short (min 2)'),
         link: z.string().optional().nullable(),
         price: z.string().nullable().optional(),
         reservedBy: z.string().optional().nullable(),

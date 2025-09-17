@@ -5,7 +5,7 @@ export interface Card {
   description?: string
   isPublic: boolean
   image: string
-  items?: CardItem[]
+  items: CardItem[]
 }
 
 export interface CardItem {

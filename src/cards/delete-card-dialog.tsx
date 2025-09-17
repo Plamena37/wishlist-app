@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate, useParams } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Card } from '@/lib/types/Cards'
@@ -18,6 +19,8 @@ interface DeleteCardDialogProps {
 
 export const DeleteCardDialog = ({ card }: DeleteCardDialogProps) => {
   const { removeCard } = useCardsContext()
+  const { cardId } = useParams<{ cardId: string }>()
+  const navigate = useNavigate()
   const [deleteCardId, setDeleteCardId] = useState<string | null>(null)
 
   const handleCloseDeleteDialog = () => {
@@ -28,6 +31,9 @@ export const DeleteCardDialog = ({ card }: DeleteCardDialogProps) => {
     if (!deleteCardId) return
     removeCard(deleteCardId)
     handleCloseDeleteDialog()
+    if (cardId && cardId === deleteCardId) {
+      navigate(-1)
+    }
   }
 
   return (

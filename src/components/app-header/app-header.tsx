@@ -61,7 +61,7 @@ export const AppHeader = () => {
           {hideNavButtons && (
             <Button
               variant="primary"
-              className="py-4 px-4 rounded-full bg-gray-50 w-auto"
+              className="py-4 px-4 rounded-full bg-gray-50 w-auto hover:bg-gray-300"
               onClick={signInWithGoogle}
             >
               <Icon

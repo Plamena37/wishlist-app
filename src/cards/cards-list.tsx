@@ -20,6 +20,26 @@ export const CardsList = ({ cards, myCards = false }: CardsListProps) => {
     navigate(`${myCards ? ROUTES.MY_CARDS : ROUTES.CARDS}/${card.id}`)
   }
 
+  if (cards.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[60vh]">
+        <Text
+          as="h5"
+          variant="h5"
+          className="font-semibold text-gray-400"
+        >
+          No cards available.
+        </Text>
+        <Text
+          variant="body"
+          className="text-gray-400 mt-2"
+        >
+          You have not created any cards yet. Start by adding a new card!
+        </Text>
+      </div>
+    )
+  }
+
   return (
     <ul className="flex-1 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-6 py-4 justify-items-center max-w-[1240px] mx-auto">
       {cards.map((card) => (
@@ -44,8 +64,8 @@ export const CardsList = ({ cards, myCards = false }: CardsListProps) => {
             variant="body-sm"
             className="text-gray-600 text-center"
           >
-            {card.description && card.description.length > 70
-              ? `${card.description.slice(0, 70)}…`
+            {card.description && card.description.length > 65
+              ? `${card.description.slice(0, 65)}…`
               : card.description}
           </Text>
 
