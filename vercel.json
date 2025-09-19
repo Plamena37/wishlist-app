@@ -1,1 +1,24 @@
-{ "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }] }
+{
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/"
+    },
+    {
+      "src": "/cards",
+      "dest": "/"
+    },
+    {
+      "src": "/cards/:cardId",
+      "dest": "/cards/:cardId"
+    },
+    {
+      "src": "/my-cards",
+      "dest": "/"
+    },
+    {
+      "src": "/my-cards/:cardId",
+      "dest": "/"
+    }
+  ]
+}
