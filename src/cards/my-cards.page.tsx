@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { errorMessages } from '@/lib/constants/messages'
+import { useAuth } from '@/auth/hooks/useAuth'
 import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { useCardsContext } from '@/cards/hooks/useCards'
+import { errorMessages } from '@/lib/constants/messages'
 import { CardsList } from '@/cards/cards-list'
 import { AddCardForm } from '@/cards/add-card-form'
 import { Collapse } from '@/components/ui/collapsible'
@@ -40,7 +41,8 @@ const MobileHeaderCollapsedChild = () => {
 }
 
 const MyCardsPage = () => {
-  const { getMyCards, myCards } = useCardsContext()
+  const { user } = useAuth()
+  const { getMyCards, myCards, loading } = useCardsContext()
   const [isCollapseOpen, setIsCollapseOpen] = useState(false)
   const { isSm } = useBreakpoints()
 
@@ -49,8 +51,8 @@ const MyCardsPage = () => {
   }
 
   useEffect(() => {
-    getMyCards()
-  }, [])
+    getMyCards(user?.uid || '')
+  }, [user])
 
   return (
     <>
@@ -66,7 +68,7 @@ const MyCardsPage = () => {
         <AddCardForm />
       </Collapse>
 
-      {myCards.length === 0 ? (
+      {myCards.length === 0 && !loading ? (
         <NotFoundCards subtitle={errorMessages.no_my_cards_found_subtitle} />
       ) : (
         <CardsList

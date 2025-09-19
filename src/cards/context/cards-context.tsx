@@ -19,7 +19,6 @@ import {
   getCard,
   updateCard,
 } from '@/cards/services/cards-service'
-import { useAuth } from '@/auth/hooks/useAuth'
 
 type CardsContextType = {
   publicCards: Card[]
@@ -32,7 +31,7 @@ type CardsContextType = {
   checkUserCanEditCard: (user: User | null) => void
   checkUserCanReserveCardItem: (user: User | null, item: CardItem) => void
   getAllPublicCards: () => Promise<void>
-  getMyCards: () => Promise<void>
+  getMyCards: (userId: string) => Promise<void>
   getCardById: (cardId: string) => Promise<void>
   addCardItem: (cardId: string, newItem: Omit<CardItem, 'id'>) => Promise<void>
   updateCardItem: (
@@ -55,7 +54,6 @@ export const CardsContext = createContext<CardsContextType | undefined>(
 export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { user } = useAuth()
   const { showSuccess, showError } = useAppSnackbar()
 
   const [publicCards, setPublicCards] = useState<Card[]>([])
@@ -81,10 +79,10 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
-  const getMyCards = async () => {
+  const getMyCards = async (userId: string) => {
     setLoading(true)
     try {
-      const data = await fetchMyCards(user?.uid || '')
+      const data = await fetchMyCards(userId)
       setMyCards(data)
     } catch (error) {
       showError((error as Error).message || errorMessages.general_error_title)
