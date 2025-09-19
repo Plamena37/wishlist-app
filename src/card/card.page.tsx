@@ -5,6 +5,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
+import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { loadingMessages } from '@/lib/constants/messages'
 import { AddCardItemForm } from '@/card/add-card-item-form'
 import { CardItemsList } from '@/card/card-items-list'
@@ -42,6 +43,10 @@ const HeaderCollapsedChild = () => {
   )
 }
 
+const MobileHeaderCollapsedChild = () => {
+  return <div className="py-4"></div>
+}
+
 export default function CardPage() {
   const { cardId } = useParams()
   const { card, getCardById, checkUserCanEditCard, canEditCard, loading } =
@@ -49,6 +54,7 @@ export default function CardPage() {
   const { user } = useAuth()
   const [isCollapseOpen, setIsCollapseOpen] = useState(false)
   const navigate = useNavigate()
+  const { isSm } = useBreakpoints()
 
   const handleCollapsedChange = (isOpen: boolean) => {
     setIsCollapseOpen(isOpen)
@@ -80,9 +86,11 @@ export default function CardPage() {
     <>
       {canEditCard && (
         <Collapse
-          headerCollapsedChild={<HeaderCollapsedChild />}
+          headerCollapsedChild={
+            isSm ? <HeaderCollapsedChild /> : <MobileHeaderCollapsedChild />
+          }
           collapsedText="Expand Form Fields"
-          expandedText="Collapse Form Fields"
+          expandedText={`${isSm ? 'Collapse Form Fields' : ''}`}
           defaultCollapsed={!isCollapseOpen}
           onCollapsedChange={handleCollapsedChange}
         >

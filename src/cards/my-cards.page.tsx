@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { errorMessages } from '@/lib/constants/messages'
+import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { CardsList } from '@/cards/cards-list'
 import { AddCardForm } from '@/cards/add-card-form'
@@ -34,9 +35,14 @@ const HeaderCollapsedChild = () => {
   )
 }
 
+const MobileHeaderCollapsedChild = () => {
+  return <div className="py-4"></div>
+}
+
 const MyCardsPage = () => {
   const { getMyCards, myCards } = useCardsContext()
   const [isCollapseOpen, setIsCollapseOpen] = useState(false)
+  const { isSm } = useBreakpoints()
 
   const handleCollapsedChange = (isOpen: boolean) => {
     setIsCollapseOpen(isOpen)
@@ -49,9 +55,11 @@ const MyCardsPage = () => {
   return (
     <>
       <Collapse
-        headerCollapsedChild={<HeaderCollapsedChild />}
+        headerCollapsedChild={
+          isSm ? <HeaderCollapsedChild /> : <MobileHeaderCollapsedChild />
+        }
         collapsedText="Expand Form Fields"
-        expandedText="Collapse Form Fields"
+        expandedText={`${isSm ? 'Collapse Form Fields' : ''}`}
         defaultCollapsed={!isCollapseOpen}
         onCollapsedChange={handleCollapsedChange}
       >

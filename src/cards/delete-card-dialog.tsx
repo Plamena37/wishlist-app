@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { Text } from '@/components/ui/text'
 
 interface DeleteCardDialogProps {
   card: Card
@@ -21,6 +22,7 @@ export const DeleteCardDialog = ({ card }: DeleteCardDialogProps) => {
   const { removeCard } = useCardsContext()
   const { cardId } = useParams<{ cardId: string }>()
   const navigate = useNavigate()
+
   const [deleteCardId, setDeleteCardId] = useState<string | null>(null)
 
   const handleCloseDeleteDialog = () => {
@@ -53,8 +55,10 @@ export const DeleteCardDialog = ({ card }: DeleteCardDialogProps) => {
         <DialogHeader>
           <DialogTitle>Delete Card</DialogTitle>
         </DialogHeader>
-        <p>Are you sure you want to delete "{card.title}"?</p>
-        <div className="flex justify-end gap-2 mt-4">
+        <Text variant="h5">
+          Are you sure you want to delete "{card.title}"?
+        </Text>
+        <div className="flex justify-center sm:justify-end gap-2 sm:mt-4 mt-1">
           <Button
             variant="outline"
             onClick={() => setDeleteCardId(null)}

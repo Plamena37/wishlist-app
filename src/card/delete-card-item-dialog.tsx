@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { Text } from '@/components/ui/text'
 
 interface DeleteCardItemDialogProps {
   cardId: string
@@ -50,8 +51,8 @@ export const DeleteCardItemDialog = ({
         <DialogHeader>
           <DialogTitle>Delete Card Item</DialogTitle>
         </DialogHeader>
-        <p>Are you sure you want to delete "{item.name}"?</p>
-        <div className="flex justify-end gap-2 mt-4">
+        <Text variant="h5">Are you sure you want to delete "{item.name}"?</Text>
+        <div className="flex justify-center sm:justify-end gap-2 sm:mt-4 mt-1">
           <Button
             variant="outline"
             onClick={() => setDeleteCardItemId(null)}

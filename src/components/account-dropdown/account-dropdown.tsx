@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useAuth } from '@/auth/hooks/useAuth'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/auth/hooks/useAuth'
+import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -27,6 +28,7 @@ interface AccountDropdownProps {
 const AccountDropdown = ({ links }: AccountDropdownProps) => {
   const { user } = useAuth()
   const navigate = useNavigate()
+  const { isSm } = useBreakpoints()
 
   // const userInitials = getUserInitials(user?.displayName || '')
 
@@ -49,14 +51,17 @@ const AccountDropdown = ({ links }: AccountDropdownProps) => {
           <img
             src={user.photoURL || ''}
             alt={user.displayName || 'User'}
-            className="w-10 h-10 rounded-full object-cover cursor-pointer"
+            className={cn(
+              'w-10 h-10 rounded-full object-cover cursor-pointer',
+              isSm ? 'w-10 h-10' : 'w-8 h-8'
+            )}
             referrerPolicy="no-referrer"
           />
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         sideOffset={0}
-        className="p-0 w-42 text-blue-900 bg-white"
+        className={cn('p-0 text-blue-900 bg-white', isSm ? 'w-42' : 'w-28')}
         data-testid="account-dropdown-menu"
       >
         {links.map((link) => (

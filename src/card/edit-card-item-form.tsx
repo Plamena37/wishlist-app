@@ -77,7 +77,7 @@ export const EditCardItemForm = ({
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter Item Title"
+                    placeholder="Enter Title"
                     error={!!errors.name}
                     {...field}
                   />
@@ -105,7 +105,7 @@ export const EditCardItemForm = ({
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter Item Link"
+                    placeholder="Enter Link"
                     error={!!errors.link}
                     {...field}
                   />
@@ -134,7 +134,7 @@ export const EditCardItemForm = ({
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="Enter Item Price"
+                    placeholder="Enter Price"
                     error={!!errors.price}
                     {...field}
                     value={field.value ?? ''}
@@ -145,7 +145,7 @@ export const EditCardItemForm = ({
             )}
           />
 
-          <div className="flex gap-2 justify-end">
+          <div className="flex gap-2 justify-between sm:justify-end mt-2">
             <Button
               type="button"
               variant="outline"

@@ -1,16 +1,18 @@
 import { useFieldArray, useForm } from 'react-hook-form'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { cn } from '@/lib/utils'
+import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { AddCardFormData, addCardSchema } from '@/cards/schemas/card.schema'
+import { NewCard } from '@/lib/types/Cards'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { NewCard } from '@/lib/types/Cards'
 import {
   Form,
   FormControl,
@@ -33,8 +35,9 @@ const getRandomCardImage = () => {
 }
 
 export const AddCardForm = () => {
-  const { addCard } = useCardsContext()
+  const { addCard, loadingCardItem } = useCardsContext()
   const { user } = useAuth()
+  const { isSm } = useBreakpoints()
 
   const form = useForm<AddCardFormData>({
     resolver: zodResolver(addCardSchema),
@@ -66,6 +69,10 @@ export const AddCardForm = () => {
 
   const onSubmit = async (data: AddCardFormData) => {
     addCard(data as NewCard, user?.uid || '', getRandomCardImage())
+    reset()
+  }
+
+  const resetForm = () => {
     reset()
   }
 
@@ -112,7 +119,7 @@ export const AddCardForm = () => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter Card Title"
+                    placeholder="Enter Title"
                     error={!!errors.title}
                     {...field}
                   />
@@ -140,7 +147,7 @@ export const AddCardForm = () => {
                 </FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Enter Card Description"
+                    placeholder="Enter Description"
                     error={!!errors.description}
                     {...field}
                   />
@@ -179,30 +186,47 @@ export const AddCardForm = () => {
             <FormMessage className="text-red-600 text-sm font-normal" />
           </FormItem>
 
-          <h4 className="font-semibold mt-2">Add Items:</h4>
-          <div className="border border-gray-200 rounded-sm p-4">
+          <Text
+            as="h5"
+            variant="h5"
+            className="font-semibold mt-2"
+          >
+            Add Items:
+          </Text>
+          <div
+            className={cn(
+              'border border-gray-200 rounded-sm',
+              isSm ? 'py-4' : 'py-2'
+            )}
+          >
             {fields.map((field, index) => (
               <div
                 key={field.id}
-                className="flex gap-4 items-start mb-4"
+                className={cn(
+                  'grid grid-cols-1 sm:grid-cols-4 sm:gap-4 gap-2 mb-2',
+                  index !== fields.length - 1
+                    ? 'border-b border-dashed border-b-gray-400 pb-2'
+                    : ''
+                )}
               >
                 <div>
-                  <FormLabel>
-                    <div className="mb-1 flex items-center gap-x-2">
-                      <Text
-                        as="p"
-                        variant="body"
-                        className="font-semibold text-purple-900"
-                      >
-                        Item Title
-                      </Text>
-                    </div>
-                  </FormLabel>
+                  {isSm && (
+                    <FormLabel>
+                      <div className="mb-1 flex items-center gap-x-2">
+                        <Text
+                          as="p"
+                          variant="body"
+                          className="font-semibold text-purple-900"
+                        >
+                          Item Title
+                        </Text>
+                      </div>
+                    </FormLabel>
+                  )}
                   <Input
-                    placeholder="Item Name"
+                    placeholder="Enter Name"
                     {...register(`items.${index}.name`)}
                     error={!!errors.items?.[index]?.name}
-                    className="w-80"
                   />
                   <FormMessage className="text-red-600 text-sm font-normal">
                     {errors.items?.[index]?.name?.message ?? ''}
@@ -210,19 +234,21 @@ export const AddCardForm = () => {
                 </div>
 
                 <div>
-                  <FormLabel>
-                    <div className="mb-1 flex items-center gap-x-2">
-                      <Text
-                        as="p"
-                        variant="body"
-                        className="font-semibold text-purple-900"
-                      >
-                        Item Title
-                      </Text>
-                    </div>
-                  </FormLabel>
+                  {isSm && (
+                    <FormLabel>
+                      <div className="mb-1 flex items-center gap-x-2">
+                        <Text
+                          as="p"
+                          variant="body"
+                          className="font-semibold text-purple-900"
+                        >
+                          Item Title
+                        </Text>
+                      </div>
+                    </FormLabel>
+                  )}
                   <Input
-                    placeholder="Item Link"
+                    placeholder="Enter Link"
                     {...register(`items.${index}.link`)}
                     error={!!errors.items?.[index]?.link}
                   />
@@ -232,21 +258,23 @@ export const AddCardForm = () => {
                 </div>
 
                 <div>
-                  <FormLabel>
-                    <div className="mb-1 flex items-center gap-x-2">
-                      <Text
-                        as="p"
-                        variant="body"
-                        className="font-semibold text-purple-900"
-                      >
-                        Item Title
-                      </Text>
-                    </div>
-                  </FormLabel>
+                  {isSm && (
+                    <FormLabel>
+                      <div className="mb-1 flex items-center gap-x-2">
+                        <Text
+                          as="p"
+                          variant="body"
+                          className="font-semibold text-purple-900"
+                        >
+                          Item Title
+                        </Text>
+                      </div>
+                    </FormLabel>
+                  )}
                   <Input
                     type="number"
                     step="0.01"
-                    placeholder="Item Price"
+                    placeholder="Enter Price"
                     {...register(`items.${index}.price`)}
                     error={!!errors.items?.[index]?.price}
                   />
@@ -256,18 +284,19 @@ export const AddCardForm = () => {
                 </div>
 
                 <div>
-                  {/* Remove Button */}
-                  <FormLabel>
-                    <div className="mb-1 flex items-center gap-x-2">
-                      <Text
-                        as="p"
-                        variant="body"
-                        className="opacity-0"
-                      >
-                        Delete Item
-                      </Text>
-                    </div>
-                  </FormLabel>
+                  {isSm && (
+                    <FormLabel>
+                      <div className="mb-1 flex items-center gap-x-2">
+                        <Text
+                          as="p"
+                          variant="body"
+                          className="opacity-0"
+                        >
+                          Delete Item
+                        </Text>
+                      </div>
+                    </FormLabel>
+                  )}
                   <Button
                     type="button"
                     variant="outline"
@@ -281,7 +310,6 @@ export const AddCardForm = () => {
               </div>
             ))}
 
-            {/* Add Item Button */}
             <Button
               type="button"
               variant="outline"
@@ -304,15 +332,25 @@ export const AddCardForm = () => {
             </Button>
           </div>
 
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            className="ml-auto"
-            // disabled={loadingCardItem}
-          >
-            Add Card
-          </Button>
+          <div className="flex sm:gap-6 gap-2 justify-between sm:justify-end">
+            <Button
+              variant="outline"
+              size="lg"
+              type="reset"
+              disabled={loadingCardItem}
+              onClick={resetForm}
+            >
+              Clear
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              disabled={loadingCardItem}
+            >
+              Add Card
+            </Button>
+          </div>
         </div>
       </form>
     </Form>

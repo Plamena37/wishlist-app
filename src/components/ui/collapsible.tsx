@@ -3,8 +3,8 @@ import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { cn } from '@/lib/utils'
-import { Button } from './button'
-import { Text } from './text'
+import { Button } from '@/components/ui/button'
+import { Text } from '@/components/ui/text'
 
 export interface CollapseProps {
   children: React.ReactNode | React.ReactNode[]
@@ -59,7 +59,7 @@ const Collapse = ({
             data-testid="collapsible-trigger-button"
           >
             <Text
-              className="text-sm font-semibold text-purple-800"
+              className="font-semibold text-purple-800"
               as="p"
               variant="body"
               data-testid="collapsible-trigger-button-text"

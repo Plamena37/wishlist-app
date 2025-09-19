@@ -2,6 +2,7 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { cn } from '@/lib/utils'
 import { Card } from '@/lib/types/Cards'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { Button } from '@/components/ui/button'
@@ -61,7 +62,10 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="max-h-[80dvh] overflow-y-auto"
+      >
         <div className="grid grid-cols-[1fr] gap-y-2">
           <FormField
             control={form.control}
@@ -152,13 +156,19 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
           {fields.map((field, index) => (
             <div
               key={field.id}
-              className="flex gap-2 items-start"
+              className={cn(
+                'grid grid-cols-1 sm:grid-cols-[1fr_1fr_1fr_0.5fr] sm:gap-4 gap-2 mb-2',
+                index !== fields.length - 1
+                  ? 'border-b border-dashed border-b-gray-400 pb-2'
+                  : ''
+              )}
             >
               <div>
                 <Input
-                  placeholder="Item Name"
+                  placeholder="Enter Name"
                   {...register(`items.${index}.name`)}
                   error={!!errors.items?.[index]?.name}
+                  // className="w-[80dvw]"
                 />
                 <FormMessage className="text-red-600 text-sm font-normal">
                   {errors.items?.[index]?.name?.message ?? ''}
@@ -167,7 +177,7 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
 
               <div>
                 <Input
-                  placeholder="Item Link"
+                  placeholder="Enter Link"
                   {...register(`items.${index}.link`)}
                   error={!!errors.items?.[index]?.link}
                 />
@@ -179,7 +189,7 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
                 <Input
                   type="number"
                   step="0.01"
-                  placeholder="Item Price"
+                  placeholder="Enter Price"
                   {...register(`items.${index}.price`)}
                   error={!!errors.items?.[index]?.price}
                 />
@@ -224,7 +234,7 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
           </Button>
 
           {/* Action buttons */}
-          <div className="flex gap-2 mt-4  justify-end">
+          <div className="flex gap-2 mt-4 justify-between sm:justify-end">
             <Button
               type="button"
               variant="outline"

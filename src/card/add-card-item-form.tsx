@@ -4,7 +4,7 @@ import { useCardsContext } from '@/cards/hooks/useCards'
 import {
   AddCardItemFormData,
   addCardItemSchema,
-} from './schemas/card-item.schema'
+} from '@/card/schemas/card-item.schema'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -33,6 +33,7 @@ export const AddCardItemForm = () => {
     handleSubmit,
     reset: resetAddForm,
     formState: { errors },
+    reset,
   } = form
 
   const onAddItem = async (data: AddCardItemFormData) => {
@@ -43,6 +44,10 @@ export const AddCardItemForm = () => {
       reservedBy: '',
     })
     resetAddForm()
+  }
+
+  const resetForm = () => {
+    reset()
   }
 
   return (
@@ -85,7 +90,7 @@ export const AddCardItemForm = () => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter Item Title"
+                    placeholder="Enter Title"
                     error={!!errors.itemName}
                     {...field}
                   />
@@ -113,7 +118,7 @@ export const AddCardItemForm = () => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter Item Link"
+                    placeholder="Enter Link"
                     error={!!errors.itemLink}
                     {...field}
                   />
@@ -142,7 +147,7 @@ export const AddCardItemForm = () => {
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="Enter Item Price"
+                    placeholder="Enter Price"
                     error={!!errors.itemPrice}
                     {...field}
                   />
@@ -152,12 +157,25 @@ export const AddCardItemForm = () => {
             )}
           />
 
-          <Button
-            type="submit"
-            disabled={loadingCardItem}
-          >
-            Add Item
-          </Button>
+          <div className="flex sm:gap-6 gap-2 justify-between sm:justify-end">
+            <Button
+              variant="outline"
+              size="lg"
+              type="reset"
+              disabled={loadingCardItem}
+              onClick={resetForm}
+            >
+              Clear
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              disabled={loadingCardItem}
+            >
+              Add Item
+            </Button>
+          </div>
         </div>
       </form>
     </Form>

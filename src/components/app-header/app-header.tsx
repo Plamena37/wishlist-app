@@ -1,8 +1,9 @@
 import { Link, NavLink, useLocation } from 'react-router'
+import { cn } from '@/lib/utils'
 import { useAuth } from '@/auth/hooks/useAuth'
+import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { ROUTES } from '@/router/constants/app-routes'
 import GoogleColorfull from '@/assets/google-colorfull.svg'
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Text } from '@/components/ui/text'
 import AccountDropdown from '@/components/account-dropdown/account-dropdown'
@@ -24,12 +25,18 @@ export const AppHeader = () => {
   const { user, signInWithGoogle } = useAuth()
   const { pathname } = useLocation()
   const links = AccountDropdownLinks()
+  const { isSm } = useBreakpoints()
 
   const hideNavButtons = !user || !user.displayName
   const activeParent = getActiveParent(pathname)
 
   return (
-    <header className="bg-purple-800 text-white flex items-center justify-between h-14 w-full shadow-sm z-50">
+    <header
+      className={cn(
+        'bg-purple-800 text-white flex items-center justify-between h-14 w-full shadow-sm z-50',
+        isSm ? 'px-4' : 'px-2'
+      )}
+    >
       <nav className="container mx-auto flex items-center justify-between">
         <Link to={ROUTES.HOME}>
           <Text
@@ -41,14 +48,15 @@ export const AppHeader = () => {
           </Text>
         </Link>
 
-        <ul className="flex items-center gap-6">
+        <ul className={cn('flex items-center', isSm ? 'gap-6' : 'gap-3')}>
           {navLinks.map(({ to, label }) => (
             <li key={to}>
               <NavLink
                 to={to}
                 className={cn(
                   'hover:text-purple-900 hover:border-purple-900 border-b-2 border-b-transparent transition',
-                  activeParent === to ? 'border-purple-900' : ''
+                  activeParent === to ? 'border-purple-900' : '',
+                  isSm ? 'text-md' : 'text-sm'
                 )}
               >
                 {label}
@@ -61,7 +69,10 @@ export const AppHeader = () => {
           {hideNavButtons && (
             <Button
               variant="primary"
-              className="py-4 px-4 rounded-full bg-gray-50 w-auto hover:bg-gray-300"
+              className={cn(
+                'py-4 rounded-full bg-gray-50 w-auto hover:bg-gray-300',
+                isSm ? 'px-4' : 'px-1.5'
+              )}
               onClick={signInWithGoogle}
             >
               <Icon
@@ -72,13 +83,15 @@ export const AppHeader = () => {
                 }}
               />
 
-              <Text
-                as="p"
-                variant="body"
-                className="text-purple-900 font-semibold"
-              >
-                Sign In With Google
-              </Text>
+              {isSm && (
+                <Text
+                  as="p"
+                  variant="body"
+                  className="text-purple-900 font-semibold"
+                >
+                  Sign In With Google
+                </Text>
+              )}
             </Button>
           )}
         </ul>

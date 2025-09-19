@@ -8,7 +8,7 @@ interface NotFoundCardsProps {
 
 export const NotFoundCards = ({ subtitle }: NotFoundCardsProps) => {
   return (
-    <div className="flex flex-1 flex-col justify-center items-center">
+    <div className="flex flex-1 flex-col justify-center items-center p-4">
       <Icon
         src={Taken}
         style={{
@@ -19,13 +19,13 @@ export const NotFoundCards = ({ subtitle }: NotFoundCardsProps) => {
       <Text
         as="h5"
         variant="h5"
-        className="font-semibold text-gray-400 mt-8"
+        className="font-semibold text-gray-400 mt-6 sm:mt-8"
       >
         No cards available.
       </Text>
       <Text
         variant="body"
-        className="text-gray-400 mt-2"
+        className="text-gray-400 mt-1 sm:mt-2 text-center"
       >
         {subtitle}
       </Text>
