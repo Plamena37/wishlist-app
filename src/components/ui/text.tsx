@@ -8,9 +8,9 @@ const textVariants = cva(
   {
     variants: {
       variant: {
-        h1: 'sm:text-[2.5rem] text-[2rem] font-semibold leading-[3.404rem]',
-        h2: 'sm:text-[2rem] text-2xl font-semibold leading-[2.5rem]',
-        h3: 'sm:text-2xl text-xl font-semibold leading-[2.043rem]',
+        h1: 'sm:text-[2.5rem] text-[2rem] font-semibold sm:leading-[3.404rem]',
+        h2: 'sm:text-[2rem] text-2xl font-semibold sm:leading-[2.5rem]',
+        h3: 'sm:text-2xl text-xl font-semibold sm:leading-[2.043rem]',
         h4: 'sm:text-xl text-base font-normal leading-[1.703rem]',
         h5: 'sm:text-base text-sm font-normal leading-[1.362rem]',
         body: 'sm:text-sm text-xs font-normal ',

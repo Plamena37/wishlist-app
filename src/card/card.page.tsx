@@ -12,9 +12,8 @@ import { CardItemsList } from '@/card/card-items-list'
 import { Collapse } from '@/components/ui/collapsible'
 import { Text } from '@/components/ui/text'
 import { Button } from '@/components/ui/button'
-import { EditCardDialog } from '@/cards/edit-card-dialog'
-import { DeleteCardDialog } from '@/cards/delete-card-dialog'
 import { LoadingOverlay } from '@/components/overlay/loading-overlay'
+import { CardsActionsDropdown } from '@/cards/cards-actions-dropdown'
 
 const HeaderCollapsedChild = () => {
   return (
@@ -98,7 +97,7 @@ export default function CardPage() {
         </Collapse>
       )}
 
-      <div className="flex justify-between items-center pt-4 px-6 z-50">
+      <div className="flex justify-between items-center pt-6 sm:pt-4 px-6 z-50">
         <Button
           variant="link"
           onClick={handleGoBack}
@@ -108,23 +107,23 @@ export default function CardPage() {
           Go Back
         </Button>
         {user?.uid === card.ownerId && (
-          <div className="flex items-center gap-2">
-            <EditCardDialog card={card} />
-            <DeleteCardDialog card={card} />
-          </div>
+          <CardsActionsDropdown
+            card={card}
+            btnBgColor="bg-white"
+          />
         )}
       </div>
 
       <div
         className={cn(
-          'flex flex-col items-center gap-4',
-          user?.uid === card.ownerId ? 'mt-[-30px]' : 'mt-0'
+          'flex flex-col items-center sm:gap-4 gap-2 p-4',
+          user?.uid === card.ownerId ? 'mt-4 sm:mt-[-30px]' : 'mt-0'
         )}
       >
         <img
           src={card.image}
           alt="Card decoration"
-          className="w-30 h-30 mx-auto"
+          className="sm:w-30 sm:h-30 w-20 h-20 mx-auto"
         />
         <Text
           as="h2"
@@ -137,7 +136,7 @@ export default function CardPage() {
           <Text
             as="p"
             variant="body"
-            className="text-center mt-2 text-gray-600 px-10"
+            className="text-center sm:mt-2 text-gray-600 sm:px-10 px-4"
           >
             {card.description}
           </Text>

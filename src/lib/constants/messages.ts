@@ -25,6 +25,8 @@ export const errorMessages = {
     'It’s empty here—no one has created a card so far. Start the first card!',
   no_my_cards_found_subtitle:
     'You have not created any cards yet. Start by adding a new card!',
+  page_not_found: 'Page Not Found',
+  go_to_home_page: 'Go To Home Page',
 }
 
 export const authMessages = {

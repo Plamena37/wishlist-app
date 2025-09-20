@@ -1,8 +1,6 @@
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import PageEaten from '@/assets/page-eaten.svg'
-import { DeleteCardItemDialog } from './delete-card-item-dialog'
-import { EditCardItemDialog } from './edit-card-item-dialog'
 import { Text } from '@/components/ui/text'
 import { Link } from 'react-router'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -13,6 +11,7 @@ import { useCallback } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
+import CardActionsDropdown from '@/card/card-actions-dropdown'
 
 export const CardItemsList = () => {
   const { user } = useAuth()
@@ -54,7 +53,7 @@ export const CardItemsList = () => {
   if (!card) return null
   if (!card.items || card.items.length === 0)
     return (
-      <div className="flex flex-col justify-center items-center gap-4 p-8">
+      <div className="flex flex-col justify-center items-center gap-4 sm:p-8 p-4">
         <Icon
           src={PageEaten}
           style={{
@@ -73,29 +72,36 @@ export const CardItemsList = () => {
     )
 
   return (
-    <ul className="flex flex-col gap-6 w-[80%] p-8 mx-auto bg-white rounded-sm shadow-sm mt-6">
+    <ul className="flex flex-col gap-6 w-[80%] py-4 mb-6 px-2 sm:px-8 sm:py-8 mx-auto bg-white rounded-sm shadow-sm mt-2 sm:mt-6">
       {card.items.map((item, index) => (
         <li
           key={item.id}
           className={cn(
-            'grid grid-cols-[1.6fr_0.4fr] gap-4',
+            'relative px-4',
             index !== card.items.length - 1
               ? 'border-b border-b-gray-300 pb-4'
               : ''
           )}
         >
-          <div className="grid grid-cols-4 gap-4">
+          {user?.uid === card.ownerId && (
+            <CardActionsDropdown
+              card={card}
+              item={item}
+              className="absolute top-0 right-0"
+            />
+          )}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <Text
               as="h5"
               variant="h5"
-              className="font-semibold pr-4 border-r border-r-gray-300"
+              className="font-semibold pr-4 lg:border-r border-r-gray-300"
             >
               {item.name}
             </Text>
 
             <Text
               variant="body"
-              className="font-semibold flex items-center gap-2 pr-4 border-r border-r-gray-300"
+              className="font-semibold flex items-center gap-2 pr-4 lg:border-r border-r-gray-300"
             >
               Link:
               {item.link ? (
@@ -123,7 +129,7 @@ export const CardItemsList = () => {
 
             <Text
               variant="body"
-              className="font-semibold flex items-center gap-2 pr-4 border-r border-r-gray-300"
+              className="font-semibold flex items-center gap-2 pr-4 lg:border-r border-r-gray-300"
             >
               Price:
               {item.price ? (
@@ -160,19 +166,6 @@ export const CardItemsList = () => {
               </Label>
             </div>
           </div>
-
-          {user?.uid === card.ownerId && (
-            <div className="flex items-center gap-2">
-              <EditCardItemDialog
-                card={card}
-                item={item}
-              />
-              <DeleteCardItemDialog
-                cardId={card.id}
-                item={item}
-              />
-            </div>
-          )}
         </li>
       ))}
     </ul>

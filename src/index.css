@@ -329,11 +329,13 @@ body,
 }
 
 .notistack-MuiContent-success {
-  @apply bg-purple-800 text-white;
+  background-color: #6d28d9; /* Tailwind's bg-purple-800 */
+  color: #fff;
 }
 
 .notistack-MuiContent-error {
-  @apply bg-red-600 text-white;
+  background-color: #dc2626; /* Tailwind's bg-red-600 */
+  color: #fff;
 }
 
 .blob-border {

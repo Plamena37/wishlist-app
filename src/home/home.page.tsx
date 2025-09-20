@@ -12,11 +12,13 @@ const HomePage = () => {
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider()
     await signInWithPopup(auth, provider)
+    window.location.reload()
   }
 
   const handleSignOut = async () => {
     await signOut(auth)
     navigate(ROUTES.HOME)
+    window.location.reload()
   }
 
   const signInButtonText =

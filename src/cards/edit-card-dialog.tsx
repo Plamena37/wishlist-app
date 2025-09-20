@@ -11,25 +11,41 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { EditCardForm } from '@/cards/edit-card-form'
+import { Text } from '@/components/ui/text'
 
 interface EditCardDialogProps {
   card: Card
+  onMenuClose: () => void
 }
 
-export const EditCardDialog = ({ card }: EditCardDialogProps) => {
-  const [openCardId, setOpenCardId] = useState<string | null>(null)
+export const EditCardDialog = ({ card, onMenuClose }: EditCardDialogProps) => {
+  const [open, setOpen] = useState(false)
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen)
+    if (!nextOpen) onMenuClose()
+  }
 
   return (
     <Dialog
-      open={openCardId === card.id}
-      onOpenChange={(open) => setOpenCardId(open ? card.id : null)}
+      open={open}
+      onOpenChange={handleOpenChange}
     >
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button
+          variant="ghost"
+          className="sm:px-0 justify-start"
+        >
           <FontAwesomeIcon
             icon={faPencil}
             className="text-purple-800"
           />
+          <Text
+            variant="body"
+            className="text-purple-900 font-medium"
+          >
+            Edit
+          </Text>
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -38,7 +54,7 @@ export const EditCardDialog = ({ card }: EditCardDialogProps) => {
         </DialogHeader>
         <EditCardForm
           card={card}
-          onClose={() => setOpenCardId(null)}
+          onClose={handleOpenChange}
         />
       </DialogContent>
     </Dialog>

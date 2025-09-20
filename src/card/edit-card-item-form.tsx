@@ -18,11 +18,12 @@ import {
   FormMessage,
 } from '@/components/form/form'
 import { Text } from '@/components/ui/text'
+import { DialogClose } from '@/components/ui/dialog'
 
 interface EditCardItemFormProps {
   card: Card
   item: CardItem
-  onClose: () => void
+  onClose: (open: boolean) => void
 }
 
 export const EditCardItemForm = ({
@@ -49,7 +50,7 @@ export const EditCardItemForm = ({
 
   const onSubmit = async (data: EditCardItemFormData) => {
     updateCardItem(card, item.id, data)
-    onClose()
+    onClose(false)
   }
 
   return (
@@ -146,13 +147,14 @@ export const EditCardItemForm = ({
           />
 
           <div className="flex gap-2 justify-between sm:justify-end mt-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-            >
-              Cancel
-            </Button>
+            <DialogClose asChild>
+              <Button
+                type="button"
+                variant="outline"
+              >
+                Cancel
+              </Button>
+            </DialogClose>
             <Button type="submit">Save</Button>
           </div>
         </div>

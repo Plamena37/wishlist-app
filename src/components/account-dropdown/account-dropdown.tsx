@@ -62,21 +62,18 @@ const AccountDropdown = ({ links }: AccountDropdownProps) => {
       <DropdownMenuContent
         sideOffset={0}
         className={cn('p-0 text-blue-900 bg-white', isSm ? 'w-42' : 'w-28')}
-        data-testid="account-dropdown-menu"
       >
         {links.map((link) => (
           <DropdownMenuItem
             key={link.label}
             disabled={link.disabled}
             className="py-0 px-0 hover:bg-muted"
-            data-testid={link.testid}
           >
             <Button
               variant="ghost"
               onClick={(e) => handleLinkClick(e, link)}
               disabled={link.disabled}
               className="disabled:opacity-100 flex text-blue-900 text-sm font-normal items-center justify-start gap-0 h-[35px] px-4 w-full"
-              data-testid={`link-${link.testid}`}
             >
               <FontAwesomeIcon
                 icon={link.icon}
@@ -84,7 +81,6 @@ const AccountDropdown = ({ links }: AccountDropdownProps) => {
                   'text-purple-900 mr-2',
                   link.disabled ? 'opacity-100 text-gray-500' : ''
                 )}
-                data-testid={`icon-${link.testid}`}
               />
               <span className="text-purple-900">{link.label}</span>
             </Button>

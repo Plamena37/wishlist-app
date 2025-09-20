@@ -9,6 +9,7 @@ import DefaultLayout from '@/layouts/default'
 import CardPage from '@/card/card.page'
 import CardsPage from '@/cards/cards.page'
 import MyCardsPage from '@/cards/my-cards.page'
+import GeneralErrorPage from '@/components/general-error/general-error.page'
 
 // export const routes: RouteObject[] = [
 //   {
@@ -70,10 +71,10 @@ export const routes: RouteObject[] = [
       { path: ROUTES.CARD, element: <CardPage /> },
       { path: ROUTES.MY_CARDS, element: <MyCardsPage /> },
       { path: ROUTES.MY_CARD, element: <CardPage /> },
-      { path: '*', element: <div>Not Found</div> },
+      { path: '*', element: <GeneralErrorPage /> },
     ],
   },
-  { path: '*', element: <div>Not Found</div> },
+  { path: '*', element: <GeneralErrorPage /> },
 ]
 
 export default createHashRouter(routes)

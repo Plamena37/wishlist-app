@@ -2,10 +2,9 @@ import { useNavigate } from 'react-router'
 import { ROUTES } from '@/router/constants/app-routes'
 import { Card } from '@/lib/types/Cards'
 import { useAuth } from '@/auth/hooks/useAuth'
-import { DeleteCardDialog } from '@/cards/delete-card-dialog'
-import { EditCardDialog } from '@/cards/edit-card-dialog'
 import { Text } from '@/components/ui/text'
 import { Button } from '@/components/ui/button'
+import { CardsActionsDropdown } from '@/cards/cards-actions-dropdown'
 
 interface CardsListProps {
   cards: Card[]
@@ -21,12 +20,18 @@ export const CardsList = ({ cards, myCards = false }: CardsListProps) => {
   }
 
   return (
-    <ul className="flex-1 grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-6 py-4 justify-items-center max-w-[1240px] mx-auto">
+    <ul className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 p-4 justify-items-center max-w-[1240px] mx-auto">
       {cards.map((card) => (
         <div
           key={card.id}
-          className="flex flex-col justify-start items-center gap-4 bg-white shadow-sm rounded-sm p-4 w-[250px] h-[300px] hover:shadow-lg transition-shadow duration-200"
+          className="relative flex flex-col justify-start items-center gap-4 bg-white shadow-sm rounded-sm p-4 w-[250px] h-[300px] hover:shadow-lg transition-shadow duration-200"
         >
+          {card.ownerId === user?.uid && (
+            <CardsActionsDropdown
+              card={card}
+              className="absolute top-4 right-4"
+            />
+          )}
           <img
             src={card.image}
             alt="Card decoration"
@@ -49,20 +54,13 @@ export const CardsList = ({ cards, myCards = false }: CardsListProps) => {
               : card.description}
           </Text>
 
-          <div className="flex flex-col justify-self-end gap-2 mt-auto">
+          <div className="mt-auto">
             <Button
               variant="primary"
               onClick={() => navigateTo(card)}
             >
               View Details
             </Button>
-
-            {card.ownerId === user?.uid && (
-              <>
-                <EditCardDialog card={card} />
-                <DeleteCardDialog card={card} />
-              </>
-            )}
           </div>
         </div>
       ))}

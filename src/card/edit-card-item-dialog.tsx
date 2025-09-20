@@ -11,26 +11,46 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { EditCardItemForm } from '@/card/edit-card-item-form'
+import { Text } from '@/components/ui/text'
 
 interface EditCardItemDialogProps {
   card: Card
   item: CardItem
+  onMenuClose: () => void
 }
 
-export const EditCardItemDialog = ({ card, item }: EditCardItemDialogProps) => {
-  const [openCardItemId, setOpenCardItemId] = useState<string | null>(null)
+export const EditCardItemDialog = ({
+  card,
+  item,
+  onMenuClose,
+}: EditCardItemDialogProps) => {
+  const [open, setOpen] = useState(false)
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen)
+    if (!nextOpen) onMenuClose()
+  }
 
   return (
     <Dialog
-      open={openCardItemId === item.id}
-      onOpenChange={(open) => setOpenCardItemId(open ? item.id : null)}
+      open={open}
+      onOpenChange={handleOpenChange}
     >
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button
+          variant="ghost"
+          className="sm:px-0 justify-start"
+        >
           <FontAwesomeIcon
             icon={faPencil}
             className="text-purple-800"
           />
+          <Text
+            variant="body"
+            className="text-purple-900 font-medium"
+          >
+            Edit
+          </Text>
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -40,7 +60,7 @@ export const EditCardItemDialog = ({ card, item }: EditCardItemDialogProps) => {
         <EditCardItemForm
           card={card}
           item={item}
-          onClose={() => setOpenCardItemId(null)}
+          onClose={handleOpenChange}
         />
       </DialogContent>
     </Dialog>
