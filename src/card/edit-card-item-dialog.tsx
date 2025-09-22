@@ -53,7 +53,11 @@ export const EditCardItemDialog = ({
           </Text>
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent
+        onKeyDown={(e) => e.stopPropagation()}
+        onKeyUp={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
+      >
         <DialogHeader>
           <DialogTitle>Edit {card.title}</DialogTitle>
         </DialogHeader>

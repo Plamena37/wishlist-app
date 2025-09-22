@@ -13,7 +13,11 @@ import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import CardActionsDropdown from '@/card/card-actions-dropdown'
 
-export const CardItemsList = () => {
+interface CardItemsList {
+  items: CardItem[]
+}
+
+export const CardItemsList = ({ items }: CardItemsList) => {
   const { user } = useAuth()
   const {
     card,
@@ -37,13 +41,9 @@ export const CardItemsList = () => {
     (card: Card, item: CardItem, checked: boolean) => {
       if (!user) return
 
-      // Reserve
-      if (item.reservedBy === '' && checked) {
-        updateCardItem(card, item.id, { reservedBy: user?.uid })
-      }
-
-      // Unreserve
-      else if (item.reservedBy === user.uid && !checked) {
+      if (!item.reservedBy && checked) {
+        updateCardItem(card, item.id, { reservedBy: user.uid })
+      } else if (item.reservedBy === user.uid && !checked) {
         updateCardItem(card, item.id, { reservedBy: '' })
       }
     },
@@ -72,8 +72,8 @@ export const CardItemsList = () => {
     )
 
   return (
-    <ul className="flex flex-col gap-6 w-[80%] py-4 mb-6 px-2 sm:px-8 sm:py-8 mx-auto bg-white rounded-sm shadow-sm mt-2 sm:mt-6">
-      {card.items.map((item, index) => (
+    <ul className="flex flex-col gap-6 w-[90%] sm:w-[80%] py-4 mb-6 px-2 sm:px-8 sm:py-8 mx-auto bg-white rounded-sm shadow-sm mt-2 sm:mt-6">
+      {items.map((item, index) => (
         <li
           key={item.id}
           className={cn(

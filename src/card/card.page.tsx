@@ -2,10 +2,14 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { db } from '@/firebase.config'
+import { doc, onSnapshot } from 'firebase/firestore'
 import { cn } from '@/lib/utils'
+import { Card, CardItem } from '@/lib/types/Cards'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import useBreakpoints from '@/lib/hooks/useBreakpoints'
+import { CARDS_COLLECTION } from '@/lib/constants'
 import { loadingMessages } from '@/lib/constants/messages'
 import { AddCardItemForm } from '@/card/add-card-item-form'
 import { CardItemsList } from '@/card/card-items-list'
@@ -14,6 +18,7 @@ import { Text } from '@/components/ui/text'
 import { Button } from '@/components/ui/button'
 import { LoadingOverlay } from '@/components/overlay/loading-overlay'
 import { CardsActionsDropdown } from '@/cards/cards-actions-dropdown'
+import { CardItemsSortDropdown } from '@/card/card-items-sort-dropdown'
 
 const HeaderCollapsedChild = () => {
   return (
@@ -48,16 +53,47 @@ const MobileHeaderCollapsedChild = () => {
 
 export default function CardPage() {
   const { cardId } = useParams()
-  const { card, getCardById, checkUserCanEditCard, canEditCard, loading } =
-    useCardsContext()
+  const {
+    card,
+    setCard,
+    getCardById,
+    checkUserCanEditCard,
+    canEditCard,
+    loading,
+  } = useCardsContext()
   const { user } = useAuth()
   const [isCollapseOpen, setIsCollapseOpen] = useState(false)
   const navigate = useNavigate()
   const { isSm } = useBreakpoints()
 
+  const [sortedItems, setSortedItems] = useState<CardItem[]>(card?.items || [])
+
   const handleCollapsedChange = (isOpen: boolean) => {
     setIsCollapseOpen(isOpen)
   }
+
+  useEffect(() => {
+    setSortedItems(card?.items || [])
+  }, [card?.items])
+
+  useEffect(() => {
+    if (!cardId) return
+
+    const ref = doc(db, CARDS_COLLECTION, cardId)
+
+    // 🔑 Start realtime listener
+    const unsubscribe = onSnapshot(ref, (snap) => {
+      if (snap.exists()) {
+        const data = snap.data() as Card
+        setCard({ ...data, id: snap.id })
+      } else {
+        setCard(null) // document deleted
+      }
+    })
+
+    // Cleanup when component unmounts or cardId changes
+    return () => unsubscribe()
+  }, [cardId])
 
   useEffect(() => {
     if (cardId) {
@@ -116,7 +152,7 @@ export default function CardPage() {
 
       <div
         className={cn(
-          'flex flex-col items-center sm:gap-4 gap-2 p-4',
+          'flex flex-col items-center sm:gap-4 gap-2 p-2 sm:p-4',
           user?.uid === card.ownerId ? 'mt-4 sm:mt-[-30px]' : 'mt-0'
         )}
       >
@@ -136,14 +172,19 @@ export default function CardPage() {
           <Text
             as="p"
             variant="body"
-            className="text-center sm:mt-2 text-gray-600 sm:px-10 px-4"
+            className="text-center sm:mt-2 text-gray-600 sm:px-10 px-4 whitespace-pre-line"
           >
             {card.description}
           </Text>
         )}
       </div>
 
-      <CardItemsList />
+      <CardItemsSortDropdown
+        items={card.items}
+        onSorted={(sorted) => setSortedItems(sorted)}
+      />
+
+      <CardItemsList items={sortedItems} />
     </>
   )
 }

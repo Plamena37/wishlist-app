@@ -27,6 +27,7 @@ export const errorMessages = {
     'You have not created any cards yet. Start by adding a new card!',
   page_not_found: 'Page Not Found',
   go_to_home_page: 'Go To Home Page',
+  item_already_reserved: 'This item was already reserved by someone else.',
 }
 
 export const authMessages = {

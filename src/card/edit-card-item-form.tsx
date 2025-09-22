@@ -39,7 +39,6 @@ export const EditCardItemForm = ({
       name: item?.name || '',
       link: item?.link || '',
       price: item?.price || null,
-      reservedBy: item?.reservedBy || '',
     },
   })
 

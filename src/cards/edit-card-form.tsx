@@ -169,7 +169,6 @@ export const EditCardForm = ({ card, onClose }: EditCardFormProps) => {
                   placeholder="Enter Name"
                   {...register(`items.${index}.name`)}
                   error={!!errors.items?.[index]?.name}
-                  // className="w-[80dvw]"
                 />
                 <FormMessage className="text-red-600 text-sm font-normal">
                   {errors.items?.[index]?.name?.message ?? ''}

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 import { cn } from '@/lib/utils'
@@ -12,7 +13,6 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { DeleteCardDialog } from '@/cards/delete-card-dialog'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
 
 interface CardsActionsDropdown {
   card: Card

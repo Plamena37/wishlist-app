@@ -15,10 +15,10 @@ export default function DefaultLayout() {
     <RouterHistoryProvider>
       <div
         className="grid h-dvh grid-cols-[1fr] grid-rows-[56px_auto_32px]
-                 [grid-template-areas:'header''main''footer']"
+                 [grid-template-areas:'header''main''footer'] bg-gray-20"
       >
         <AppHeader />
-        <main className="[grid-area:main] flex flex-1 flex-col bg-gray-200 scrollbar-outlined-inverse overflow-y-auto min-h-0">
+        <main className="[grid-area:main] flex flex-1 flex-col bg-gray-200 overflow-y-auto">
           <Outlet />
         </main>
         <footer className="w-full px-8 py-2 [grid-area:footer] bg-gray-200">

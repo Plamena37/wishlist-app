@@ -1,6 +1,9 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
 import { nanoid } from 'nanoid'
 import { User } from 'firebase/auth'
+import { auth, db } from '@/firebase.config'
+import { doc, getDoc } from 'firebase/firestore'
+import { CARDS_COLLECTION } from '@/lib/constants'
 import { Card, CardItem, NewCard } from '@/lib/types/Cards'
 import {
   cardItemMessages,
@@ -9,7 +12,13 @@ import {
 } from '@/lib/constants/messages'
 import { EditCardItemFormData } from '@/card/schemas/card-item.schema'
 import { EditCardFormData } from '@/cards/schemas/card.schema'
-import { addItem, deleteItem, updateItem } from '@/card/services/card-service'
+import {
+  addItem,
+  deleteItem,
+  reserveItem,
+  unreserveItem,
+  updateItem as updateItemTransaction,
+} from '@/card/services/card-service'
 import { useAppSnackbar } from '@/lib/hooks/useAppSnackbar'
 import {
   createCard,
@@ -24,6 +33,7 @@ type CardsContextType = {
   publicCards: Card[]
   myCards: Card[]
   card: Card | null
+  setCard: Dispatch<SetStateAction<Card | null>>
   loading: boolean
   canEditCard: boolean
   canReserveCardItem: boolean
@@ -119,26 +129,74 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
     cancelEdit?: () => void
   ) => {
     setLoadingCardItem(true)
+    setUpdatingCardItemId(itemId)
     try {
-      const updatedItem: Partial<CardItem> = {}
-      setUpdatingCardItemId(itemId)
+      const updatedFields: Partial<CardItem> = {}
+      updatedFields.name = data.name
+      updatedFields.link = data.link
+      updatedFields.price = data.price
 
-      if (data.name) updatedItem.name = data.name
-      if (data.link) updatedItem.link = data.link
-      if (data.price) updatedItem.price = data.price
-      if (data.reservedBy || data.reservedBy === '')
-        updatedItem.reservedBy = data.reservedBy
+      let updatedItem: CardItem | null = null
 
-      const item = await updateItem(card.id, itemId, updatedItem)
-      setCard({
-        ...card,
-        items: (card.items ?? []).map((i) => (i.id === itemId ? item : i)),
-      })
+      // If reservedBy is provided in the payload -> do an atomic reserve/unreserve
+      if ('reservedBy' in data) {
+        // data.reservedBy will be either '' (unreserve) or userId to reserve
+        const requested = data.reservedBy
+
+        if (requested === '' || requested == null) {
+          const currentUserId = auth?.currentUser?.uid
+          if (!currentUserId)
+            throw new Error('You must be signed in to unreserve')
+          updatedItem = await unreserveItem(card.id, itemId, currentUserId)
+        } else {
+          updatedItem = await reserveItem(card.id, itemId, requested)
+        }
+      } else {
+        // Normal non-reservation field updates (atomic transaction)
+        updatedItem = await updateItemTransaction(
+          card.id,
+          itemId,
+          updatedFields
+        )
+      }
+
+      if (updatedItem) {
+        setCard((prev) =>
+          prev
+            ? {
+                ...prev,
+                items: (prev.items ?? []).map((i) =>
+                  i.id === itemId ? updatedItem! : i
+                ),
+              }
+            : prev
+        )
+      }
 
       showSuccess(cardItemMessages.item_updated)
       cancelEdit?.()
     } catch (err: Error | unknown) {
-      showError((err as Error).message || cardItemMessages.item_update_failed)
+      // Show better error text for reserve conflict
+      const message =
+        (err as Error).message || cardItemMessages.item_update_failed
+
+      if (message.includes('reserved')) {
+        showError(errorMessages.item_already_reserved)
+
+        // 🔑 1) Re-fetch the card so UI shows the new reservedBy immediately
+        const freshSnap = await getDoc(doc(db, CARDS_COLLECTION, card.id))
+        if (freshSnap.exists()) {
+          const freshCard: Card = {
+            ...(freshSnap.data() as Omit<Card, 'id'>),
+            id: freshSnap.id,
+          }
+
+          // 🔑 2) Update state with the fresh data
+          setCard(() => freshCard)
+        }
+      } else {
+        showError(message)
+      }
     } finally {
       setLoadingCardItem(false)
       setUpdatingCardItemId('')
@@ -263,6 +321,7 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
         publicCards,
         myCards,
         card,
+        setCard,
         loading,
         canEditCard,
         canReserveCardItem,
