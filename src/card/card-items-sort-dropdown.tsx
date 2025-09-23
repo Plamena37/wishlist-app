@@ -95,50 +95,48 @@ export const CardItemsSortDropdown = ({
   }, [sortBy])
 
   return (
-    <div className="flex justify-center sm:justify-end w-[90%] sm:w-[80%] mx-auto mt-2 sm:mt-0">
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          asChild
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        asChild
+        className="outline-none"
+      >
+        <Button
+          variant="outline"
           className="outline-none"
         >
-          <Button
-            variant="outline"
-            className="outline-none"
-          >
-            {currentLabel}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => handleSort('titleAsc')}>
-            <Text>Title</Text>
-            <FontAwesomeIcon
-              icon={faArrowUp}
-              size="sm"
-            />
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleSort('titleDesc')}>
-            <Text>Title</Text>
-            <FontAwesomeIcon
-              icon={faArrowDown}
-              size="sm"
-            />
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleSort('priceAsc')}>
-            <Text>Price</Text>
-            <FontAwesomeIcon
-              icon={faArrowUp}
-              size="sm"
-            />
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleSort('priceDesc')}>
-            <Text>Price</Text>
-            <FontAwesomeIcon
-              icon={faArrowDown}
-              size="sm"
-            />
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+          {currentLabel}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => handleSort('titleAsc')}>
+          <Text>Title</Text>
+          <FontAwesomeIcon
+            icon={faArrowUp}
+            size="sm"
+          />
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleSort('titleDesc')}>
+          <Text>Title</Text>
+          <FontAwesomeIcon
+            icon={faArrowDown}
+            size="sm"
+          />
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleSort('priceAsc')}>
+          <Text>Price</Text>
+          <FontAwesomeIcon
+            icon={faArrowUp}
+            size="sm"
+          />
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleSort('priceDesc')}>
+          <Text>Price</Text>
+          <FontAwesomeIcon
+            icon={faArrowDown}
+            size="sm"
+          />
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

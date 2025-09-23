@@ -179,10 +179,18 @@ export default function CardPage() {
         )}
       </div>
 
-      <CardItemsSortDropdown
-        items={card.items}
-        onSorted={(sorted) => setSortedItems(sorted)}
-      />
+      <div className="flex justify-between w-[90%] sm:w-[80%] pl-0.5 mx-auto mt-4 sm:mt-0">
+        <Text
+          variant="body"
+          className="text-purple-900 font-medium"
+        >
+          Items: ({sortedItems.length ?? 0})
+        </Text>
+        <CardItemsSortDropdown
+          items={card.items}
+          onSorted={(sorted) => setSortedItems(sorted)}
+        />
+      </div>
 
       <CardItemsList items={sortedItems} />
     </>

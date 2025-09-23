@@ -14,11 +14,11 @@ export default function DefaultLayout() {
   return (
     <RouterHistoryProvider>
       <div
-        className="grid h-dvh grid-cols-[1fr] grid-rows-[56px_auto_32px]
-                 [grid-template-areas:'header''main''footer'] bg-gray-20"
+        className="grid h-full grid-cols-[1fr] grid-rows-[56px_auto_32px]
+                 [grid-template-areas:'header''main''footer'] bg-gray-20 overflow-y-auto"
       >
         <AppHeader />
-        <main className="[grid-area:main] flex flex-1 flex-col bg-gray-200 overflow-y-auto">
+        <main className="[grid-area:main] flex flex-1 flex-col bg-gray-200">
           <Outlet />
         </main>
         <footer className="w-full px-8 py-2 [grid-area:footer] bg-gray-200">
