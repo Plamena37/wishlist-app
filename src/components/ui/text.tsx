@@ -15,7 +15,7 @@ const textVariants = cva(
         h5: 'sm:text-base text-sm font-normal leading-[1.362rem]',
         body: 'sm:text-sm text-xs font-normal ',
         'body-sm': 'text-xs font-normal',
-        subtext: 'text-[0.625] font-normal',
+        subtext: 'sm:text-[0.625] text-[0.8rem] font-normal',
       },
       weight: {
         regular: 'font-normal',

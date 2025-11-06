@@ -83,6 +83,10 @@
   --color-yellow-200: #fff4d7;
   --color-yellow-100: #fffcf5;
 
+  --color-balloon-red-200: #f03849;
+  --color-balloon-red-100: #ff4440;
+  --color-present-yellow: #ffc73b;
+
   /* common colors */
   --color-text-primary: var(--color-purple-900);
   --color-text-secondary: var(--color-gray-600);

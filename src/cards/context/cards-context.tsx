@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid'
 import { User } from 'firebase/auth'
 import { auth, db } from '@/firebase.config'
 import { doc, getDoc } from 'firebase/firestore'
+import { isBoolean } from 'lodash'
 import { CARDS_COLLECTION } from '@/lib/constants'
 import { Card, CardItem, NewCard } from '@/lib/types/Cards'
 import {
@@ -263,11 +264,11 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
       })
 
       if (addedCard.isPublic) {
-        setPublicCards((prev) => [...prev, addedCard])
-        setMyCards((prev) => [...prev, addedCard])
+        setPublicCards((prev) => [addedCard, ...prev])
+        setMyCards((prev) => [addedCard, ...prev])
       }
       if (!addedCard.isPublic) {
-        setMyCards((prev) => [...prev, addedCard])
+        setMyCards((prev) => [addedCard, ...prev])
       }
       showSuccess(cardMessages.card_added)
     } catch (err) {
@@ -281,7 +282,7 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       if (data.title) updatedCard.title = data.title
       if (data.description) updatedCard.description = data.description
-      if (data.isPublic) updatedCard.isPublic = data.isPublic
+      if (isBoolean(data.isPublic)) updatedCard.isPublic = data.isPublic
       if (data?.items) {
         updatedCard.items = data.items.map((item) => ({
           ...item,
@@ -292,7 +293,15 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       const card = await updateCard(cardId, updatedCard)
 
-      setPublicCards((prev) => prev.map((c) => (c.id === card.id ? card : c)))
+      setPublicCards((prev) => {
+        if (card.isPublic) {
+          const exists = prev.some((c) => c.id === card.id)
+          return exists
+            ? prev.map((c) => (c.id === card.id ? card : c))
+            : [...prev, card]
+        }
+        return prev.filter((c) => c.id !== card.id)
+      })
       setMyCards((prev) => prev.map((c) => (c.id === card.id ? card : c)))
       setCard(card)
       showSuccess(cardMessages.card_updated)

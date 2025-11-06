@@ -28,8 +28,8 @@ export default function DefaultLayout() {
               variant="body-sm"
               className="text-gray-600"
             >
-              Copyright &copy; {new Date().getFullYear()} Whishlist App. All
-              Rights Reserved
+              Copyright &copy; {new Date().getFullYear()} Whishlist. All Rights
+              Reserved
             </Text>
           ) : (
             <Text
@@ -37,7 +37,7 @@ export default function DefaultLayout() {
               variant="body-sm"
               className="text-gray-600 text-center"
             >
-              Copyright &copy; {new Date().getFullYear()} Whishlist App.
+              Copyright &copy; {new Date().getFullYear()} Whishlist.
             </Text>
           )}
         </footer>

@@ -22,7 +22,7 @@ export const errorMessages = {
     'Sorry, we couldn\'t find the page you are looking for. Try refreshing the page or returning to the previous screen.',
   no_results_found: 'No results found.',
   no_cards_found_subtitle:
-    'It’s empty here—no one has created a card so far. Start the first card!',
+    'It’s empty here — no one has created a card so far. Start the first card!',
   no_my_cards_found_subtitle:
     'You have not created any cards yet. Start by adding a new card!',
   page_not_found: 'Page Not Found',
@@ -36,21 +36,21 @@ export const authMessages = {
 }
 
 export const cardMessages = {
-  card_added: 'Card added successfully.',
-  card_add_failed: 'Failed to add card.',
-  card_removed: 'Card removed successfully.',
+  card_added: 'Card created.',
+  card_add_failed: 'Failed to create card.',
+  card_removed: 'Card removed.',
   card_remove_failed: 'Failed to remove card.',
-  card_updated: 'Card updated successfully.',
+  card_updated: 'Card updated.',
   card_update_failed: 'Failed to update card.',
   card_not_found: 'Card not found.',
 }
 
 export const cardItemMessages = {
-  item_added: 'Item added successfully.',
+  item_added: 'Item added.',
   item_add_failed: 'Failed to add item.',
-  item_removed: 'Item removed successfully.',
+  item_removed: 'Item removed.',
   item_remove_failed: 'Failed to remove item.',
-  item_updated: 'Item updated successfully.',
+  item_updated: 'Item updated.',
   item_update_failed: 'Failed to update item.',
   item_not_found: 'Item not found.',
   item_reservation_success: 'Item reserved.',

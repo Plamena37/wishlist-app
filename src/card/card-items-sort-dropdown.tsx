@@ -1,5 +1,12 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { CardItem } from '@/lib/types/Cards'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faArrowDown,
+  faArrowUp,
+  faLock,
+  faLockOpen,
+} from '@fortawesome/free-solid-svg-icons'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -7,45 +14,81 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons'
 import { Text } from '@/components/ui/text'
 
-type SortOption = 'titleAsc' | 'titleDesc' | 'priceAsc' | 'priceDesc'
+export type SortOption =
+  | 'titleAsc'
+  | 'titleDesc'
+  | 'priceAsc'
+  | 'priceDesc'
+  | 'statusFree'
+  | 'statusReserved'
 
-const getSortablePrice = (price: string | null | undefined) => {
+export const getSortablePrice = (price: string | null | undefined) => {
   const num = parseFloat(price || '')
   return isNaN(num) ? -Infinity : num
 }
 
+const isFree = (item: CardItem) => !item.reservedBy
+
 interface CardItemsSortDropdownProps {
   items: CardItem[]
   onSorted: (sorted: CardItem[]) => void
+  sortBy?: SortOption | null
+  onSortChange?: (s: SortOption | null) => void
 }
 export const CardItemsSortDropdown = ({
   items,
   onSorted,
+  sortBy: externalSortBy = null,
+  onSortChange,
 }: CardItemsSortDropdownProps) => {
-  const [sortBy, setSortBy] = useState<SortOption | null>(null)
+  const [internalSortBy, setInternalSortBy] = useState<SortOption | null>(null)
+  const sortBy = externalSortBy ?? internalSortBy
 
-  const handleSort = (option: SortOption) => {
-    setSortBy(option)
-
-    const sortedItems = [...items].sort((a, b) => {
+  const applySort = (option: SortOption | null, sourceItems: CardItem[]) => {
+    if (!option) return [...sourceItems]
+    return [...sourceItems].sort((a, b) => {
       switch (option) {
         case 'titleAsc':
           return a.name.localeCompare(b.name)
         case 'titleDesc':
           return b.name.localeCompare(a.name)
-        case 'priceAsc': // low → high
+        case 'priceAsc':
           return getSortablePrice(a.price) - getSortablePrice(b.price)
-        case 'priceDesc': // high → low
+        case 'priceDesc':
           return getSortablePrice(b.price) - getSortablePrice(a.price)
+        case 'statusFree': {
+          const aFree = isFree(a)
+          const bFree = isFree(b)
+          if (aFree === bFree) return 0
+          return aFree ? -1 : 1
+        }
+        case 'statusReserved': {
+          const aFree = isFree(a)
+          const bFree = isFree(b)
+          if (aFree === bFree) return 0
+          return aFree ? 1 : -1
+        }
+        default:
+          return 0
       }
     })
+  }
 
+  const handleSort = (option: SortOption) => {
+    if (onSortChange) onSortChange(option)
+    else setInternalSortBy(option)
+    const sortedItems = applySort(option, items)
     onSorted(sortedItems)
   }
+
+  // when items change and there's a selected sort, re-apply it
+  useEffect(() => {
+    if (sortBy) {
+      onSorted(applySort(sortBy, items))
+    }
+  }, [items, sortBy])
 
   const currentLabel = useMemo(() => {
     switch (sortBy) {
@@ -86,6 +129,28 @@ export const CardItemsSortDropdown = ({
             <FontAwesomeIcon
               icon={faArrowDown}
               size="sm"
+            />
+          </>
+        )
+      case 'statusFree':
+        return (
+          <>
+            <Text>Free</Text>
+            <FontAwesomeIcon
+              icon={faLockOpen}
+              size="sm"
+              className="text-gray-700"
+            />
+          </>
+        )
+      case 'statusReserved':
+        return (
+          <>
+            <Text>Reserved</Text>
+            <FontAwesomeIcon
+              icon={faLock}
+              size="sm"
+              className="text-gray-700"
             />
           </>
         )
@@ -134,6 +199,22 @@ export const CardItemsSortDropdown = ({
           <FontAwesomeIcon
             icon={faArrowDown}
             size="sm"
+          />
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleSort('statusFree')}>
+          <Text>Free</Text>
+          <FontAwesomeIcon
+            icon={faLockOpen}
+            size="sm"
+            className="text-gray-700"
+          />
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleSort('statusReserved')}>
+          <Text>Reserved</Text>
+          <FontAwesomeIcon
+            icon={faLock}
+            size="sm"
+            className="text-gray-700"
           />
         </DropdownMenuItem>
       </DropdownMenuContent>

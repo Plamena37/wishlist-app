@@ -13,12 +13,16 @@ import { CARDS_COLLECTION } from '@/lib/constants'
 import { loadingMessages } from '@/lib/constants/messages'
 import { AddCardItemForm } from '@/card/add-card-item-form'
 import { CardItemsList } from '@/card/card-items-list'
+import { CardsActionsDropdown } from '@/cards/cards-actions-dropdown'
+import {
+  CardItemsSortDropdown,
+  getSortablePrice,
+  SortOption,
+} from '@/card/card-items-sort-dropdown'
 import { Collapse } from '@/components/ui/collapsible'
 import { Text } from '@/components/ui/text'
 import { Button } from '@/components/ui/button'
 import { LoadingOverlay } from '@/components/overlay/loading-overlay'
-import { CardsActionsDropdown } from '@/cards/cards-actions-dropdown'
-import { CardItemsSortDropdown } from '@/card/card-items-sort-dropdown'
 
 const HeaderCollapsedChild = () => {
   return (
@@ -67,14 +71,49 @@ export default function CardPage() {
   const { isSm } = useBreakpoints()
 
   const [sortedItems, setSortedItems] = useState<CardItem[]>(card?.items || [])
+  const [sortBy, setSortBy] = useState<SortOption | null>(null)
+
+  const sortItems = (
+    itemsToSort: CardItem[] | undefined,
+    option: SortOption | null
+  ) => {
+    if (!itemsToSort) return []
+    if (!option) return [...itemsToSort]
+    return [...itemsToSort].sort((a, b) => {
+      switch (option) {
+        case 'titleAsc':
+          return a.name.localeCompare(b.name)
+        case 'titleDesc':
+          return b.name.localeCompare(a.name)
+        case 'priceAsc':
+          return getSortablePrice(a.price) - getSortablePrice(b.price)
+        case 'priceDesc':
+          return getSortablePrice(b.price) - getSortablePrice(a.price)
+        case 'statusFree': {
+          const aFree = !a.reservedBy
+          const bFree = !b.reservedBy
+          if (aFree === bFree) return 0
+          return aFree ? -1 : 1
+        }
+        case 'statusReserved': {
+          const aFree = !a.reservedBy
+          const bFree = !b.reservedBy
+          if (aFree === bFree) return 0
+          return aFree ? 1 : -1
+        }
+        default:
+          return 0
+      }
+    })
+  }
 
   const handleCollapsedChange = (isOpen: boolean) => {
     setIsCollapseOpen(isOpen)
   }
 
   useEffect(() => {
-    setSortedItems(card?.items || [])
-  }, [card?.items])
+    setSortedItems(sortItems(card?.items, sortBy))
+  }, [card?.items, sortBy])
 
   useEffect(() => {
     if (!cardId) return
@@ -188,6 +227,8 @@ export default function CardPage() {
         </Text>
         <CardItemsSortDropdown
           items={card.items}
+          sortBy={sortBy}
+          onSortChange={(s) => setSortBy(s)}
           onSorted={(sorted) => setSortedItems(sorted)}
         />
       </div>

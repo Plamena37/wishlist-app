@@ -4,6 +4,7 @@ import { useAuth } from '@/auth/hooks/useAuth'
 import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { ROUTES } from '@/router/constants/app-routes'
 import GoogleColorfull from '@/assets/google-colorfull.svg'
+import logo from '@/assets/logo.png'
 import { Button } from '@/components/ui/button'
 import { Text } from '@/components/ui/text'
 import AccountDropdown from '@/components/account-dropdown/account-dropdown'
@@ -11,11 +12,13 @@ import { AccountDropdownLinks } from '@/components/account-dropdown/account-drop
 import { Icon } from '@/components/ui/icon'
 
 const navLinks = [
-  { to: ROUTES.CARDS, label: 'Home' },
+  { to: ROUTES.HOME, label: 'Home' },
+  { to: ROUTES.CARDS, label: 'Cards' },
   { to: ROUTES.MY_CARDS, label: 'My Cards' },
 ]
 
 const getActiveParent = (pathname: string): string | null => {
+  if (pathname === '/') return ROUTES.HOME
   if (pathname.startsWith('/my-cards')) return ROUTES.MY_CARDS
   if (pathname.startsWith('/cards')) return ROUTES.CARDS
   return null
@@ -39,13 +42,11 @@ export const AppHeader = () => {
     >
       <nav className="container mx-auto flex items-center justify-between">
         <Link to={ROUTES.HOME}>
-          <Text
-            variant="h3"
-            className="text-white font-semibold cursor-pointer"
-            weight="semibold"
-          >
-            Wishlist App
-          </Text>
+          <img
+            src={logo}
+            alt="App Logo"
+            className={cn(isSm ? 'max-w-40' : 'w-24')}
+          />
         </Link>
 
         <ul className={cn('flex items-center', isSm ? 'gap-6' : 'gap-3')}>
