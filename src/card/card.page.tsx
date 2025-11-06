@@ -163,7 +163,7 @@ export default function CardPage() {
           headerCollapsedChild={
             isSm ? <HeaderCollapsedChild /> : <MobileHeaderCollapsedChild />
           }
-          collapsedText="Expand Form Fields"
+          collapsedText="Expand to Add Whishes"
           expandedText={`${isSm ? 'Collapse Form Fields' : ''}`}
           defaultCollapsed={!isCollapseOpen}
           onCollapsedChange={handleCollapsedChange}

@@ -60,7 +60,7 @@ const MyCardsPage = () => {
         headerCollapsedChild={
           isSm ? <HeaderCollapsedChild /> : <MobileHeaderCollapsedChild />
         }
-        collapsedText="Expand Form Fields"
+        collapsedText="Expand to Create Card"
         expandedText={`${isSm ? 'Collapse Form Fields' : ''}`}
         defaultCollapsed={!isCollapseOpen}
         onCollapsedChange={handleCollapsedChange}

@@ -54,7 +54,7 @@ const HomePage = () => {
           </Text>
 
           <Button
-            className="mt-2 w-auto"
+            className="mt-2 w-auto py-2"
             variant="primary"
             onClick={navigateToCardsPage}
           >
@@ -108,19 +108,19 @@ const HomePage = () => {
           </Text>
 
           <ul className="flex flex-col gap-2 items-start">
-            <li>
+            <li className="text-left">
               <Text variant="body">
                 <span className="font-semibold">Step 1:</span> Create your card
                 — from Cards or My Cards page.
               </Text>
             </li>
-            <li>
+            <li className="text-left">
               <Text variant="body">
                 <span className="font-semibold">Step 2:</span> Add your wishes —
                 as you create or edit your card.
               </Text>
             </li>
-            <li>
+            <li className="text-left">
               <Text variant="body">
                 <span className="font-semibold">Step 3:</span> Share the link
               </Text>
@@ -128,7 +128,7 @@ const HomePage = () => {
           </ul>
           <Text variant="body">Easy as a piece of 🎂</Text>
           <Button
-            className="mt-4 w-fit self-center md:self-start"
+            className="mt-4 py-2 w-fit self-center md:self-start"
             onClick={navigateToCardsPage}
           >
             Create My Wishlist
@@ -137,19 +137,19 @@ const HomePage = () => {
 
         {/* image collage */}
         <div className="mt-6 sm:mt-0 relative w-full flex flex-wrap justify-center gap-2">
-          <div className="w-40 sm:w-60 h-52 shadow-lg rotate-[-4deg] flex items-center justify-center">
+          <div className="w-38 sm:w-60 h-52 shadow-lg rotate-[-4deg] flex items-center justify-center">
             <img
               src={step1Image}
               alt="Step 1"
             />
           </div>
-          <div className="w-40 sm:w-60 h-52 shadow-lg rotate-[3deg] flex items-center justify-center">
+          <div className="w-38 sm:w-60 h-52 shadow-lg rotate-[3deg] flex items-center justify-center">
             <img
               src={step2Image}
               alt="Step 2"
             />
           </div>
-          <div className="w-40 sm:w-60  h-52 shadow-lg rotate-[-2deg] flex items-center justify-center">
+          <div className="w-38 sm:w-60  h-52 shadow-lg rotate-[-2deg] flex items-center justify-center">
             <img
               src={step3Image}
               alt="Step 3"
