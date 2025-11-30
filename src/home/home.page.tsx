@@ -18,9 +18,9 @@ const HomePage = () => {
   }
 
   return (
-    <div className="flex flex-col l">
+    <div className="flex flex-col">
       {/* 🏠 HERO SECTION */}
-      <section className="relative min-h-[calc(100dvh-55px)] flex flex-col items-center justify-center text-center py-8 sm:py-24 px-6 bg-purple-50 shadow-xs">
+      <section className="relative h-[calc(100vh-55px)] flex flex-col items-center justify-center text-center py-8 sm:py-24 px-6 bg-purple-50 shadow-xs">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
