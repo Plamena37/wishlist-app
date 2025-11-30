@@ -172,7 +172,7 @@ export default function CardPage() {
         </Collapse>
       )}
 
-      <div className="flex justify-between items-center pt-6 sm:pt-4 px-6 z-50">
+      <div className="flex w-full justify-between items-center pt-6 sm:pt-4 px-6 z-50">
         <Button
           variant="link"
           onClick={handleGoBack}
