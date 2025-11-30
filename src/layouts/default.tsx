@@ -17,7 +17,7 @@ export default function DefaultLayout() {
         className="grid h-full grid-cols-[1fr] grid-rows-[56px_auto_32px]
                  [grid-template-areas:'header''main''footer'] bg-gray-20 overflow-y-auto"
       > */}
-      <div className="min-h-full flex flex-col bg-gray-200">
+      <div className="h-full flex flex-col bg-gray-200">
         <AppHeader />
         {/* <main className="[grid-area:main] flex flex-1 flex-col bg-gray-200"> */}
 
