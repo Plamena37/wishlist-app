@@ -36,7 +36,7 @@ export const AppHeader = () => {
   return (
     <header
       className={cn(
-        'bg-purple-800 text-white flex items-center justify-between h-14 w-full shadow-sm z-50',
+        'bg-purple-800 text-white flex items-center justify-between h-14 shrink-0 w-full shadow-sm z-50',
         isSm ? 'px-4' : 'px-2'
       )}
     >
