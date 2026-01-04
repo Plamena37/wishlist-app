@@ -71,7 +71,7 @@ export const EditCardItemForm = ({
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Item Title
+                      Wish Title
                     </Text>
                   </div>
                 </FormLabel>
@@ -99,7 +99,7 @@ export const EditCardItemForm = ({
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Item Link
+                      Wish Link
                     </Text>
                   </div>
                 </FormLabel>
@@ -127,7 +127,7 @@ export const EditCardItemForm = ({
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Item Price
+                      Wish Price
                     </Text>
                   </div>
                 </FormLabel>
@@ -150,11 +150,17 @@ export const EditCardItemForm = ({
               <Button
                 type="button"
                 variant="outline"
+                size="sm"
               >
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit">Save</Button>
+            <Button
+              type="submit"
+              size="sm"
+            >
+              Save
+            </Button>
           </div>
         </div>
       </form>

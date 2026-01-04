@@ -1,37 +1,49 @@
+import { useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/auth/hooks/useAuth'
 import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { ROUTES } from '@/router/constants/app-routes'
-import GoogleColorfull from '@/assets/google-colorfull.svg'
 import logo from '@/assets/logo.png'
 import { Button } from '@/components/ui/button'
-import { Text } from '@/components/ui/text'
 import AccountDropdown from '@/components/account-dropdown/account-dropdown'
 import { AccountDropdownLinks } from '@/components/account-dropdown/account-dropdown-links'
-import { Icon } from '@/components/ui/icon'
+import { AuthTrigger } from '@/auth/auth-trigger'
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from '@/components/ui/sheet'
 
 const navLinks = [
   { to: ROUTES.HOME, label: 'Home' },
-  { to: ROUTES.CARDS, label: 'Cards' },
-  { to: ROUTES.MY_CARDS, label: 'My Cards' },
+  { to: ROUTES.CARDS, label: 'My Cards' },
+  { to: ROUTES.FAQ, label: 'FAQ' },
 ]
 
 const getActiveParent = (pathname: string): string | null => {
   if (pathname === '/') return ROUTES.HOME
-  if (pathname.startsWith('/my-cards')) return ROUTES.MY_CARDS
   if (pathname.startsWith('/cards')) return ROUTES.CARDS
+  if (pathname === '/faq') return ROUTES.FAQ
   return null
 }
 
 export const AppHeader = () => {
-  const { user, signInWithGoogle } = useAuth()
+  const { user, signOut } = useAuth()
   const { pathname } = useLocation()
   const links = AccountDropdownLinks()
   const { isSm } = useBreakpoints()
+  const [sheetOpen, setSheetOpen] = useState(false)
 
   const hideNavButtons = !user || !user.displayName
   const activeParent = getActiveParent(pathname)
+
+  const handleCloseSheet = () => {
+    setSheetOpen(false)
+  }
 
   return (
     <header
@@ -49,53 +61,93 @@ export const AppHeader = () => {
           />
         </Link>
 
-        <ul className={cn('flex items-center', isSm ? 'gap-6' : 'gap-3')}>
-          {navLinks.map(({ to, label }) => (
-            <li key={to}>
-              <NavLink
-                to={to}
-                className={cn(
-                  'hover:text-purple-900 hover:border-purple-900 border-b-2 border-b-transparent transition',
-                  activeParent === to ? 'border-purple-900' : '',
-                  isSm ? 'text-md' : 'text-sm'
-                )}
-              >
-                {label}
-              </NavLink>
-            </li>
-          ))}
-
-          {!hideNavButtons && <AccountDropdown links={links} />}
-
-          {hideNavButtons && (
-            <Button
-              variant="primary"
-              className={cn(
-                'py-4 rounded-full bg-gray-50 w-auto hover:bg-gray-300',
-                isSm ? 'px-4' : 'px-1.5'
-              )}
-              onClick={signInWithGoogle}
-            >
-              <Icon
-                src={GoogleColorfull}
-                style={{
-                  width: '20px',
-                  height: '20px',
-                }}
-              />
-
-              {isSm && (
-                <Text
-                  as="p"
-                  variant="body"
-                  className="text-purple-900 font-semibold"
+        {isSm ? (
+          <ul className={cn('flex items-center', isSm ? 'gap-6' : 'gap-3')}>
+            {navLinks.map(({ to, label }) => (
+              <li key={to}>
+                <NavLink
+                  to={to}
+                  className={cn(
+                    'hover:text-purple-900 hover:border-purple-900 border-b-2 border-b-transparent transition',
+                    activeParent === to ? 'border-purple-900' : '',
+                    isSm ? 'text-md' : 'text-sm'
+                  )}
                 >
-                  Sign In With Google
-                </Text>
-              )}
-            </Button>
-          )}
-        </ul>
+                  {label}
+                </NavLink>
+              </li>
+            ))}
+
+            {!hideNavButtons && <AccountDropdown links={links} />}
+
+            {hideNavButtons && (
+              <AuthTrigger>
+                <Button
+                  className={cn(
+                    'hover:text-purple-900 hover:border-purple-900 border-b-1 border-b-transparent transition w-fit p-0 sm:p-0',
+                    isSm ? 'text-md' : 'text-sm'
+                  )}
+                >
+                  Sign In
+                </Button>
+              </AuthTrigger>
+            )}
+          </ul>
+        ) : (
+          <Sheet
+            open={sheetOpen}
+            onOpenChange={setSheetOpen}
+          >
+            <SheetTrigger>
+              <FontAwesomeIcon
+                icon={faBars}
+                className="text-white px-1.5 py-2 hover:bg-purple-900 rounded-full cursor-pointer transition"
+              />
+            </SheetTrigger>
+            <SheetContent>
+              <ul className="flex flex-col gap-3 p-6 justify-center items-center h-full">
+                {navLinks.map(({ to, label }) => (
+                  <li key={to}>
+                    <SheetClose asChild>
+                      <NavLink
+                        to={to}
+                        className={cn(
+                          'hover:text-purple-900 hover:border-purple-900 border-b-2 border-b-transparent transition text-lg',
+                          activeParent === to ? 'border-purple-900' : ''
+                        )}
+                      >
+                        {label}
+                      </NavLink>
+                    </SheetClose>
+                  </li>
+                ))}
+
+                {!hideNavButtons && (
+                  <SheetClose asChild>
+                    <Button
+                      variant="link"
+                      className="hover:text-purple-900 hover:border-purple-900 text-black font-normal border-b-1 border-b-transparent transition w-fit p-0 text-lg"
+                      onClick={signOut}
+                    >
+                      Sign Out
+                    </Button>
+                  </SheetClose>
+                )}
+
+                {hideNavButtons && (
+                  <AuthTrigger onCloseSheet={handleCloseSheet}>
+                    <Button
+                      variant="link"
+                      className="hover:text-purple-900 hover:border-purple-900 text-black font-normal border-b-1 border-b-transparent transition w-fit p-0 text-lg"
+                    >
+                      Sign In
+                    </Button>
+                  </AuthTrigger>
+                )}
+              </ul>
+            </SheetContent>
+          </Sheet>
+        )}
       </nav>
     </header>
   )

@@ -6,6 +6,7 @@ import {
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
+  FacebookAuthProvider,
 } from 'firebase/auth'
 import { auth } from '@/firebase.config'
 
@@ -13,6 +14,7 @@ type AuthContextType = {
   user: User | null
   loading: boolean
   signInWithGoogle: () => void
+  signInWithFacebook: () => void
   signOut: () => void
 }
 
@@ -20,6 +22,7 @@ export const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   signInWithGoogle: () => {},
+  signInWithFacebook: () => {},
   signOut: () => {},
 })
 
@@ -47,6 +50,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     await signInWithPopup(auth, provider)
   }
 
+  const handleFacebookSignIn = async () => {
+    const provider = new FacebookAuthProvider()
+    await signInWithPopup(auth, provider)
+  }
+
   const handleSignOut = async () => {
     await signOut(auth)
   }
@@ -57,6 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         user,
         loading,
         signInWithGoogle: handleGoogleSignIn,
+        signInWithFacebook: handleFacebookSignIn,
         signOut: handleSignOut,
       }}
     >

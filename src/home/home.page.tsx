@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router'
 import { ROUTES } from '@/router/constants/app-routes'
 import useBreakpoints from '@/lib/hooks/useBreakpoints'
+import { useCardsContext } from '@/cards/hooks/useCards'
 import heroImage from '@/assets/hero-img.png'
 import heroVerticalImage from '@/assets/hero-img-vertical.png'
 import step1Image from '@/assets/1.png'
@@ -12,9 +13,15 @@ import { Button } from '@/components/ui/button'
 const HomePage = () => {
   const { isSm } = useBreakpoints()
   const navigate = useNavigate()
+  const { toggleCreateCardDialog } = useCardsContext()
 
   const navigateToCardsPage = () => {
     navigate(ROUTES.CARDS)
+    toggleCreateCardDialog(true)
+  }
+
+  const navigateToFAQPage = () => {
+    navigate(ROUTES.FAQ)
   }
 
   return (
@@ -111,7 +118,7 @@ const HomePage = () => {
             <li className="text-left">
               <Text variant="body">
                 <span className="font-semibold">Step 1:</span> Create your card
-                — from Cards or My Cards page.
+                — from My Cards page.
               </Text>
             </li>
             <li className="text-left">
@@ -126,26 +133,35 @@ const HomePage = () => {
               </Text>
             </li>
           </ul>
-          <Text variant="body">Easy as a piece of 🎂</Text>
-          <Button
-            className="mt-4 py-2 w-fit self-center md:self-start"
-            onClick={navigateToCardsPage}
-          >
-            Create My Wishlist
-          </Button>
+          {/* <Text variant="body">Easy as a piece of 🎂</Text> */}
+
+          <div className="flex gap-2 mt-4 items-center justify-center md:justify-start">
+            <Button
+              className="w-auto"
+              onClick={navigateToCardsPage}
+            >
+              Create My Wishlist
+            </Button>
+            <Button
+              variant="outline"
+              onClick={navigateToFAQPage}
+            >
+              Learn More
+            </Button>
+          </div>
         </div>
 
         {/* image collage */}
         <div className="mt-6 sm:mt-0 relative w-full flex flex-wrap justify-center gap-2">
           <div className="w-38 sm:w-60 h-52 shadow-lg rotate-[-4deg] flex items-center justify-center">
             <img
-              src={step1Image}
+              src={step2Image}
               alt="Step 1"
             />
           </div>
           <div className="w-38 sm:w-60 h-52 shadow-lg rotate-[3deg] flex items-center justify-center">
             <img
-              src={step2Image}
+              src={step1Image}
               alt="Step 2"
             />
           </div>
@@ -205,36 +221,68 @@ const HomePage = () => {
           variant="h2"
           className="font-bold text-purple-900 mb-6"
         >
-          🔒 Public or Private — You decide
+          🎁 Wishlists, made simple
         </Text>
-        <div className="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+
+        <div className="grid md:grid-cols-3 gap-6 sm:gap-10 max-w-5xl mx-auto">
+          {/* Card 1 */}
           <div className="p-8 rounded-2xl bg-purple-100 shadow-md">
-            <div className="text-4xl mb-2">🌍</div>
-            <h3 className="font-semibold text-lg text-purple-900">Public</h3>
+            <div className="text-4xl mb-3">📝</div>
             <Text
-              variant="h4"
+              as="h2"
+              className="font-semibold text-purple-900 mb-2"
+            >
+              One wishlist for every occasion
+            </Text>
+            <Text
+              variant="subtext"
               className="mt-2 text-gray-700 leading-6"
             >
-              Everyone can see your card on the main page.
+              Keep all your gift ideas in one place — for any moment.
             </Text>
           </div>
+
+          {/* Card 2 */}
           <div className="p-8 rounded-2xl bg-gray-100 shadow-md">
-            <div className="text-4xl mb-2">🔐</div>
-            <h3 className="font-semibold text-lg text-gray-900">Private</h3>
+            <div className="text-4xl mb-3">😌</div>
             <Text
-              variant="h4"
+              as="h2"
+              className="font-semibold text-gray-900 mb-2"
+            >
+              No more awkward questions
+            </Text>
+            <Text
+              variant="subtext"
               className="mt-2 text-gray-700 leading-6"
             >
-              Only you can see it in — unless you share the link.
+              People know exactly what to get you. No asking needed.
+            </Text>
+          </div>
+
+          {/* Card 3 */}
+          <div className="p-8 rounded-2xl bg-purple-100 shadow-md">
+            <div className="text-4xl mb-3">🤖</div>
+            <Text
+              as="h2"
+              className="font-semibold text-purple-900 mb-2"
+            >
+              Your wishlist assistant
+            </Text>
+            <Text
+              variant="subtext"
+              className="mt-2 text-gray-700 leading-6"
+            >
+              Get gift ideas and help instantly with our AI.
             </Text>
           </div>
         </div>
+
         <Text
           as="p"
           variant="subtext"
           className="mt-6 text-gray-500"
         >
-          Keep your surprise gifts private — or brag about them, your call.
+          Less guessing, fewer duplicates, better surprises 🎉
         </Text>
       </section>
     </div>

@@ -60,7 +60,7 @@ export const updateCard = async (cardId: string, data: Partial<Card>) => {
   await updateDoc(cardRef, data)
 
   const snap = await getDoc(cardRef)
-  if (!snap.exists()) throw new Error('Card not found')
+  if (!snap.exists()) throw new Error('Wishlist not found')
 
   return { id: snap.id, ...snap.data() } as Card
 }

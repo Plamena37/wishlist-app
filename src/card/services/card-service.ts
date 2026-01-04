@@ -10,7 +10,7 @@ export const addItem = async (
 ) => {
   const cardRef = doc(db, CARDS_COLLECTION, cardId)
   const cardSnap = await getDoc(cardRef)
-  if (!cardSnap.exists()) throw new Error('Card not found')
+  if (!cardSnap.exists()) throw new Error('Wishlist not found')
 
   const currentItems = cardSnap.data().items || []
 
@@ -48,7 +48,7 @@ export const addItem = async (
 export const deleteItem = async (cardId: string, itemId: string) => {
   const cardRef = doc(db, CARDS_COLLECTION, cardId)
   const cardSnap = await getDoc(cardRef)
-  if (!cardSnap.exists()) throw new Error('Card not found')
+  if (!cardSnap.exists()) throw new Error('Wishlist not found')
 
   const currentItems = cardSnap.data().items || []
   const updatedItems = currentItems.filter(
@@ -74,11 +74,11 @@ export const updateItem = async (
 
   return await runTransaction(db, async (tx) => {
     const snap = await tx.get(cardRef)
-    if (!snap.exists()) throw new Error('Card not found')
+    if (!snap.exists()) throw new Error('Wishlist not found')
 
     const items: CardItem[] = snap.data().items || []
     const idx = items.findIndex((i) => i.id === itemId)
-    if (idx === -1) throw new Error('Item not found')
+    if (idx === -1) throw new Error('Wish not found')
 
     const updatedItem = { ...items[idx], ...updatedFields }
     const newItems = [...items]
@@ -101,15 +101,15 @@ export const reserveItem = async (
 
   return await runTransaction(db, async (tx) => {
     const snap = await tx.get(cardRef)
-    if (!snap.exists()) throw new Error('Card not found')
+    if (!snap.exists()) throw new Error('Wishlist not found')
 
     const items: CardItem[] = snap.data().items || []
     const idx = items.findIndex((i) => i.id === itemId)
-    if (idx === -1) throw new Error('Item not found')
+    if (idx === -1) throw new Error('Wish not found')
 
     const current = items[idx]
     if (current.reservedBy && current.reservedBy !== '') {
-      throw new Error('Item already reserved')
+      throw new Error('Wish already reserved')
     }
 
     const updated = { ...current, reservedBy: userId }
@@ -133,15 +133,15 @@ export const unreserveItem = async (
 
   return await runTransaction(db, async (tx) => {
     const snap = await tx.get(cardRef)
-    if (!snap.exists()) throw new Error('Card not found')
+    if (!snap.exists()) throw new Error('Wishlist not found')
 
     const items: CardItem[] = snap.data().items || []
     const idx = items.findIndex((i) => i.id === itemId)
-    if (idx === -1) throw new Error('Item not found')
+    if (idx === -1) throw new Error('Wish not found')
 
     const current = items[idx]
     if (!current.reservedBy || current.reservedBy === '') {
-      throw new Error('Item is not reserved')
+      throw new Error('Wish is not reserved')
     }
     if (current.reservedBy !== userId) {
       throw new Error('You cannot unreserve an item reserved by another user')

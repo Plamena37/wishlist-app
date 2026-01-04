@@ -10,6 +10,7 @@ export default function useBreakpoints() {
   }, [])
 
   return {
+    isXs: width < 450,
     isSm: width >= 640,
     isMd: width >= 768,
     isLg: width >= 1024,

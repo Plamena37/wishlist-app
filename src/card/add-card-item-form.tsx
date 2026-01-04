@@ -17,7 +17,11 @@ import {
 } from '@/components/form/form'
 import { Text } from '@/components/ui/text'
 
-export const AddCardItemForm = () => {
+interface AddCardItemFormProps {
+  onClose: (open: boolean) => void
+}
+
+export const AddCardItemForm = ({ onClose }: AddCardItemFormProps) => {
   const { card, addCardItem, loadingCardItem } = useCardsContext()
 
   const form = useForm<AddCardItemFormData>({
@@ -33,7 +37,6 @@ export const AddCardItemForm = () => {
     handleSubmit,
     reset: resetAddForm,
     formState: { errors },
-    reset,
   } = form
 
   const onAddItem = async (data: AddCardItemFormData) => {
@@ -43,27 +46,28 @@ export const AddCardItemForm = () => {
       price: data.itemPrice ? data.itemPrice : null,
       reservedBy: '',
     })
+    onClose(false)
     resetAddForm()
   }
 
-  const resetForm = () => {
-    reset()
+  const closeForm = () => {
+    onClose(false)
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onAddItem)}
-        className="py-6 px-8 border-b border-gray-400"
+        className="py-2"
       >
         <div className="grid grid-cols-[1fr]">
-          <Text
+          {/* <Text
             as="h4"
             variant="h4"
             className="mb-4 font-semibold text-purple-900"
           >
             Add your desired items...
-          </Text>
+          </Text> */}
 
           <FormField
             control={form.control}
@@ -77,7 +81,7 @@ export const AddCardItemForm = () => {
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Item Title
+                      Wish Title
                     </Text>
                     <Text
                       as="p"
@@ -112,7 +116,7 @@ export const AddCardItemForm = () => {
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Item Link
+                      Wish Link
                     </Text>
                   </div>
                 </FormLabel>
@@ -140,7 +144,7 @@ export const AddCardItemForm = () => {
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Item Price
+                      Wish Price
                     </Text>
                   </div>
                 </FormLabel>
@@ -161,11 +165,11 @@ export const AddCardItemForm = () => {
             <Button
               variant="outline"
               size="lg"
-              type="reset"
+              type="button"
               disabled={loadingCardItem}
-              onClick={resetForm}
+              onClick={closeForm}
             >
-              Clear
+              Close
             </Button>
             <Button
               type="submit"
@@ -173,7 +177,7 @@ export const AddCardItemForm = () => {
               size="lg"
               disabled={loadingCardItem}
             >
-              Add Item
+              Add Wish
             </Button>
           </div>
         </div>

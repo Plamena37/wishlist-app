@@ -8,10 +8,8 @@ import { cn } from '@/lib/utils'
 import { Card, CardItem } from '@/lib/types/Cards'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
-import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { CARDS_COLLECTION } from '@/lib/constants'
 import { loadingMessages } from '@/lib/constants/messages'
-import { AddCardItemForm } from '@/card/add-card-item-form'
 import { CardItemsList } from '@/card/card-items-list'
 import { CardsActionsDropdown } from '@/cards/cards-actions-dropdown'
 import {
@@ -19,56 +17,16 @@ import {
   getSortablePrice,
   SortOption,
 } from '@/card/card-items-sort-dropdown'
-import { Collapse } from '@/components/ui/collapsible'
 import { Text } from '@/components/ui/text'
 import { Button } from '@/components/ui/button'
 import { LoadingOverlay } from '@/components/overlay/loading-overlay'
 
-const HeaderCollapsedChild = () => {
-  return (
-    <div className="flex w-full px-6 py-4 border-b border-gray-400">
-      <div className="flex-[0_0_25%] pr-8 border-r-2 border-gray-400">
-        <Text
-          as="h5"
-          variant="h5"
-          className="font-semibold text-gray-400"
-        >
-          What do I want?
-        </Text>
-      </div>
-      <div className="flex-[0_0_75%] pl-8">
-        <div className="flex items-center gap-x-2">
-          <Text
-            as="h5"
-            variant="h5"
-            className="font-semibold text-gray-400"
-          >
-            Add your items here
-          </Text>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-const MobileHeaderCollapsedChild = () => {
-  return <div className="py-4"></div>
-}
-
 export default function CardPage() {
   const { cardId } = useParams()
-  const {
-    card,
-    setCard,
-    getCardById,
-    checkUserCanEditCard,
-    canEditCard,
-    loading,
-  } = useCardsContext()
+  const { card, setCard, getCardById, checkUserCanEditCard, loading } =
+    useCardsContext()
   const { user } = useAuth()
-  const [isCollapseOpen, setIsCollapseOpen] = useState(false)
   const navigate = useNavigate()
-  const { isSm } = useBreakpoints()
 
   const [sortedItems, setSortedItems] = useState<CardItem[]>(card?.items || [])
   const [sortBy, setSortBy] = useState<SortOption | null>(null)
@@ -105,10 +63,6 @@ export default function CardPage() {
           return 0
       }
     })
-  }
-
-  const handleCollapsedChange = (isOpen: boolean) => {
-    setIsCollapseOpen(isOpen)
   }
 
   useEffect(() => {
@@ -158,20 +112,6 @@ export default function CardPage() {
 
   return (
     <>
-      {canEditCard && (
-        <Collapse
-          headerCollapsedChild={
-            isSm ? <HeaderCollapsedChild /> : <MobileHeaderCollapsedChild />
-          }
-          collapsedText="Expand to Add Whishes"
-          expandedText={`${isSm ? 'Collapse Form Fields' : ''}`}
-          defaultCollapsed={!isCollapseOpen}
-          onCollapsedChange={handleCollapsedChange}
-        >
-          <AddCardItemForm />
-        </Collapse>
-      )}
-
       <div className="flex w-full justify-between items-center pt-6 sm:pt-4 px-6 z-50">
         <Button
           variant="link"
@@ -217,13 +157,12 @@ export default function CardPage() {
           </Text>
         )}
       </div>
-
       <div className="flex justify-between w-[90%] sm:w-[80%] pl-0.5 mx-auto mt-4 sm:mt-0">
         <Text
           variant="body"
           className="text-purple-900 font-medium"
         >
-          Items: ({sortedItems.length ?? 0})
+          Wishes: ({sortedItems.length ?? 0})
         </Text>
         <CardItemsSortDropdown
           items={card.items}
@@ -232,7 +171,6 @@ export default function CardPage() {
           onSorted={(sorted) => setSortedItems(sorted)}
         />
       </div>
-
       <CardItemsList items={sortedItems} />
     </>
   )

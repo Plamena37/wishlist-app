@@ -6,6 +6,7 @@ import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { AppHeader } from '@/components/app-header/app-header'
 import { Text } from '@/components/ui/text'
 import { LoadingOverlay } from '@/components/overlay/loading-overlay'
+import { AIAssistant } from '@/components/ai-assistant/ai-assistant'
 
 export default function DefaultLayout() {
   const { loading } = useAuth()
@@ -22,6 +23,7 @@ export default function DefaultLayout() {
         <main className="[grid-area:main] flex flex-1 flex-col bg-gray-200">
           {/* <main className="flex-1 min-h-0 flex flex-col items-center justify-center overflow-y-auto"> */}
           <Outlet />
+          <AIAssistant />
         </main>
         <footer className="w-full px-8 py-2 bg-gray-200 h-8">
           {isSm ? (

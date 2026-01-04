@@ -1,17 +1,18 @@
+import { useCallback } from 'react'
+import { Link } from 'react-router'
+import PageEaten from '@/assets/page-eaten.svg'
+import { cn } from '@/lib/utils'
+import { authMessages, cardItemMessages } from '@/lib/constants/messages'
+import { Card, CardItem } from '@/lib/types/Cards'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
-import PageEaten from '@/assets/page-eaten.svg'
+import CardActionsDropdown from '@/card/card-actions-dropdown'
+import { AuthTrigger } from '@/auth/auth-trigger'
 import { Text } from '@/components/ui/text'
-import { Link } from 'react-router'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
-import { cardItemMessages } from '@/lib/constants/messages'
-import { Card, CardItem } from '@/lib/types/Cards'
-import { useCallback } from 'react'
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
-import CardActionsDropdown from '@/card/card-actions-dropdown'
 
 interface CardItemsList {
   items: CardItem[]
@@ -39,7 +40,7 @@ export const CardItemsList = ({ items }: CardItemsList) => {
 
   const handleToggleReservedBy = useCallback(
     (card: Card, item: CardItem, checked: boolean) => {
-      if (!user) return
+      if (!user?.displayName || !user) return
 
       if (!item.reservedBy && checked) {
         updateCardItem(card, item.id, { reservedBy: user.uid })
@@ -150,17 +151,22 @@ export const CardItemsList = ({ items }: CardItemsList) => {
             </Text>
 
             <div className="flex items-center gap-2">
-              <Checkbox
-                checked={!!item.reservedBy}
-                id={`reserved-${item.id}`}
-                onCheckedChange={(val) =>
-                  handleToggleReservedBy(card, item, !!val)
-                }
-                disabled={
-                  (item.id === updatingCardItemId && loadingCardItem) ||
-                  canReserveCardItem
-                }
-              />
+              <AuthTrigger
+                isReserved={!!item.reservedBy}
+                title={authMessages.sign_in_to_continue}
+              >
+                <Checkbox
+                  checked={!!item.reservedBy}
+                  id={`reserved-${item.id}`}
+                  onCheckedChange={(val) =>
+                    handleToggleReservedBy(card, item, !!val)
+                  }
+                  disabled={
+                    (item.id === updatingCardItemId && loadingCardItem) ||
+                    canReserveCardItem
+                  }
+                />
+              </AuthTrigger>
               <Label htmlFor={`reserved-${item.id}`}>
                 {handleReservedByLabel(item.reservedBy)}
               </Label>

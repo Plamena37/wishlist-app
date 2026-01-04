@@ -1,10 +1,14 @@
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
+import { faEllipsisV, faShare } from '@fortawesome/free-solid-svg-icons'
 import { cn } from '@/lib/utils'
 import useBreakpoints from '@/lib/hooks/useBreakpoints'
+import { useAppSnackbar } from '@/lib/hooks/useAppSnackbar'
+import { ROUTES } from '@/router/constants/app-routes'
+import { cardMessages } from '@/lib/constants/messages'
 import { Card } from '@/lib/types/Cards'
-import { EditCardDialog } from '@/cards/edit-card-dialog'
+import { EditCardInfoDialog } from '@/cards/edit-card-info-dialog'
+import { EditCardItemsDialog } from '@/cards/edit-card-items-dialog'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -13,6 +17,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { DeleteCardDialog } from '@/cards/delete-card-dialog'
 import { Button } from '@/components/ui/button'
+import { Text } from '@/components/ui/text'
 
 interface CardsActionsDropdown {
   card: Card
@@ -26,6 +31,7 @@ export const CardsActionsDropdown = ({
   btnBgColor = 'bg-gray-200',
 }: CardsActionsDropdown) => {
   const { isSm } = useBreakpoints()
+  const { showSuccess } = useAppSnackbar()
   const [menuOpen, setMenuOpen] = useState(false)
 
   const handleCloseMenu = () => {
@@ -34,6 +40,13 @@ export const CardsActionsDropdown = ({
 
   const handleOpenMenu = () => {
     setMenuOpen(true)
+  }
+
+  const handleCopyLink = () => {
+    const link = `${window.location.origin}/#${ROUTES.CARDS}/${card.id}`
+    navigator.clipboard.writeText(link)
+    showSuccess(cardMessages.card_link_copied)
+    handleCloseMenu()
   }
 
   return (
@@ -61,14 +74,44 @@ export const CardsActionsDropdown = ({
         sideOffset={0}
         className={cn(
           'p-0 text-blue-900 bg-white text-left',
-          isSm ? 'w-42' : 'w-28'
+          isSm ? 'w-42' : 'w-34'
         )}
       >
         <DropdownMenuItem
           className="hover:bg-muted"
           onSelect={(e) => e.preventDefault()}
         >
-          <EditCardDialog
+          <Button
+            variant="ghost"
+            className="sm:px-0 justify-start"
+            onClick={handleCopyLink}
+          >
+            <FontAwesomeIcon
+              icon={faShare}
+              className="text-purple-800"
+            />
+            <Text
+              variant="body"
+              className="text-purple-900 font-medium"
+            >
+              Copy Link
+            </Text>
+          </Button>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="hover:bg-muted"
+          onSelect={(e) => e.preventDefault()}
+        >
+          <EditCardInfoDialog
+            card={card}
+            onMenuClose={handleCloseMenu}
+          />
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="hover:bg-muted"
+          onSelect={(e) => e.preventDefault()}
+        >
+          <EditCardItemsDialog
             card={card}
             onMenuClose={handleCloseMenu}
           />

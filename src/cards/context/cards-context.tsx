@@ -29,6 +29,7 @@ import {
   getCard,
   updateCard,
 } from '@/cards/services/cards-service'
+import { useAuth } from '@/auth/hooks/useAuth'
 
 type CardsContextType = {
   publicCards: Card[]
@@ -39,6 +40,10 @@ type CardsContextType = {
   canEditCard: boolean
   canReserveCardItem: boolean
   updatingCardItemId: string
+  isCreateCardDialogOpen: boolean
+  showSignInDialog: boolean
+  setShowSignInDialog: (open: boolean) => void
+  toggleCreateCardDialog: (open: boolean) => void
   checkUserCanEditCard: (user: User | null) => void
   checkUserCanReserveCardItem: (user: User | null, item: CardItem) => void
   getAllPublicCards: () => Promise<void>
@@ -66,6 +71,7 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { showSuccess, showError } = useAppSnackbar()
+  const { user } = useAuth()
 
   const [publicCards, setPublicCards] = useState<Card[]>([])
   const [myCards, setMyCards] = useState<Card[]>([])
@@ -77,6 +83,9 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [canReserveCardItem, setCanReserveCardItem] = useState<boolean>(false)
 
   const [updatingCardItemId, setUpdatingCardItemId] = useState<string>('')
+
+  const [isCreateCardDialogOpen, setIsCreateCardDialogOpen] = useState(false)
+  const [showSignInDialog, setShowSignInDialog] = useState(false)
 
   const getAllPublicCards = async () => {
     setLoading(true)
@@ -324,6 +333,16 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
+  const toggleCreateCardDialog = (open: boolean) => {
+    if (!user?.displayName || !user) {
+      setShowSignInDialog(true)
+      return
+    }
+
+    setIsCreateCardDialogOpen(open)
+    setShowSignInDialog(false)
+  }
+
   return (
     <CardsContext.Provider
       value={{
@@ -337,6 +356,10 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
         checkUserCanEditCard,
         checkUserCanReserveCardItem,
         updatingCardItemId,
+        isCreateCardDialogOpen,
+        showSignInDialog,
+        setShowSignInDialog,
+        toggleCreateCardDialog,
         getAllPublicCards,
         getMyCards,
         getCardById,

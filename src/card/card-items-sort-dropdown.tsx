@@ -155,7 +155,7 @@ export const CardItemsSortDropdown = ({
           </>
         )
       default:
-        return 'Sort Items'
+        return 'Sort Wishes'
     }
   }, [sortBy])
 

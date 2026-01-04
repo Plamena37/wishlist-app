@@ -3,9 +3,9 @@ import { ROUTES } from '@/router/constants/app-routes'
 import DefaultLayout from '@/layouts/default'
 import HomePage from '@/home/home.page'
 import CardPage from '@/card/card.page'
-import CardsPage from '@/cards/cards.page'
 import MyCardsPage from '@/cards/my-cards.page'
 import GeneralErrorPage from '@/components/general-error/general-error.page'
+import FAQPage from '@/faq/faq.page'
 
 export const routes: RouteObject[] = [
   {
@@ -16,10 +16,9 @@ export const routes: RouteObject[] = [
         index: true,
         element: <HomePage />,
       },
-      { path: ROUTES.CARDS, element: <CardsPage /> },
+      { path: ROUTES.FAQ, element: <FAQPage /> },
+      { path: ROUTES.CARDS, element: <MyCardsPage /> },
       { path: ROUTES.CARD, element: <CardPage /> },
-      { path: ROUTES.MY_CARDS, element: <MyCardsPage /> },
-      { path: ROUTES.MY_CARD, element: <CardPage /> },
       { path: '*', element: <GeneralErrorPage /> },
     ],
   },

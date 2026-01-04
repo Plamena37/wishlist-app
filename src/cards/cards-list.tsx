@@ -11,12 +11,12 @@ interface CardsListProps {
   myCards?: boolean
 }
 
-export const CardsList = ({ cards, myCards = false }: CardsListProps) => {
+export const CardsList = ({ cards }: CardsListProps) => {
   const { user } = useAuth()
   const navigate = useNavigate()
 
   const navigateTo = (card: Card) => {
-    navigate(`${myCards ? ROUTES.MY_CARDS : ROUTES.CARDS}/${card.id}`)
+    navigate(`${ROUTES.CARDS}/${card.id}`)
   }
 
   return (

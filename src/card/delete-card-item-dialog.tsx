@@ -52,7 +52,7 @@ export const DeleteCardItemDialog = ({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Card Item</DialogTitle>
+          <DialogTitle>Delete Wish</DialogTitle>
         </DialogHeader>
         <Text variant="h5">Are you sure you want to delete "{item.name}"?</Text>
         <div className="flex justify-center sm:justify-end gap-2 sm:mt-4 mt-1">

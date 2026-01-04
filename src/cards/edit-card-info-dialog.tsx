@@ -10,15 +10,18 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { EditCardForm } from '@/cards/edit-card-form'
+import { EditCardInfoForm } from '@/cards/edit-card-info-form'
 import { Text } from '@/components/ui/text'
 
-interface EditCardDialogProps {
+interface EditCardInfoDialogProps {
   card: Card
   onMenuClose: () => void
 }
 
-export const EditCardDialog = ({ card, onMenuClose }: EditCardDialogProps) => {
+export const EditCardInfoDialog = ({
+  card,
+  onMenuClose,
+}: EditCardInfoDialogProps) => {
   const [open, setOpen] = useState(false)
 
   const handleOpenChange = (nextOpen: boolean) => {
@@ -44,7 +47,7 @@ export const EditCardDialog = ({ card, onMenuClose }: EditCardDialogProps) => {
             variant="body"
             className="text-purple-900 font-medium"
           >
-            Edit
+            Edit Wishlist
           </Text>
         </Button>
       </DialogTrigger>
@@ -56,7 +59,7 @@ export const EditCardDialog = ({ card, onMenuClose }: EditCardDialogProps) => {
         <DialogHeader>
           <DialogTitle>Edit {card.title}</DialogTitle>
         </DialogHeader>
-        <EditCardForm
+        <EditCardInfoForm
           card={card}
           onClose={handleOpenChange}
         />

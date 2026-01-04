@@ -51,13 +51,13 @@ export const DeleteCardDialog = ({
             variant="body"
             className="text-red-600 font-medium"
           >
-            Delete
+            Delete Wishlist
           </Text>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Card</DialogTitle>
+          <DialogTitle>Delete Wishlist</DialogTitle>
         </DialogHeader>
         <Text variant="h5">
           Are you sure you want to delete "{card.title}"?

@@ -34,7 +34,11 @@ const getRandomCardImage = () => {
   return cardImages[Math.floor(Math.random() * cardImages.length)]
 }
 
-export const AddCardForm = () => {
+interface AddCardFormProps {
+  onClose: (open: boolean) => void
+}
+
+export const AddCardForm = ({ onClose }: AddCardFormProps) => {
   const { addCard, loadingCardItem } = useCardsContext()
   const { user } = useAuth()
   const { isSm } = useBreakpoints()
@@ -70,10 +74,11 @@ export const AddCardForm = () => {
   const onSubmit = async (data: AddCardFormData) => {
     addCard(data as NewCard, user?.uid || '', getRandomCardImage())
     reset()
+    onClose(false)
   }
 
-  const resetForm = () => {
-    reset()
+  const closeForm = () => {
+    onClose(false)
   }
 
   return (
@@ -83,16 +88,16 @@ export const AddCardForm = () => {
           clearErrors()
         }}
         onSubmit={handleSubmit(onSubmit)}
-        className="py-4 px-8 border-b border-gray-400"
+        className="py-2"
       >
         <div className="grid grid-cols-[1fr]">
-          <Text
+          {/* <Text
             as="h4"
             variant="h4"
             className="mb-4 font-semibold text-purple-900"
           >
             What do I want?
-          </Text>
+          </Text> */}
 
           <FormField
             control={form.control}
@@ -106,7 +111,7 @@ export const AddCardForm = () => {
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Card Title
+                      Wishlist Title
                     </Text>
                     <Text
                       as="p"
@@ -141,7 +146,7 @@ export const AddCardForm = () => {
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Card Description
+                      Wishlist Description
                     </Text>
                   </div>
                 </FormLabel>
@@ -165,7 +170,7 @@ export const AddCardForm = () => {
                   variant="body"
                   className="font-semibold text-purple-900"
                 >
-                  Make Card Public
+                  Make Wishlist Public
                 </Text>
               </div>
             </FormLabel>
@@ -191,7 +196,7 @@ export const AddCardForm = () => {
             variant="h5"
             className="font-semibold mt-2"
           >
-            Add Items:
+            Add Wishes:
           </Text>
           <div
             className={cn(
@@ -218,7 +223,7 @@ export const AddCardForm = () => {
                           variant="body"
                           className="font-semibold text-purple-900"
                         >
-                          Item Title
+                          Wish Title
                         </Text>
                       </div>
                     </FormLabel>
@@ -242,7 +247,7 @@ export const AddCardForm = () => {
                           variant="body"
                           className="font-semibold text-purple-900"
                         >
-                          Item Title
+                          Wish Title
                         </Text>
                       </div>
                     </FormLabel>
@@ -266,7 +271,7 @@ export const AddCardForm = () => {
                           variant="body"
                           className="font-semibold text-purple-900"
                         >
-                          Item Title
+                          Wish Title
                         </Text>
                       </div>
                     </FormLabel>
@@ -292,7 +297,7 @@ export const AddCardForm = () => {
                           variant="body"
                           className="opacity-0"
                         >
-                          Delete Item
+                          Delete Wish
                         </Text>
                       </div>
                     </FormLabel>
@@ -301,7 +306,7 @@ export const AddCardForm = () => {
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="text-purple-900 self-center"
+                    className="text-purple-900 self-center w-full"
                     onClick={() => remove(index)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
@@ -313,6 +318,7 @@ export const AddCardForm = () => {
             <Button
               type="button"
               variant="outline"
+              size="sm"
               onClick={() =>
                 append({
                   name: '',
@@ -323,12 +329,13 @@ export const AddCardForm = () => {
               disabled={
                 fields.length > 0 && !watch(`items.${fields.length - 1}.name`)
               }
+              className="w-full"
             >
               <FontAwesomeIcon
                 icon={faPlus}
                 className="text-purple-900"
               />
-              Add Item
+              Add Wish
             </Button>
           </div>
 
@@ -336,11 +343,11 @@ export const AddCardForm = () => {
             <Button
               variant="outline"
               size="lg"
-              type="reset"
+              type="button"
               disabled={loadingCardItem}
-              onClick={resetForm}
+              onClick={closeForm}
             >
-              Clear
+              Close
             </Button>
             <Button
               type="submit"
@@ -348,7 +355,7 @@ export const AddCardForm = () => {
               size="lg"
               disabled={loadingCardItem}
             >
-              Add Card
+              Add Wishlist
             </Button>
           </div>
         </div>
