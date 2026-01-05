@@ -72,8 +72,9 @@ export const EditCardItemsForm = ({
             key={field.id}
             className={cn(
               'grid grid-cols-1 sm:grid-cols-[1fr_1fr_1fr_0.5fr] sm:gap-4 gap-2 mb-2',
+              // 'p-2 odd:bg-purple-100 even:bg-white',
               index !== fields.length - 1
-                ? 'border-b border-dashed border-b-gray-400 pb-2'
+                ? 'border-b-2 border-dashed border-b-purple-800 pb-2'
                 : ''
             )}
           >

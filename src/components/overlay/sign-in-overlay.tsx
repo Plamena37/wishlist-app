@@ -9,17 +9,25 @@ import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
 import GoogleColorfull from '@/assets/google-colorfull.svg'
 import Facebook from '@/assets/fb.png'
+import { SignInWithEmailForm } from '@/auth/sign-in-with-email-form'
+import { SignUpWithEmailForm } from '@/auth/sign-up-with-email-form'
 
-export const SignInOverlay = () => {
-  const { signInWithGoogle, signInWithFacebook } = useAuth()
+interface SignInOverlay {
+  title?: string
+}
+
+export const SignInOverlay = ({ title }: SignInOverlay) => {
+  const { signInWithGoogle, signInWithFacebook, clearAuthError } = useAuth()
   const { setShowSignInDialog } = useCardsContext()
   const [open, setOpen] = useState(true)
+  const [showSignInWithEmail, setShowSignInWithEmail] = useState(true)
 
   if (!open) return null
 
   const handleClose = () => {
     setOpen(false)
     setShowSignInDialog(false)
+    clearAuthError()
   }
 
   const handleSignInWithGoogle = () => {
@@ -32,14 +40,19 @@ export const SignInOverlay = () => {
     handleClose()
   }
 
+  const toggleShowSignInWithEmail = () => {
+    setShowSignInWithEmail((prev) => !prev)
+    clearAuthError()
+  }
+
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-lg"
+      className="fixed inset-0 bg-black/50 backdrop-blur-lg z-999"
       data-testid="loading-overlay-container"
     >
       <div className="bg-gray-200 fixed top-[50%] left-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg sm:p-6 p-4 shadow-lg justify-center items-center flex flex-col sm:max-w-96">
-        <Text className="text-base sm:text-lg font-semibold text-center sm:text-left mb-2 px-5 sm:px-0 leading-6 w-full">
-          Sign in to continue ✨
+        <Text className="text-base sm:text-lg font-semibold text-center sm:text-left px-5 sm:px-0 leading-4 w-full">
+          {title ?? `Sign ${showSignInWithEmail ? 'in' : 'up'} to continue ✨`}
         </Text>
 
         <FontAwesomeIcon
@@ -48,10 +61,34 @@ export const SignInOverlay = () => {
           onClick={handleClose}
         />
 
+        <div className="w-full flex flex-col items-center">
+          {showSignInWithEmail ? (
+            <SignInWithEmailForm onClose={handleClose} />
+          ) : (
+            <SignUpWithEmailForm onClose={handleClose} />
+          )}
+
+          <Button
+            onClick={toggleShowSignInWithEmail}
+            variant="link"
+            className="text-xs sm:py-0"
+          >
+            {showSignInWithEmail
+              ? 'Don\'t have an account? Sign up'
+              : 'Have an account? Sign In'}
+          </Button>
+
+          <div className="flex gap-2 justify-center items-center w-full pt-2">
+            <div className="border-b-2 border-b-gray-300 w-full"></div>
+            <Text className="text-xs text-gray-800 font-medium">OR</Text>
+            <div className="border-b-2 border-b-gray-300 w-full"></div>
+          </div>
+        </div>
+
         <Button
           variant="primary"
           className={cn(
-            'p-4 rounded-full bg-gray-50 w-full max-w-56 hover:bg-gray-300 justify-start'
+            'p-4 rounded-full bg-gray-50 w-full hover:bg-gray-300 justify-center'
           )}
           onClick={handleSignInWithGoogle}
         >
@@ -75,7 +112,7 @@ export const SignInOverlay = () => {
         <Button
           variant="primary"
           className={cn(
-            'p-4 rounded-full bg-gray-50 w-full max-w-56 hover:bg-gray-300 justify-start'
+            'p-4 rounded-full bg-gray-50 w-full hover:bg-gray-300  justify-center'
           )}
           onClick={handleSignInWithFacebook}
         >

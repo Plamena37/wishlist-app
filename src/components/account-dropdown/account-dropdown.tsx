@@ -12,13 +12,13 @@ import {
 import { Button } from '@/components/ui/button'
 import { AccountDropdownLink } from './account-dropdown-links'
 
-// const getUserInitials = (displayName?: string): string => {
-//   if (displayName) {
-//     const [firstName, lastName] = displayName.split(' ')
-//     return firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase()
-//   }
-//   return 'CC'
-// }
+const getUserInitials = (displayName?: string): string => {
+  if (displayName) {
+    const [firstName, lastName] = displayName.split(' ')
+    return firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase()
+  }
+  return 'CC'
+}
 
 interface AccountDropdownProps {
   className?: string
@@ -30,7 +30,7 @@ const AccountDropdown = ({ links }: AccountDropdownProps) => {
   const navigate = useNavigate()
   const { isSm } = useBreakpoints()
 
-  // const userInitials = getUserInitials(user?.displayName || '')
+  const userInitials = getUserInitials(user?.displayName || '')
 
   const handleLinkClick = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -47,16 +47,25 @@ const AccountDropdown = ({ links }: AccountDropdownProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        {user && (
+        {user && user?.photoURL ? (
           <img
             src={user.photoURL || ''}
             alt={user.displayName || 'User'}
             className={cn(
-              'w-10 h-10 rounded-full object-cover cursor-pointer',
+              'rounded-full object-cover cursor-pointer',
               isSm ? 'w-10 h-10' : 'w-8 h-8'
             )}
             referrerPolicy="no-referrer"
           />
+        ) : (
+          <div
+            className={cn(
+              'flex justify-center items-center p-1 bg-gray-400 rounded-full cursor-pointer',
+              isSm ? 'w-10 h-10' : 'w-8 h-8'
+            )}
+          >
+            {userInitials}
+          </div>
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent

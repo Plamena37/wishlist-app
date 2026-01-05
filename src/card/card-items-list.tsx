@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { Link } from 'react-router'
 import PageEaten from '@/assets/page-eaten.svg'
 import { cn } from '@/lib/utils'
@@ -7,12 +7,12 @@ import { Card, CardItem } from '@/lib/types/Cards'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import CardActionsDropdown from '@/card/card-actions-dropdown'
-import { AuthTrigger } from '@/auth/auth-trigger'
 import { Text } from '@/components/ui/text'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
+import { SignInOverlay } from '@/components/overlay/sign-in-overlay'
 
 interface CardItemsList {
   items: CardItem[]
@@ -27,6 +27,7 @@ export const CardItemsList = ({ items }: CardItemsList) => {
     loadingCardItem,
     updatingCardItemId,
   } = useCardsContext()
+  const [openSignInOverlay, setOpenSignInOverlay] = useState(false)
 
   const handleReservedByLabel = (reservedBy: string): string => {
     if (user?.uid === reservedBy) {
@@ -72,108 +73,115 @@ export const CardItemsList = ({ items }: CardItemsList) => {
       </div>
     )
 
+  const toggleSignInOverlay = (isReserved: string) => {
+    if ((user && user?.displayName) || isReserved) return
+    setOpenSignInOverlay((prev) => !prev)
+  }
+
   return (
-    <ul className="flex flex-col gap-6 w-[90%] sm:w-[80%] py-4 mb-6 px-2 sm:px-8 sm:py-8 mx-auto bg-white rounded-sm shadow-sm mt-2 sm:mt-6">
-      {items.map((item, index) => (
-        <li
-          key={item.id}
-          className={cn(
-            'relative px-4',
-            index !== card.items.length - 1
-              ? 'border-b border-b-gray-300 pb-4'
-              : ''
-          )}
-        >
-          {user?.uid === card.ownerId && (
-            <CardActionsDropdown
-              card={card}
-              item={item}
-              className="absolute top-0 right-0"
-            />
-          )}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            <Text
-              as="h5"
-              variant="h5"
-              className="font-semibold pr-4 lg:border-r border-r-gray-300"
-            >
-              {item.name}
-            </Text>
-
-            <Text
-              variant="body"
-              className="font-semibold flex items-center gap-2 pr-4 lg:border-r border-r-gray-300"
-            >
-              Link:
-              {item.link ? (
-                <Button
-                  variant="link"
-                  className="p-0 w-auto"
-                >
-                  <Link
-                    to={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Click Here
-                  </Link>
-                </Button>
-              ) : (
-                <Text
-                  as="span"
-                  variant="body-sm"
-                >
-                  No link provided
-                </Text>
-              )}
-            </Text>
-
-            <Text
-              variant="body"
-              className="font-semibold flex items-center gap-2 pr-4 lg:border-r border-r-gray-300"
-            >
-              Price:
-              {item.price ? (
-                <Text
-                  as="span"
-                  variant="body-sm"
-                >
-                  {item.price} BGN
-                </Text>
-              ) : (
-                <Text
-                  as="span"
-                  variant="body-sm"
-                >
-                  Apparently priceless 🤔
-                </Text>
-              )}
-            </Text>
-
-            <div className="flex items-center gap-2">
-              <AuthTrigger
-                isReserved={!!item.reservedBy}
-                title={authMessages.sign_in_to_continue}
+    <>
+      <ul className="flex flex-col gap-6 w-[90%] sm:w-[80%] py-4 mb-6 px-2 sm:px-8 sm:py-8 mx-auto bg-white rounded-sm shadow-sm mt-2 sm:mt-6">
+        {items.map((item, index) => (
+          <li
+            key={item.id}
+            className={cn(
+              'relative px-4',
+              index !== card.items.length - 1
+                ? 'border-b border-b-gray-300 pb-4'
+                : ''
+            )}
+          >
+            {user?.uid === card.ownerId && (
+              <CardActionsDropdown
+                card={card}
+                item={item}
+                className="absolute top-0 right-0"
+              />
+            )}
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+              <Text
+                as="h5"
+                variant="h5"
+                className="font-semibold pr-4 lg:border-r border-r-gray-300"
               >
+                {item.name}
+              </Text>
+
+              <Text
+                variant="body"
+                className="font-semibold flex items-center gap-2 pr-4 lg:border-r border-r-gray-300"
+              >
+                Link:
+                {item.link ? (
+                  <Button
+                    variant="link"
+                    className="p-0 w-auto"
+                  >
+                    <Link
+                      to={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Click Here
+                    </Link>
+                  </Button>
+                ) : (
+                  <Text
+                    as="span"
+                    variant="body-sm"
+                  >
+                    No link provided
+                  </Text>
+                )}
+              </Text>
+
+              <Text
+                variant="body"
+                className="font-semibold flex items-center gap-2 pr-4 lg:border-r border-r-gray-300"
+              >
+                Price:
+                {item.price ? (
+                  <Text
+                    as="span"
+                    variant="body-sm"
+                  >
+                    {item.price} BGN
+                  </Text>
+                ) : (
+                  <Text
+                    as="span"
+                    variant="body-sm"
+                  >
+                    Apparently priceless 🤔
+                  </Text>
+                )}
+              </Text>
+
+              <div className="flex items-center gap-2">
                 <Checkbox
                   checked={!!item.reservedBy}
                   id={`reserved-${item.id}`}
-                  onCheckedChange={(val) =>
+                  onCheckedChange={(val) => {
+                    toggleSignInOverlay(item.reservedBy)
                     handleToggleReservedBy(card, item, !!val)
-                  }
+                  }}
                   disabled={
                     (item.id === updatingCardItemId && loadingCardItem) ||
                     canReserveCardItem
                   }
                 />
-              </AuthTrigger>
-              <Label htmlFor={`reserved-${item.id}`}>
-                {handleReservedByLabel(item.reservedBy)}
-              </Label>
+                <Label htmlFor={`reserved-${item.id}`}>
+                  {handleReservedByLabel(item.reservedBy)}
+                </Label>
+              </div>
             </div>
-          </div>
-        </li>
-      ))}
-    </ul>
+          </li>
+        ))}
+      </ul>
+
+      {openSignInOverlay && (
+        <SignInOverlay title={authMessages.sign_in_to_continue} />
+      )}
+    </>
   )
 }

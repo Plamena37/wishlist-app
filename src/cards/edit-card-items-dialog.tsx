@@ -57,7 +57,7 @@ export const EditCardItemsDialog = ({
         onClick={(e) => e.stopPropagation()}
       >
         <DialogHeader>
-          <DialogTitle>Edit {card.title} Wishes</DialogTitle>
+          <DialogTitle>Edit Wishes 🎁</DialogTitle>
         </DialogHeader>
         <EditCardItemsForm
           card={card}

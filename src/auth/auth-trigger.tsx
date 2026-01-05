@@ -24,13 +24,15 @@ export const AuthTrigger = ({
   onClose,
   onCloseSheet,
 }: AuthTriggerProps) => {
-  const { user } = useAuth()
-
+  const { user, clearAuthError } = useAuth()
   const [open, setOpen] = useState(false)
 
   const handleOpenChange = (next: boolean) => {
     setOpen(next)
-    if (!next) onClose?.()
+    if (!next) {
+      clearAuthError()
+      onClose?.()
+    }
   }
 
   if ((user && user?.displayName) || isReserved) return <>{children}</>
@@ -48,9 +50,7 @@ export const AuthTrigger = ({
         className="sm:max-w-96"
       >
         <DialogHeader>
-          <DialogTitle className="mb-2 px-5 sm:px-0 leading-6">
-            {title}
-          </DialogTitle>
+          <DialogTitle className="px-5 sm:px-0 leading-4">{title}</DialogTitle>
         </DialogHeader>
         <AuthModal onCloseSheet={onCloseSheet} />
       </DialogContent>
