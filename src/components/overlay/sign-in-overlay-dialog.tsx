@@ -62,7 +62,7 @@ export const SignInOverlayDialog = ({ title }: SignInOverlay) => {
           className="text-xs sm:py-0"
         >
           {showSignInWithEmail
-            ? "Don't have an account? Sign up"
+            ? 'Don\'t have an account? Sign up'
             : 'Have an account? Sign In'}
         </Button>
 

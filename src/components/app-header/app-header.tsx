@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { cn } from '@/lib/utils'
+import { authMessages, loadingMessages } from '@/lib/constants/messages'
 import { useAuth } from '@/auth/hooks/useAuth'
 import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { ROUTES } from '@/router/constants/app-routes'
@@ -16,9 +17,9 @@ import {
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/sheet'
-// import { SignInOverlay } from '@/components/overlay/sign-in-overlay'
-import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
-import { SignInOverlayDialog } from '../overlay/sign-in-overlay-dialog'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import { SignInOverlayDialog } from '@/components/overlay/sign-in-overlay-dialog'
+import { LoadingOverlay } from '@/components/overlay/loading-overlay'
 
 const navLinks = [
   { to: ROUTES.HOME, label: 'Home' },
@@ -34,7 +35,7 @@ const getActiveParent = (pathname: string): string | null => {
 }
 
 export const AppHeader = () => {
-  const { user, signOut, isUserSignedIn } = useAuth()
+  const { user, signOut, isUserSignedIn, authActionLoading } = useAuth()
   const { pathname } = useLocation()
   const links = AccountDropdownLinks()
   const { isSm } = useBreakpoints()
@@ -59,6 +60,15 @@ export const AppHeader = () => {
       setSheetOpen(false)
     }
   }, [isUserSignedIn])
+
+  if (authActionLoading) {
+    return (
+      <LoadingOverlay
+        title={authMessages.logging_in}
+        subtitle={loadingMessages.loading_subtitle}
+      />
+    )
+  }
 
   return (
     <>
@@ -150,14 +160,6 @@ export const AppHeader = () => {
                   )}
 
                   {hideNavButtons && (
-                    // <Button
-                    //   variant="link"
-                    //   className="hover:text-purple-900 hover:border-purple-900 text-black font-normal border-b-1 border-b-transparent transition w-fit p-0 text-lg"
-                    //   onClick={toggleSignInOverlay}
-                    // >
-                    //   Sign In
-                    // </Button>
-
                     <Dialog
                       open={openSignInOverlay}
                       onOpenChange={toggleSignInOverlay}
@@ -185,8 +187,6 @@ export const AppHeader = () => {
           )}
         </nav>
       </header>
-
-      {/* {openSignInOverlay && <SignInOverlay />} */}
     </>
   )
 }
