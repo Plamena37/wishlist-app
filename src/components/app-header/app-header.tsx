@@ -35,7 +35,7 @@ const getActiveParent = (pathname: string): string | null => {
 }
 
 export const AppHeader = () => {
-  const { user, signOut, isUserSignedIn, authActionLoading } = useAuth()
+  const { user, signOut, isUserSignedIn, authProviderActionLoading } = useAuth()
   const { pathname } = useLocation()
   const links = AccountDropdownLinks()
   const { isSm } = useBreakpoints()
@@ -61,7 +61,7 @@ export const AppHeader = () => {
     }
   }, [isUserSignedIn])
 
-  if (authActionLoading) {
+  if (authProviderActionLoading) {
     return (
       <LoadingOverlay
         title={authMessages.logging_in}

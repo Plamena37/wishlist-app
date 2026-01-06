@@ -46,6 +46,7 @@ type AuthContextType = {
   user: User | null
   loading: boolean
   authActionLoading: boolean
+  authProviderActionLoading: boolean
   isUserSignedIn: boolean
   authError: string | null
   signUpWithEmail: (
@@ -64,6 +65,7 @@ export const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   authActionLoading: false,
+  authProviderActionLoading: false,
   isUserSignedIn: false,
   authError: '',
   signUpWithEmail: (): Promise<AuthResult> =>
@@ -82,6 +84,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [isUserSignedIn, setIsUserSignedIn] = useState(false)
+  const [authProviderActionLoading, setAuthProviderActionLoading] =
+    useState(false)
   const [authActionLoading, setAuthActionLoading] = useState(false)
   const [authError, setAuthError] = useState<string | null>(null)
 
@@ -150,7 +154,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }
 
   const handleGoogleSignIn = async () => {
-    setAuthActionLoading(true)
+    setAuthProviderActionLoading(true)
     setAuthError(null)
     setIsUserSignedIn(false)
 
@@ -163,12 +167,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setAuthError(message)
       setIsUserSignedIn(false)
     } finally {
-      setAuthActionLoading(false)
+      setAuthProviderActionLoading(false)
     }
   }
 
   const handleFacebookSignIn = async () => {
-    setAuthActionLoading(true)
+    setAuthProviderActionLoading(true)
     setAuthError(null)
     setIsUserSignedIn(false)
 
@@ -181,7 +185,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setAuthError(message)
       setIsUserSignedIn(false)
     } finally {
-      setAuthActionLoading(false)
+      setAuthProviderActionLoading(false)
     }
   }
 
@@ -215,6 +219,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         user,
         loading,
         authActionLoading,
+        authProviderActionLoading,
         authError,
         isUserSignedIn,
         signUpWithEmail: handleSignUpWithEmail,

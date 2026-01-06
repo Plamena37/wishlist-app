@@ -51,10 +51,12 @@ export const SignInWithEmailForm = ({ onClose }: SignInWithEmailFormProps) => {
     }
   }
 
-  const handlePasswordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === ' ') {
-      e.preventDefault()
-    }
+  const handlePasswordChange = (
+    value: string,
+    onChange: (v: string) => void
+  ) => {
+    const noSpaces = value.replace(/\s/g, '')
+    onChange(noSpaces)
   }
 
   const handlePasswordPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
@@ -121,7 +123,9 @@ export const SignInWithEmailForm = ({ onClose }: SignInWithEmailFormProps) => {
                       {...field}
                       placeholder="Enter Password"
                       error={!!errors.password}
-                      onKeyDown={handlePasswordKeyDown}
+                      onChange={(e) =>
+                        handlePasswordChange(e.target.value, field.onChange)
+                      }
                       onPaste={handlePasswordPaste}
                       type={hidePassword ? 'password' : 'text'}
                     />
