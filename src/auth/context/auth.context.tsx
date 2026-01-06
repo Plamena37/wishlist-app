@@ -46,6 +46,7 @@ type AuthContextType = {
   user: User | null
   loading: boolean
   authActionLoading: boolean
+  isUserSignedIn: boolean
   authError: string | null
   signUpWithEmail: (
     email: string,
@@ -63,6 +64,7 @@ export const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   authActionLoading: false,
+  isUserSignedIn: false,
   authError: '',
   signUpWithEmail: (): Promise<AuthResult> =>
     Promise.resolve({ success: false, error: '' }),
@@ -79,6 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isUserSignedIn, setIsUserSignedIn] = useState(false)
   const [authActionLoading, setAuthActionLoading] = useState(false)
   const [authError, setAuthError] = useState<string | null>(null)
 
@@ -102,6 +105,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   ): Promise<AuthResult> => {
     setAuthActionLoading(true)
     setAuthError(null)
+    setIsUserSignedIn(false)
 
     try {
       const userCredentials = await createUserWithEmailAndPassword(
@@ -111,10 +115,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       )
 
       await updateProfile(userCredentials.user, { displayName })
+      setIsUserSignedIn(true)
       return { success: true }
     } catch (error) {
       const message = getAuthErrorMessage(error as FirebaseError)
       setAuthError(message)
+      setIsUserSignedIn(false)
       return { success: false, error: message }
     } finally {
       setAuthActionLoading(false)
@@ -127,13 +133,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   ): Promise<AuthResult> => {
     setAuthActionLoading(true)
     setAuthError(null)
+    setIsUserSignedIn(false)
 
     try {
       await signInWithEmailAndPassword(auth, email, password)
+      setIsUserSignedIn(true)
       return { success: true }
     } catch (error) {
       const message = getAuthErrorMessage(error as FirebaseError)
       setAuthError(message)
+      setIsUserSignedIn(false)
       return { success: false, error: message }
     } finally {
       setAuthActionLoading(false)
@@ -141,13 +150,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }
 
   const handleGoogleSignIn = async () => {
-    const provider = new GoogleAuthProvider()
-    await signInWithPopup(auth, provider)
+    setAuthActionLoading(true)
+    setAuthError(null)
+    setIsUserSignedIn(false)
+
+    try {
+      const provider = new GoogleAuthProvider()
+      await signInWithPopup(auth, provider)
+      setIsUserSignedIn(true)
+    } catch (error) {
+      const message = getAuthErrorMessage(error as FirebaseError)
+      setAuthError(message)
+      setIsUserSignedIn(false)
+    } finally {
+      setAuthActionLoading(false)
+    }
   }
 
   const handleFacebookSignIn = async () => {
-    const provider = new FacebookAuthProvider()
-    await signInWithPopup(auth, provider)
+    setAuthActionLoading(true)
+    setAuthError(null)
+    setIsUserSignedIn(false)
+
+    try {
+      const provider = new FacebookAuthProvider()
+      await signInWithPopup(auth, provider)
+      setIsUserSignedIn(true)
+    } catch (error) {
+      const message = getAuthErrorMessage(error as FirebaseError)
+      setAuthError(message)
+      setIsUserSignedIn(false)
+    } finally {
+      setAuthActionLoading(false)
+    }
   }
 
   const clearAuthError = () => {
@@ -181,6 +216,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         loading,
         authActionLoading,
         authError,
+        isUserSignedIn,
         signUpWithEmail: handleSignUpWithEmail,
         signInWithEmail: handleSignInWithEmail,
         signInWithGoogle: handleGoogleSignIn,

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
@@ -16,7 +16,9 @@ import {
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { SignInOverlay } from '@/components/overlay/sign-in-overlay'
+// import { SignInOverlay } from '@/components/overlay/sign-in-overlay'
+import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
+import { SignInOverlayDialog } from '../overlay/sign-in-overlay-dialog'
 
 const navLinks = [
   { to: ROUTES.HOME, label: 'Home' },
@@ -32,7 +34,7 @@ const getActiveParent = (pathname: string): string | null => {
 }
 
 export const AppHeader = () => {
-  const { user, signOut } = useAuth()
+  const { user, signOut, isUserSignedIn } = useAuth()
   const { pathname } = useLocation()
   const links = AccountDropdownLinks()
   const { isSm } = useBreakpoints()
@@ -45,6 +47,18 @@ export const AppHeader = () => {
   const toggleSignInOverlay = () => {
     setOpenSignInOverlay((prev) => !prev)
   }
+
+  useEffect(() => {
+    if (!sheetOpen) {
+      setOpenSignInOverlay(false)
+    }
+  }, [sheetOpen])
+
+  useEffect(() => {
+    if (isUserSignedIn) {
+      setSheetOpen(false)
+    }
+  }, [isUserSignedIn])
 
   return (
     <>
@@ -136,13 +150,34 @@ export const AppHeader = () => {
                   )}
 
                   {hideNavButtons && (
-                    <Button
-                      variant="link"
-                      className="hover:text-purple-900 hover:border-purple-900 text-black font-normal border-b-1 border-b-transparent transition w-fit p-0 text-lg"
-                      onClick={toggleSignInOverlay}
+                    // <Button
+                    //   variant="link"
+                    //   className="hover:text-purple-900 hover:border-purple-900 text-black font-normal border-b-1 border-b-transparent transition w-fit p-0 text-lg"
+                    //   onClick={toggleSignInOverlay}
+                    // >
+                    //   Sign In
+                    // </Button>
+
+                    <Dialog
+                      open={openSignInOverlay}
+                      onOpenChange={toggleSignInOverlay}
                     >
-                      Sign In
-                    </Button>
+                      <DialogTrigger>
+                        <Button
+                          variant="link"
+                          className="hover:text-purple-900 hover:border-purple-900 text-black font-normal border-b-1 border-b-transparent transition w-fit p-0 text-lg"
+                        >
+                          Sign In
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent
+                        onKeyDown={(e) => e.stopPropagation()}
+                        onKeyUp={(e) => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <SignInOverlayDialog />
+                      </DialogContent>
+                    </Dialog>
                   )}
                 </ul>
               </SheetContent>
@@ -151,7 +186,7 @@ export const AppHeader = () => {
         </nav>
       </header>
 
-      {openSignInOverlay && <SignInOverlay />}
+      {/* {openSignInOverlay && <SignInOverlay />} */}
     </>
   )
 }

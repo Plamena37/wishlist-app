@@ -46,10 +46,7 @@ export const SignInOverlay = ({ title }: SignInOverlay) => {
   }
 
   return (
-    <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-lg z-999"
-      data-testid="loading-overlay-container"
-    >
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-lg z-999">
       <div className="bg-gray-200 fixed top-[50%] left-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg sm:p-6 p-4 shadow-lg justify-center items-center flex flex-col sm:max-w-96">
         <Text className="text-base sm:text-lg font-semibold text-center sm:text-left px-5 sm:px-0 leading-4 w-full">
           {title ?? `Sign ${showSignInWithEmail ? 'in' : 'up'} to continue ✨`}
@@ -74,7 +71,7 @@ export const SignInOverlay = ({ title }: SignInOverlay) => {
             className="text-xs sm:py-0"
           >
             {showSignInWithEmail
-              ? 'Don\'t have an account? Sign up'
+              ? "Don't have an account? Sign up"
               : 'Have an account? Sign In'}
           </Button>
 
