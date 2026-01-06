@@ -1,10 +1,14 @@
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import {
   SignUpWithEmailFormData,
   signUpWithEmailSchema,
 } from './schemas/auth.schema'
 import { useAuth } from './hooks/useAuth'
+import Loading from '@/assets/loading-purple.svg'
 import {
   Form,
   FormControl,
@@ -16,6 +20,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Text } from '@/components/ui/text'
 import { Button } from '@/components/ui/button'
+import { Icon } from '@/components/ui/icon'
 
 interface SignUpWithEmailFormProps {
   onClose?: () => void
@@ -23,6 +28,8 @@ interface SignUpWithEmailFormProps {
 
 export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
   const { signUpWithEmail, authError, authActionLoading } = useAuth()
+  const [hidePassword, setHidePassword] = useState(true)
+  const [hideConfirmPassword, setHideConfirmPassword] = useState(true)
 
   const form = useForm<SignUpWithEmailFormData>({
     resolver: zodResolver(signUpWithEmailSchema),
@@ -50,6 +57,27 @@ export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
     if (result.success) {
       onClose?.()
     }
+  }
+
+  const handlePasswordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === ' ') {
+      e.preventDefault()
+    }
+  }
+
+  const handlePasswordPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const pasted = e.clipboardData.getData('text')
+    if (pasted.includes(' ')) {
+      e.preventDefault()
+    }
+  }
+
+  const toggleHidePassword = () => {
+    setHidePassword((prev) => !prev)
+  }
+
+  const toggleHideConfirmPassword = () => {
+    setHideConfirmPassword((prev) => !prev)
   }
 
   return (
@@ -126,11 +154,22 @@ export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
                   </Text>
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Enter Password"
-                    error={!!errors.password}
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      placeholder="Enter Password"
+                      error={!!errors.password}
+                      onKeyDown={handlePasswordKeyDown}
+                      onPaste={handlePasswordPaste}
+                      type={hidePassword ? 'password' : 'text'}
+                    />
+                    <FontAwesomeIcon
+                      icon={hidePassword ? faEyeSlash : faEye}
+                      className="absolute top-2 right-2 cursor-pointer"
+                      style={{ width: '14px' }}
+                      onClick={toggleHidePassword}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage className="text-red-600 font-normal" />
               </FormItem>
@@ -152,11 +191,22 @@ export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
                   </Text>
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Confirm Password"
-                    error={!!errors.confirmPassword}
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      placeholder="Confirm Password"
+                      error={!!errors.confirmPassword}
+                      onKeyDown={handlePasswordKeyDown}
+                      onPaste={handlePasswordPaste}
+                      type={hideConfirmPassword ? 'password' : 'text'}
+                    />
+                    <FontAwesomeIcon
+                      icon={hideConfirmPassword ? faEyeSlash : faEye}
+                      className="absolute top-2 right-2 cursor-pointer"
+                      style={{ width: '14px' }}
+                      onClick={toggleHideConfirmPassword}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage className="text-red-600 font-normal" />
               </FormItem>
@@ -167,8 +217,16 @@ export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
             type="submit"
             variant="primary"
             className="mt-2 w-full"
+            size="lg"
             disabled={authActionLoading}
           >
+            {authActionLoading && (
+              <Icon
+                src={Loading}
+                size="sm"
+                className="animate-spin"
+              />
+            )}
             {authActionLoading ? 'Signing up…' : 'Sign up'}
           </Button>
 

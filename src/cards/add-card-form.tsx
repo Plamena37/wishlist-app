@@ -11,8 +11,8 @@ import { NewCard } from '@/lib/types/Cards'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
+// import { Switch } from '@/components/ui/switch'
+// import { Label } from '@/components/ui/label'
 import {
   Form,
   FormControl,
@@ -58,7 +58,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
     handleSubmit,
     control,
     watch,
-    setValue,
+    // setValue,
     reset,
     clearErrors,
     formState: { errors },
@@ -69,7 +69,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
     name: 'items',
   })
 
-  const isPublic = watch('isPublic')
+  // const isPublic = watch('isPublic')
 
   const onSubmit = async (data: AddCardFormData) => {
     addCard(data as NewCard, user?.uid || '', getRandomCardImage())
@@ -162,7 +162,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
             )}
           />
 
-          <FormItem className="flex items-center gap-4">
+          {/* <FormItem className="flex items-center gap-4">
             <FormLabel>
               <div className="flex items-center gap-1">
                 <Text
@@ -189,7 +189,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
               </div>
             </FormControl>
             <FormMessage className="text-red-600 text-sm font-normal" />
-          </FormItem>
+          </FormItem> */}
 
           <Text
             as="h5"

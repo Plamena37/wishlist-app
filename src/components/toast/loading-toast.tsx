@@ -1,7 +1,7 @@
-import { Icon } from '@/components/ui/icon'
-import Loading from '@/assets/loading.svg'
 import { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
+import Loading from '@/assets/loading.svg'
+import { Icon } from '@/components/ui/icon'
 
 interface LoadingToastProps {
   children?: ReactNode

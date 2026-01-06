@@ -4,8 +4,8 @@ import { Card } from '@/lib/types/Cards'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
+// import { Label } from '@/components/ui/label'
+// import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { EditCardFormData, editCardSchema } from '@/cards/schemas/card.schema'
 import {
@@ -39,12 +39,12 @@ export const EditCardInfoForm = ({ card, onClose }: EditCardInfoFormProps) => {
 
   const {
     handleSubmit,
-    watch,
-    setValue,
+    // watch,
+    // setValue,
     formState: { errors },
   } = form
 
-  const isPublic = watch('isPublic')
+  // const isPublic = watch('isPublic')
 
   const onSubmit = async (data: EditCardFormData) => {
     editCard(card.id, data)
@@ -114,7 +114,7 @@ export const EditCardInfoForm = ({ card, onClose }: EditCardInfoFormProps) => {
             )}
           />
 
-          <FormItem className="flex items-center gap-4">
+          {/* <FormItem className="flex items-center gap-4">
             <FormLabel>
               <div className="flex items-center gap-1">
                 <Text
@@ -141,7 +141,7 @@ export const EditCardInfoForm = ({ card, onClose }: EditCardInfoFormProps) => {
               </div>
             </FormControl>
             <FormMessage className="text-red-600 text-sm font-normal" />
-          </FormItem>
+          </FormItem> */}
 
           {/* Action buttons */}
           <div className="flex gap-2 mt-4 justify-between sm:justify-end">
