@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { CardItem } from '@/lib/types/Cards'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import {
@@ -24,6 +25,7 @@ export const DeleteCardItemDialog = ({
   item,
   onMenuClose,
 }: DeleteCardItemDialogProps) => {
+  const { t } = useTranslation()
   const { deleteCardItem } = useCardsContext()
 
   const handleDeleteCardItem = () => {
@@ -46,24 +48,33 @@ export const DeleteCardItemDialog = ({
             variant="body"
             className="text-red-600 font-medium"
           >
-            Delete
+            {t('common.delete')}
           </Text>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Wish</DialogTitle>
+          <DialogTitle>{t('editWishes.deleteWish')}</DialogTitle>
         </DialogHeader>
-        <Text variant="h5">Are you sure you want to delete "{item.name}"?</Text>
+        <Text variant="h5">
+          {t('editWishes.deleteConf')}
+          <Text
+            variant="h5"
+            weight="semibold"
+          >
+            “{item.name}”
+          </Text>{' '}
+          ?
+        </Text>
         <div className="flex justify-center sm:justify-end gap-2 sm:mt-4 mt-1">
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline">{t('common.cancel')}</Button>
           </DialogClose>
           <Button
             variant="dark"
             onClick={handleDeleteCardItem}
           >
-            Delete
+            {t('common.delete')}
           </Button>
         </div>
       </DialogContent>

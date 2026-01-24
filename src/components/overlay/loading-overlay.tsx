@@ -9,10 +9,7 @@ interface LoadingOverlayProps {
 
 export const LoadingOverlay = ({ title, subtitle }: LoadingOverlayProps) => {
   return (
-    <div
-      className="absolute inset-0 bg-purple-100/90 backdrop-blur-lg w-full h-full flex flex-col gap-4 justify-center items-center z-50"
-      data-testid="loading-overlay-container"
-    >
+    <div className="absolute inset-0 bg-purple-100/90 backdrop-blur-lg w-full h-full flex flex-col gap-4 justify-center items-center z-50 text-center px-2">
       <Icon
         src={Loading}
         size={'lg'}
@@ -32,7 +29,6 @@ export const LoadingOverlay = ({ title, subtitle }: LoadingOverlayProps) => {
         as="h5"
         variant="h5"
         className="text-gray-600"
-        data-testid="loading-overlay-subtitle"
       >
         {subtitle}
       </Text>

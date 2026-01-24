@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { useCardsContext } from '@/cards/hooks/useCards'
-import { errorMessages, loadingMessages } from '@/lib/constants/messages'
 import { CardsList } from '@/cards/cards-list'
 import { LoadingOverlay } from '@/components/overlay/loading-overlay'
 import { NotFoundCards } from '@/cards/not-found-cards'
@@ -8,6 +8,7 @@ import { AddCardDialog } from '@/cards/add-card-dialog'
 import { SignInOverlay } from '@/components/overlay/sign-in-overlay'
 
 const CardsPage = () => {
+  const { t } = useTranslation()
   const { getAllPublicCards, publicCards, loading, showSignInDialog } =
     useCardsContext()
 
@@ -18,8 +19,8 @@ const CardsPage = () => {
   if (loading) {
     return (
       <LoadingOverlay
-        title={loadingMessages.loading_cards_title}
-        subtitle={loadingMessages.loading_cards_subtitle}
+        title={t('loading.loadingCardsTitle')}
+        subtitle={t('loading.loadingCardsSubtitle')}
       />
     )
   }
@@ -29,7 +30,7 @@ const CardsPage = () => {
       <AddCardDialog />
 
       {publicCards.length === 0 ? (
-        <NotFoundCards subtitle={errorMessages.no_cards_found_subtitle} />
+        <NotFoundCards />
       ) : (
         <CardsList cards={publicCards} />
       )}

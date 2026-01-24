@@ -7,6 +7,7 @@ import {
   faLock,
   faLockOpen,
 } from '@fortawesome/free-solid-svg-icons'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -43,6 +44,7 @@ export const CardItemsSortDropdown = ({
   sortBy: externalSortBy = null,
   onSortChange,
 }: CardItemsSortDropdownProps) => {
+  const { t } = useTranslation()
   const [internalSortBy, setInternalSortBy] = useState<SortOption | null>(null)
   const sortBy = externalSortBy ?? internalSortBy
 
@@ -95,7 +97,7 @@ export const CardItemsSortDropdown = ({
       case 'titleAsc':
         return (
           <>
-            <Text>Title</Text>
+            <Text>{t('cardPage.sortTitle')}</Text>
             <FontAwesomeIcon
               icon={faArrowUp}
               size="sm"
@@ -105,7 +107,7 @@ export const CardItemsSortDropdown = ({
       case 'titleDesc':
         return (
           <>
-            <Text>Title</Text>
+            <Text>{t('cardPage.sortTitle')}</Text>
             <FontAwesomeIcon
               icon={faArrowDown}
               size="sm"
@@ -115,7 +117,7 @@ export const CardItemsSortDropdown = ({
       case 'priceAsc':
         return (
           <>
-            <Text>Price</Text>
+            <Text>{t('cardPage.sortPrice')}</Text>
             <FontAwesomeIcon
               icon={faArrowUp}
               size="sm"
@@ -125,7 +127,7 @@ export const CardItemsSortDropdown = ({
       case 'priceDesc':
         return (
           <>
-            <Text>Price</Text>
+            <Text>{t('cardPage.sortPrice')}</Text>
             <FontAwesomeIcon
               icon={faArrowDown}
               size="sm"
@@ -135,7 +137,7 @@ export const CardItemsSortDropdown = ({
       case 'statusFree':
         return (
           <>
-            <Text>Free</Text>
+            <Text>{t('cardPage.sortFree')}</Text>
             <FontAwesomeIcon
               icon={faLockOpen}
               size="sm"
@@ -146,7 +148,7 @@ export const CardItemsSortDropdown = ({
       case 'statusReserved':
         return (
           <>
-            <Text>Reserved</Text>
+            <Text>{t('cardPage.sortReserved')}</Text>
             <FontAwesomeIcon
               icon={faLock}
               size="sm"
@@ -155,7 +157,7 @@ export const CardItemsSortDropdown = ({
           </>
         )
       default:
-        return 'Sort Wishes'
+        return t('cardPage.sortWishes')
     }
   }, [sortBy])
 
@@ -174,35 +176,35 @@ export const CardItemsSortDropdown = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => handleSort('titleAsc')}>
-          <Text>Title</Text>
+          <Text>{t('cardPage.sortTitle')}</Text>
           <FontAwesomeIcon
             icon={faArrowUp}
             size="sm"
           />
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleSort('titleDesc')}>
-          <Text>Title</Text>
+          <Text>{t('cardPage.sortTitle')}</Text>
           <FontAwesomeIcon
             icon={faArrowDown}
             size="sm"
           />
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleSort('priceAsc')}>
-          <Text>Price</Text>
+          <Text>{t('cardPage.sortPrice')}</Text>
           <FontAwesomeIcon
             icon={faArrowUp}
             size="sm"
           />
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleSort('priceDesc')}>
-          <Text>Price</Text>
+          <Text>{t('cardPage.sortPrice')}</Text>
           <FontAwesomeIcon
             icon={faArrowDown}
             size="sm"
           />
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleSort('statusFree')}>
-          <Text>Free</Text>
+          <Text>{t('cardPage.sortFree')}</Text>
           <FontAwesomeIcon
             icon={faLockOpen}
             size="sm"
@@ -210,7 +212,7 @@ export const CardItemsSortDropdown = ({
           />
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleSort('statusReserved')}>
-          <Text>Reserved</Text>
+          <Text>{t('cardPage.sortReserved')}</Text>
           <FontAwesomeIcon
             icon={faLock}
             size="sm"

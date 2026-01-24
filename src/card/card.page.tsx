@@ -5,11 +5,12 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { db } from '@/firebase.config'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { cn } from '@/lib/utils'
-import { Card, CardItem } from '@/lib/types/Cards'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { CARDS_COLLECTION } from '@/lib/constants'
-import { loadingMessages } from '@/lib/constants/messages'
+import { Language } from '@/i18n/constants'
+import { Card, CardItem } from '@/lib/types/Cards'
 import { CardItemsList } from '@/card/card-items-list'
 import { CardsActionsDropdown } from '@/cards/cards-actions-dropdown'
 import {
@@ -22,6 +23,7 @@ import { Button } from '@/components/ui/button'
 import { LoadingOverlay } from '@/components/overlay/loading-overlay'
 
 export default function CardPage() {
+  const { t, lang } = useTranslation()
   const { cardId } = useParams()
   const { card, setCard, getCardById, checkUserCanEditCard, loading } =
     useCardsContext()
@@ -102,8 +104,8 @@ export default function CardPage() {
   if (loading) {
     return (
       <LoadingOverlay
-        title={loadingMessages.loading_card_title}
-        subtitle={loadingMessages.loading_card_subtitle}
+        title={t('loading.loadingCardTitle')}
+        subtitle={t('loading.loadingCardSubtitle')}
       />
     )
   }
@@ -112,21 +114,20 @@ export default function CardPage() {
 
   return (
     <>
-      <div className="flex w-full justify-between items-center pt-6 sm:pt-4 px-6 z-50">
+      <div className="flex w-full justify-between items-center pt-6 sm:pt-4 px-6 z-10">
         <Button
           variant="link"
           onClick={handleGoBack}
           className="w-auto px-0"
         >
           <FontAwesomeIcon icon={faArrowLeft} />
-          Go Back
+          {t('common.goBack')}
         </Button>
-        {user?.uid === card.ownerId && (
-          <CardsActionsDropdown
-            card={card}
-            btnBgColor="bg-white"
-          />
-        )}
+        <CardsActionsDropdown
+          card={card}
+          btnBgColor="bg-white"
+          isCardMine={user?.uid === card.ownerId}
+        />
       </div>
 
       <div
@@ -138,14 +139,14 @@ export default function CardPage() {
         <img
           src={card.image}
           alt="Card decoration"
-          className="sm:w-30 sm:h-30 w-20 h-20 mx-auto"
+          className="sm:w-30 sm:h-30 w-20 h-20 mx-auto select-none"
         />
         <Text
           as="h2"
           variant="h2"
           className="text-center font-semibold text-gray-800"
         >
-          It's... {card.title}
+          {lang === Language.EN ? 'It\'s...' : ''} {card.title}
         </Text>
         {card.description && (
           <Text
@@ -162,7 +163,7 @@ export default function CardPage() {
           variant="body"
           className="text-purple-900 font-medium"
         >
-          Wishes: ({sortedItems.length ?? 0})
+          {t('cardPage.wishes')}: ({sortedItems.length ?? 0})
         </Text>
         <CardItemsSortDropdown
           items={card.items}

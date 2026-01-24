@@ -1,12 +1,11 @@
 import Taken from '@/assets/taken.svg'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
 
-interface NotFoundCardsProps {
-  subtitle: string
-}
+export const NotFoundCards = () => {
+  const { t } = useTranslation()
 
-export const NotFoundCards = ({ subtitle }: NotFoundCardsProps) => {
   return (
     <div className="flex flex-1 flex-col justify-center items-center p-4">
       <Icon
@@ -21,13 +20,13 @@ export const NotFoundCards = ({ subtitle }: NotFoundCardsProps) => {
         variant="h5"
         className="font-semibold text-gray-400 mt-6 sm:mt-8"
       >
-        No cards available.
+        {t('noCardsFound.title')}
       </Text>
       <Text
         variant="body"
         className="text-gray-400 mt-1 sm:mt-2 text-center"
       >
-        {subtitle}
+        {t('noCardsFound.description')}
       </Text>
     </div>
   )

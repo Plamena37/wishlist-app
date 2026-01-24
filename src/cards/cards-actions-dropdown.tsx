@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisV, faShare } from '@fortawesome/free-solid-svg-icons'
 import { cn } from '@/lib/utils'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { useAppSnackbar } from '@/lib/hooks/useAppSnackbar'
 import { ROUTES } from '@/router/constants/app-routes'
-import { cardMessages } from '@/lib/constants/messages'
 import { Card } from '@/lib/types/Cards'
 import { EditCardInfoDialog } from '@/cards/edit-card-info-dialog'
 import { EditCardItemsDialog } from '@/cards/edit-card-items-dialog'
@@ -23,13 +23,16 @@ interface CardsActionsDropdown {
   card: Card
   className?: string
   btnBgColor?: string
+  isCardMine: boolean
 }
 
 export const CardsActionsDropdown = ({
   card,
   className,
   btnBgColor = 'bg-gray-200',
+  isCardMine,
 }: CardsActionsDropdown) => {
+  const { t } = useTranslation()
   const { isSm } = useBreakpoints()
   const { showSuccess } = useAppSnackbar()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -45,7 +48,7 @@ export const CardsActionsDropdown = ({
   const handleCopyLink = () => {
     const link = `${window.location.origin}/#${ROUTES.CARDS}/${card.id}`
     navigator.clipboard.writeText(link)
-    showSuccess(cardMessages.card_link_copied)
+    showSuccess(t('successMessages.wishlistLinkCopied'))
     handleCloseMenu()
   }
 
@@ -74,7 +77,7 @@ export const CardsActionsDropdown = ({
         sideOffset={0}
         className={cn(
           'p-0 text-blue-900 bg-white text-left',
-          isSm ? 'w-42' : 'w-34'
+          isSm ? 'w-52' : 'w-46'
         )}
       >
         <DropdownMenuItem
@@ -94,37 +97,44 @@ export const CardsActionsDropdown = ({
               variant="body"
               className="text-purple-900 font-medium"
             >
-              Copy Link
+              {t('wishlistActions.copyLink')}
             </Text>
           </Button>
         </DropdownMenuItem>
-        <DropdownMenuItem
-          className="hover:bg-muted"
-          onSelect={(e) => e.preventDefault()}
-        >
-          <EditCardInfoDialog
-            card={card}
-            onMenuClose={handleCloseMenu}
-          />
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="hover:bg-muted"
-          onSelect={(e) => e.preventDefault()}
-        >
-          <EditCardItemsDialog
-            card={card}
-            onMenuClose={handleCloseMenu}
-          />
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="hover:bg-muted"
-          onSelect={(e) => e.preventDefault()}
-        >
-          <DeleteCardDialog
-            card={card}
-            onMenuClose={handleCloseMenu}
-          />
-        </DropdownMenuItem>
+
+        {isCardMine && (
+          <>
+            <DropdownMenuItem
+              className="hover:bg-muted"
+              onSelect={(e) => e.preventDefault()}
+            >
+              <EditCardInfoDialog
+                card={card}
+                onMenuClose={handleCloseMenu}
+              />
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              className="hover:bg-muted"
+              onSelect={(e) => e.preventDefault()}
+            >
+              <EditCardItemsDialog
+                card={card}
+                onMenuClose={handleCloseMenu}
+              />
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              className="hover:bg-muted"
+              onSelect={(e) => e.preventDefault()}
+            >
+              <DeleteCardDialog
+                card={card}
+                onMenuClose={handleCloseMenu}
+              />
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   )

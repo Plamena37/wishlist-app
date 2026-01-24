@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 import { cn } from '@/lib/utils'
@@ -10,7 +11,6 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
 import { EditCardItemDialog } from '@/card/edit-card-item-dialog'
 import { DeleteCardItemDialog } from '@/card/delete-card-item-dialog'
 
@@ -76,6 +76,7 @@ const CardActionsDropdown = ({
             onMenuClose={handleCloseMenu}
           />
         </DropdownMenuItem>
+
         <DropdownMenuItem
           className="hover:bg-muted"
           onSelect={(e) => e.preventDefault()}

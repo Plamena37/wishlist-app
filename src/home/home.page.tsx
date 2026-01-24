@@ -2,15 +2,21 @@ import { useNavigate } from 'react-router'
 import { ROUTES } from '@/router/constants/app-routes'
 import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { useCardsContext } from '@/cards/hooks/useCards'
+import { useTranslation } from '@/lib/hooks/useTranslation'
+import { Language } from '@/i18n/constants'
 import heroImage from '@/assets/hero-img.png'
 import heroVerticalImage from '@/assets/hero-img-vertical.png'
-import step1Image from '@/assets/1.png'
-import step2Image from '@/assets/2.png'
-import step3Image from '@/assets/3.png'
+import step1ImageEN from '@/assets/en_1.png'
+import step2ImageEN from '@/assets/en_2.png'
+import step3ImageEN from '@/assets/en_3.png'
+import step1ImageBG from '@/assets/bg_1.png'
+import step2ImageBG from '@/assets/bg_2.png'
+import step3ImageBG from '@/assets/bg_3.png'
 import { Text } from '@/components/ui/text'
 import { Button } from '@/components/ui/button'
 
 const HomePage = () => {
+  const { t, lang } = useTranslation()
   const { isSm } = useBreakpoints()
   const navigate = useNavigate()
   const { toggleCreateCardDialog } = useCardsContext()
@@ -23,6 +29,10 @@ const HomePage = () => {
   const navigateToFAQPage = () => {
     navigate(ROUTES.FAQ)
   }
+
+  const image1 = lang === Language.EN ? step1ImageEN : step1ImageBG
+  const image2 = lang === Language.EN ? step2ImageEN : step2ImageBG
+  const image3 = lang === Language.EN ? step3ImageEN : step3ImageBG
 
   return (
     <div className="flex flex-col">
@@ -40,32 +50,35 @@ const HomePage = () => {
             variant="h1"
             className="font-bold text-gray-800 drop-shadow-lg"
           >
-            <span className="text-balloon-red-200">Stop</span> Explaining What
-            You Want — Just Share Your
-            <span className="text-balloon-red-200"> Wishlist.</span>
+            <span className="text-balloon-red-200">
+              {t('homePage.hero.titleStop')}
+            </span>
+            {t('homePage.hero.title')}
+            <span className="text-balloon-red-200">
+              {t('homePage.hero.titleWhishlist')}
+            </span>
           </Text>
 
           <Text
             variant="body"
             className="text-gray-700 max-w-xl leading-relaxed"
           >
-            Create a card for your birthday, wedding, or any occasion — list
-            what you want, add prices and links, and share it with friends.
+            {t('homePage.hero.subTitle')}
           </Text>
 
           <Text
             variant="body"
             className="text-gray-700"
           >
-            Easy as a piece of 🎂
+            {t('homePage.hero.description')}
           </Text>
 
           <Button
-            className="mt-2 w-auto py-2"
+            className="mt-2 w-auto p-2"
             variant="primary"
             onClick={navigateToCardsPage}
           >
-            Create My Wishlist
+            {t('homePage.hero.cta')}
           </Button>
         </div>
       </section>
@@ -76,15 +89,15 @@ const HomePage = () => {
           variant="h2"
           className="font-bold text-purple-900"
         >
-          🙄 Tired of answering “What do you want for your birthday?”
+          {t('homePage.tired.title')}
         </Text>
 
         <div className="flex flex-col gap-3 max-w-md w-full">
           <div className="bg-gray-200 text-left p-2 sm:p-3 rounded-2xl w-fit">
-            <Text variant="h5">“What do you want for your birthday???”</Text>
+            <Text variant="h5">{t('homePage.tired.chat1')}</Text>
           </div>
           <div className="bg-purple-200 text-right p-2 sm:p-3 rounded-2xl w-fit ml-auto text-purple-900">
-            <Text variant="h5">“Here’s my Wishlist 😎”</Text>
+            <Text variant="h5">{t('homePage.tired.chat2')}</Text>
           </div>
         </div>
 
@@ -92,8 +105,7 @@ const HomePage = () => {
           variant="body"
           className="text-gray-700 max-w-xl"
         >
-          Every year, it’s the same thing — messages, calls, questions. Make a
-          Wishlist once, send the link, and never explain again. No more socks.
+          {t('homePage.tired.description')}
         </Text>
       </section>
 
@@ -104,32 +116,38 @@ const HomePage = () => {
             variant="h2"
             className="font-bold text-purple-900"
           >
-            ✨ Three easy steps to peace and presents
+            {t('homePage.threeSteps.title')}
           </Text>
           <Text
             variant="body"
             className="text-gray-700"
           >
-            Create a card for your birthday, or any occasion — list what you
-            want, add prices and links, and share it with friends.
+            {t('homePage.threeSteps.description')}
           </Text>
 
           <ul className="flex flex-col gap-2 items-start">
             <li className="text-left">
               <Text variant="body">
-                <span className="font-semibold">Step 1:</span> Create your card
-                — from My Cards page.
+                <span className="font-semibold">
+                  {t('homePage.threeSteps.step1')}
+                </span>
+                {t('homePage.threeSteps.step1Title')}
               </Text>
             </li>
             <li className="text-left">
               <Text variant="body">
-                <span className="font-semibold">Step 2:</span> Add your wishes —
-                as you create or edit your card.
+                <span className="font-semibold">
+                  {t('homePage.threeSteps.step2')}
+                </span>
+                {t('homePage.threeSteps.step2Title')}
               </Text>
             </li>
             <li className="text-left">
               <Text variant="body">
-                <span className="font-semibold">Step 3:</span> Share the link
+                <span className="font-semibold">
+                  {t('homePage.threeSteps.step3')}
+                </span>
+                {t('homePage.threeSteps.step3Title')}
               </Text>
             </li>
           </ul>
@@ -140,13 +158,13 @@ const HomePage = () => {
               className="w-auto"
               onClick={navigateToCardsPage}
             >
-              Create My Wishlist
+              {t('homePage.threeSteps.cta')}
             </Button>
             <Button
               variant="outline"
               onClick={navigateToFAQPage}
             >
-              Learn More
+              {t('homePage.threeSteps.learnMore')}
             </Button>
           </div>
         </div>
@@ -155,19 +173,19 @@ const HomePage = () => {
         <div className="mt-6 sm:mt-0 relative w-full flex flex-wrap justify-center gap-2">
           <div className="w-38 sm:w-60 h-52 shadow-lg rotate-[-4deg] flex items-center justify-center">
             <img
-              src={step2Image}
+              src={image2}
               alt="Step 1"
             />
           </div>
           <div className="w-38 sm:w-60 h-52 shadow-lg rotate-[3deg] flex items-center justify-center">
             <img
-              src={step1Image}
+              src={image1}
               alt="Step 2"
             />
           </div>
           <div className="w-38 sm:w-60  h-52 shadow-lg rotate-[-2deg] flex items-center justify-center">
             <img
-              src={step3Image}
+              src={image3}
               alt="Step 3"
             />
           </div>
@@ -214,14 +232,14 @@ const HomePage = () => {
         </div>
       </section> */}
 
-      {/* 🔒 PUBLIC OR PRIVATE */}
+      {/* 🔒 OVERVIEW */}
       <section className="py-8 sm:py-20 px-6 text-center bg-white">
         <Text
           as="h2"
           variant="h2"
           className="font-bold text-purple-900 mb-6"
         >
-          🎁 Wishlists, made simple
+          {t('homePage.overview.title')}
         </Text>
 
         <div className="grid md:grid-cols-3 gap-6 sm:gap-10 max-w-5xl mx-auto">
@@ -232,30 +250,30 @@ const HomePage = () => {
               as="h2"
               className="font-semibold text-purple-900 mb-2"
             >
-              One wishlist for every occasion
+              {t('homePage.overview.card1Title')}
             </Text>
             <Text
               variant="subtext"
               className="mt-2 text-gray-700 leading-6"
             >
-              Keep all your gift ideas in one place — for any moment.
+              {t('homePage.overview.card1Description')}
             </Text>
           </div>
 
           {/* Card 2 */}
-          <div className="p-8 rounded-2xl bg-gray-100 shadow-md">
+          <div className="p-8 rounded-2xl bg-white shadow-md">
             <div className="text-4xl mb-3">😌</div>
             <Text
               as="h2"
               className="font-semibold text-gray-900 mb-2"
             >
-              No more awkward questions
+              {t('homePage.overview.card2Title')}
             </Text>
             <Text
               variant="subtext"
               className="mt-2 text-gray-700 leading-6"
             >
-              People know exactly what to get you. No asking needed.
+              {t('homePage.overview.card2Description')}
             </Text>
           </div>
 
@@ -266,13 +284,13 @@ const HomePage = () => {
               as="h2"
               className="font-semibold text-purple-900 mb-2"
             >
-              Your wishlist assistant
+              {t('homePage.overview.card3Title')}
             </Text>
             <Text
               variant="subtext"
               className="mt-2 text-gray-700 leading-6"
             >
-              Get gift ideas and help instantly with our AI.
+              {t('homePage.overview.card3Description')}
             </Text>
           </div>
         </div>
@@ -282,7 +300,7 @@ const HomePage = () => {
           variant="subtext"
           className="mt-6 text-gray-500"
         >
-          Less guessing, fewer duplicates, better surprises 🎉
+          {t('homePage.overview.description')}
         </Text>
       </section>
     </div>

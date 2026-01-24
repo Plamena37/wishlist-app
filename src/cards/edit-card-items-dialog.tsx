@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGift } from '@fortawesome/free-solid-svg-icons'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { Card } from '@/lib/types/Cards'
 import {
   Dialog,
@@ -22,6 +23,7 @@ export const EditCardItemsDialog = ({
   card,
   onMenuClose,
 }: EditCardItemsDialogProps) => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
 
   const handleOpenChange = (nextOpen: boolean) => {
@@ -47,7 +49,7 @@ export const EditCardItemsDialog = ({
             variant="body"
             className="text-purple-900 font-medium"
           >
-            Edit Wishes
+            {t('wishlistActions.editWishes')}
           </Text>
         </Button>
       </DialogTrigger>
@@ -57,7 +59,7 @@ export const EditCardItemsDialog = ({
         onClick={(e) => e.stopPropagation()}
       >
         <DialogHeader>
-          <DialogTitle>Edit Wishes 🎁</DialogTitle>
+          <DialogTitle>{t('editWishes.title')}</DialogTitle>
         </DialogHeader>
         <EditCardItemsForm
           card={card}

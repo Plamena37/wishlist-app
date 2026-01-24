@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
@@ -9,11 +10,14 @@ import Facebook from '@/assets/fb.png'
 import { SignInWithEmailForm } from './sign-in-with-email-form'
 import { SignUpWithEmailForm } from './sign-up-with-email-form'
 
+// IMPORTANT: NOT USED
+
 interface AuthModalProps {
   onCloseSheet?: () => void
 }
 
 export const AuthModal = ({ onCloseSheet }: AuthModalProps) => {
+  const { t } = useTranslation()
   const { signInWithGoogle, signInWithFacebook, clearAuthError } = useAuth()
   const [showSignInWithEmail, setShowSignInWithEmail] = useState(true)
 
@@ -47,13 +51,15 @@ export const AuthModal = ({ onCloseSheet }: AuthModalProps) => {
           className="text-xs sm:py-0"
         >
           {showSignInWithEmail
-            ? 'Don\'t have an account? Sign up'
-            : 'Have an account? Sign In'}
+            ? t('auth.dontHaveAccount')
+            : t('auth.haveAccount')}
         </Button>
 
         <div className="flex gap-2 justify-center items-center w-full pt-2">
           <div className="border-b-2 border-b-gray-300 w-full"></div>
-          <Text className="text-xs text-gray-800 font-medium">OR</Text>
+          <Text className="text-xs text-gray-800 font-medium">
+            {t('auth.or')}
+          </Text>
           <div className="border-b-2 border-b-gray-300 w-full"></div>
         </div>
       </div>
@@ -78,7 +84,7 @@ export const AuthModal = ({ onCloseSheet }: AuthModalProps) => {
           variant="body"
           className="text-purple-900 font-semibold"
         >
-          Continue with Google
+          {t('auth.continueWithGoogle')}
         </Text>
       </Button>
 
@@ -102,7 +108,7 @@ export const AuthModal = ({ onCloseSheet }: AuthModalProps) => {
           variant="body"
           className="text-purple-900 font-semibold"
         >
-          Continue with Facebook
+          {t('auth.continueWithFacebook')}
         </Text>
       </Button>
     </div>

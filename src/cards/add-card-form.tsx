@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { cn } from '@/lib/utils'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
@@ -11,8 +12,6 @@ import { NewCard } from '@/lib/types/Cards'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-// import { Switch } from '@/components/ui/switch'
-// import { Label } from '@/components/ui/label'
 import {
   Form,
   FormControl,
@@ -39,12 +38,13 @@ interface AddCardFormProps {
 }
 
 export const AddCardForm = ({ onClose }: AddCardFormProps) => {
+  const { t } = useTranslation()
   const { addCard, loadingCardItem } = useCardsContext()
   const { user } = useAuth()
   const { isSm } = useBreakpoints()
 
   const form = useForm<AddCardFormData>({
-    resolver: zodResolver(addCardSchema),
+    resolver: zodResolver(addCardSchema(t)),
     defaultValues: {
       title: '',
       description: '',
@@ -58,7 +58,6 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
     handleSubmit,
     control,
     watch,
-    // setValue,
     reset,
     clearErrors,
     formState: { errors },
@@ -111,20 +110,20 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Wishlist Title
+                      {t('editWishlist.titleLabel')}
                     </Text>
                     <Text
                       as="p"
                       variant="body"
                       className="text-gray-600"
                     >
-                      (Required)
+                      ({t('common.required')})
                     </Text>
                   </div>
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter Title"
+                    placeholder={t('editWishlist.titlePlaceholder')}
                     error={!!errors.title}
                     {...field}
                   />
@@ -146,13 +145,13 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Wishlist Description
+                      {t('editWishlist.descriptionLabel')}
                     </Text>
                   </div>
                 </FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Enter Description"
+                    placeholder={t('editWishlist.descriptionPlaceholder')}
                     error={!!errors.description}
                     {...field}
                   />
@@ -196,7 +195,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
             variant="h5"
             className="font-semibold mt-2"
           >
-            Add Wishes:
+            {t('editWishes.addWishes')}:
           </Text>
           <div
             className={cn(
@@ -223,13 +222,13 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
                           variant="body"
                           className="font-semibold text-purple-900"
                         >
-                          Wish Title
+                          {t('editWishes.nameLabel')}
                         </Text>
                       </div>
                     </FormLabel>
                   )}
                   <Input
-                    placeholder="Enter Name"
+                    placeholder={t('editWishes.namePlaceholder')}
                     {...register(`items.${index}.name`)}
                     error={!!errors.items?.[index]?.name}
                   />
@@ -247,13 +246,13 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
                           variant="body"
                           className="font-semibold text-purple-900"
                         >
-                          Wish Title
+                          {t('editWishes.linkLabel')}
                         </Text>
                       </div>
                     </FormLabel>
                   )}
                   <Input
-                    placeholder="Enter Link"
+                    placeholder={t('editWishes.linkPlaceholder')}
                     {...register(`items.${index}.link`)}
                     error={!!errors.items?.[index]?.link}
                   />
@@ -271,7 +270,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
                           variant="body"
                           className="font-semibold text-purple-900"
                         >
-                          Wish Title
+                          {t('editWishes.priceLabel')}
                         </Text>
                       </div>
                     </FormLabel>
@@ -279,7 +278,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
                   <Input
                     type="number"
                     step="0.01"
-                    placeholder="Enter Price"
+                    placeholder={t('editWishes.pricePlaceholder')}
                     {...register(`items.${index}.price`)}
                     error={!!errors.items?.[index]?.price}
                   />
@@ -297,7 +296,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
                           variant="body"
                           className="opacity-0"
                         >
-                          Delete Wish
+                          {t('common.delete')}
                         </Text>
                       </div>
                     </FormLabel>
@@ -335,7 +334,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
                 icon={faPlus}
                 className="text-purple-900"
               />
-              Add Wish
+              {t('editWishes.addWish')}
             </Button>
           </div>
 
@@ -347,7 +346,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
               disabled={loadingCardItem}
               onClick={closeForm}
             >
-              Close
+              {t('common.cancel')}
             </Button>
             <Button
               type="submit"
@@ -355,7 +354,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
               size="lg"
               disabled={loadingCardItem}
             >
-              Add Wishlist
+              {t('wishlistActions.createWishlist')}
             </Button>
           </div>
         </div>

@@ -4,13 +4,11 @@ import { User } from 'firebase/auth'
 import { auth, db } from '@/firebase.config'
 import { doc, getDoc } from 'firebase/firestore'
 import { isBoolean } from 'lodash'
+import { useTranslation } from '@/lib/hooks/useTranslation'
+import { useAuth } from '@/auth/hooks/useAuth'
+import { useAppSnackbar } from '@/lib/hooks/useAppSnackbar'
 import { CARDS_COLLECTION } from '@/lib/constants'
 import { Card, CardItem, NewCard } from '@/lib/types/Cards'
-import {
-  cardItemMessages,
-  cardMessages,
-  errorMessages,
-} from '@/lib/constants/messages'
 import { EditCardItemFormData } from '@/card/schemas/card-item.schema'
 import { EditCardFormData } from '@/cards/schemas/card.schema'
 import {
@@ -20,7 +18,6 @@ import {
   unreserveItem,
   updateItem as updateItemTransaction,
 } from '@/card/services/card-service'
-import { useAppSnackbar } from '@/lib/hooks/useAppSnackbar'
 import {
   createCard,
   deleteCard,
@@ -29,7 +26,6 @@ import {
   getCard,
   updateCard,
 } from '@/cards/services/cards-service'
-import { useAuth } from '@/auth/hooks/useAuth'
 
 type CardsContextType = {
   publicCards: Card[]
@@ -70,6 +66,7 @@ export const CardsContext = createContext<CardsContextType | undefined>(
 export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { t } = useTranslation()
   const { showSuccess, showError } = useAppSnackbar()
   const { user } = useAuth()
 
@@ -93,7 +90,9 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
       const data = await fetchAllPublicCards()
       setPublicCards(data)
     } catch (error) {
-      showError((error as Error).message || errorMessages.general_error_title)
+      showError(
+        (error as Error).message || t('errorMessages.general_error_title')
+      )
     } finally {
       setLoading(false)
     }
@@ -105,7 +104,9 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
       const data = await fetchMyCards(userId)
       setMyCards(data)
     } catch (error) {
-      showError((error as Error).message || errorMessages.general_error_title)
+      showError(
+        (error as Error).message || t('errorMessages.general_error_title')
+      )
     } finally {
       setLoading(false)
     }
@@ -126,9 +127,9 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
             }
           : prev
       )
-      showSuccess(cardItemMessages.item_added)
+      showSuccess(t('successMessages.wishAdded'))
     } catch (err) {
-      showError((err as Error).message || cardItemMessages.item_add_failed)
+      showError((err as Error).message || t('errorMessages.wishAddedFailed'))
     }
   }
 
@@ -183,15 +184,15 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
         )
       }
 
-      showSuccess(cardItemMessages.item_updated)
+      showSuccess(t('successMessages.wishUpdated'))
       cancelEdit?.()
     } catch (err: Error | unknown) {
       // Show better error text for reserve conflict
       const message =
-        (err as Error).message || cardItemMessages.item_update_failed
+        (err as Error).message || t('errorMessages.wishUpdatedFailed')
 
       if (message.includes('reserved')) {
-        showError(errorMessages.item_already_reserved)
+        showError(t('errorMessages.wishAlreadyReserved'))
 
         // 🔑 1) Re-fetch the card so UI shows the new reservedBy immediately
         const freshSnap = await getDoc(doc(db, CARDS_COLLECTION, card.id))
@@ -225,9 +226,9 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
             }
           : prev
       )
-      showSuccess(cardItemMessages.item_removed)
+      showSuccess(t('successMessages.wishDeleted'))
     } catch (err: Error | unknown) {
-      showError((err as Error).message || cardItemMessages.item_remove_failed)
+      showError((err as Error).message || t('errorMessages.wishDeletedFailed'))
     } finally {
       setLoadingCardItem(false)
     }
@@ -250,7 +251,7 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
       const cardData = await getCard(cardId)
       setCard(cardData)
     } catch (err) {
-      showError((err as Error).message || cardMessages.card_not_found)
+      showError((err as Error).message || t('errorMessages.wishlistNotFound'))
     }
     setLoading(false)
   }
@@ -279,9 +280,11 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!addedCard.isPublic) {
         setMyCards((prev) => [addedCard, ...prev])
       }
-      showSuccess(cardMessages.card_added)
+      showSuccess(t('successMessages.wishlistAdded'))
     } catch (err) {
-      showError((err as Error).message || cardMessages.card_add_failed)
+      showError(
+        (err as Error).message || t('errorMessages.wishlistAddedFailed')
+      )
     }
   }
 
@@ -313,9 +316,11 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
       })
       setMyCards((prev) => prev.map((c) => (c.id === card.id ? card : c)))
       setCard(card)
-      showSuccess(cardMessages.card_updated)
+      showSuccess(t('successMessages.wishlistUpdated'))
     } catch (err) {
-      showError((err as Error).message || cardMessages.card_update_failed)
+      showError(
+        (err as Error).message || t('errorMessages.wishlistUpdatedFailed')
+      )
     }
   }
 
@@ -325,9 +330,11 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
       await deleteCard(cardId)
       setPublicCards((prev) => prev.filter((card) => card.id !== cardId))
       setMyCards((prev) => prev.filter((card) => card.id !== cardId))
-      showSuccess(cardMessages.card_removed)
+      showSuccess(t('successMessages.wishlistDeleted'))
     } catch (err: Error | unknown) {
-      showError((err as Error).message || cardMessages.card_remove_failed)
+      showError(
+        (err as Error).message || t('errorMessages.wishlistDeletedFailed')
+      )
     } finally {
       setLoadingCardItem(false)
     }

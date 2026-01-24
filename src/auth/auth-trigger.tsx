@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { AuthModal } from '@/auth/auth-modal'
 import {
@@ -8,6 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+
+// IMPORTANT: NOT USED
 
 interface AuthTriggerProps {
   children?: React.ReactNode
@@ -20,10 +23,11 @@ interface AuthTriggerProps {
 export const AuthTrigger = ({
   children,
   isReserved,
-  title = 'Sign in to continue ✨',
+  title,
   onClose,
   onCloseSheet,
 }: AuthTriggerProps) => {
+  const { t } = useTranslation()
   const { user, clearAuthError } = useAuth()
   const [open, setOpen] = useState(false)
 
@@ -50,7 +54,9 @@ export const AuthTrigger = ({
         className="sm:max-w-96"
       >
         <DialogHeader>
-          <DialogTitle className="px-5 sm:px-0 leading-4">{title}</DialogTitle>
+          <DialogTitle className="px-5 sm:px-0 leading-4">
+            {title ?? t('auth.signInToContinue')}
+          </DialogTitle>
         </DialogHeader>
         <AuthModal onCloseSheet={onCloseSheet} />
       </DialogContent>

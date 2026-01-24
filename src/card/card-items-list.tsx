@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { Link } from 'react-router'
 import PageEaten from '@/assets/page-eaten.svg'
 import { cn } from '@/lib/utils'
-import { authMessages, cardItemMessages } from '@/lib/constants/messages'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { Card, CardItem } from '@/lib/types/Cards'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
@@ -20,6 +20,7 @@ interface CardItemsList {
 
 export const CardItemsList = ({ items }: CardItemsList) => {
   const { user } = useAuth()
+  const { t } = useTranslation()
   const {
     card,
     updateCardItem,
@@ -31,12 +32,12 @@ export const CardItemsList = ({ items }: CardItemsList) => {
 
   const handleReservedByLabel = (reservedBy: string): string => {
     if (user?.uid === reservedBy) {
-      return cardItemMessages.item_reserved_by_me
+      return t('cardPage.reservedByYou')
     }
     if (reservedBy) {
-      return cardItemMessages.item_reserved_by_another_user
+      return t('cardPage.reserved')
     }
-    return cardItemMessages.item_free
+    return t('cardPage.free')
   }
 
   const handleToggleReservedBy = useCallback(
@@ -66,9 +67,9 @@ export const CardItemsList = ({ items }: CardItemsList) => {
         <Text
           as="p"
           variant="body"
-          className="text-gray-600"
+          className="text-gray-600 text-center"
         >
-          No items have been added to this wishlist yet.
+          {t('cardPage.noItems')}
         </Text>
       </div>
     )
@@ -111,7 +112,7 @@ export const CardItemsList = ({ items }: CardItemsList) => {
                 variant="body"
                 className="font-semibold flex items-center gap-2 pr-4 lg:border-r border-r-gray-300"
               >
-                Link:
+                {t('cardPage.link')}:
                 {item.link ? (
                   <Button
                     variant="link"
@@ -122,7 +123,7 @@ export const CardItemsList = ({ items }: CardItemsList) => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Click Here
+                      {t('common.clickHere')}
                     </Link>
                   </Button>
                 ) : (
@@ -130,7 +131,7 @@ export const CardItemsList = ({ items }: CardItemsList) => {
                     as="span"
                     variant="body-sm"
                   >
-                    No link provided
+                    {t('cardPage.noLink')}
                   </Text>
                 )}
               </Text>
@@ -139,7 +140,7 @@ export const CardItemsList = ({ items }: CardItemsList) => {
                 variant="body"
                 className="font-semibold flex items-center gap-2 pr-4 lg:border-r border-r-gray-300"
               >
-                Price:
+                {t('cardPage.price')}:
                 {item.price ? (
                   <Text
                     as="span"
@@ -152,7 +153,7 @@ export const CardItemsList = ({ items }: CardItemsList) => {
                     as="span"
                     variant="body-sm"
                   >
-                    Apparently priceless 🤔
+                    {t('cardPage.noPrice')}
                   </Text>
                 )}
               </Text>
@@ -161,6 +162,7 @@ export const CardItemsList = ({ items }: CardItemsList) => {
                 <Checkbox
                   checked={!!item.reservedBy}
                   id={`reserved-${item.id}`}
+                  className="cursor-pointer"
                   onCheckedChange={(val) => {
                     toggleSignInOverlay(item.reservedBy)
                     handleToggleReservedBy(card, item, !!val)
@@ -170,7 +172,10 @@ export const CardItemsList = ({ items }: CardItemsList) => {
                     canReserveCardItem
                   }
                 />
-                <Label htmlFor={`reserved-${item.id}`}>
+                <Label
+                  htmlFor={`reserved-${item.id}`}
+                  className="cursor-pointer"
+                >
                   {handleReservedByLabel(item.reservedBy)}
                 </Label>
               </div>
@@ -180,7 +185,7 @@ export const CardItemsList = ({ items }: CardItemsList) => {
       </ul>
 
       {openSignInOverlay && (
-        <SignInOverlay title={authMessages.sign_in_to_continue} />
+        <SignInOverlay title={t('auth.holdUpSignInFirst')} />
       )}
     </>
   )

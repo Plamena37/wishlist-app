@@ -1,28 +1,43 @@
 import { z } from 'zod'
 
-export const addCardItemSchema = z.object({
-  itemName: z.string().min(2, 'Name too short (min 2)'),
-  itemLink: z.string().url('Invalid URL').optional().or(z.literal('')),
-  itemPrice: z
-    .string()
-    .optional()
-    .refine((val) => !val || !isNaN(Number(val)), 'Price must be a valid'),
-})
+export const addCardItemSchema = (t: (key: string) => string) =>
+  z.object({
+    itemName: z.string().min(2, t('formValidation.cardItem.nameMin')),
+    itemLink: z
+      .string()
+      .url(t('formValidation.cardItem.invalidUrl'))
+      .optional()
+      .or(z.literal('')),
+    itemPrice: z
+      .string()
+      .optional()
+      .refine(
+        (val) => !val || !isNaN(Number(val)),
+        t('formValidation.cardItem.invalidPrice')
+      ),
+  })
 
-export const editCardItemSchema = z.object({
-  name: z.string().min(2, 'Name too short (min 2)').optional(),
-  link: z.string().url('Invalid URL').optional().or(z.literal('')),
-  price: z
-    .string()
-    .optional()
-    .nullable()
-    .refine(
-      (val) => val === null || !val || !isNaN(Number(val)),
-      'Price must be a valid'
-    ),
-  reservedBy: z.string().optional().or(z.literal('')),
-})
+export const editCardItemSchema = (t: (key: string) => string) =>
+  z.object({
+    name: z.string().min(2, t('formValidation.cardItem.nameMin')).optional(),
+    link: z
+      .string()
+      .url(t('formValidation.cardItem.invalidUrl'))
+      .optional()
+      .or(z.literal('')),
+    price: z
+      .string()
+      .optional()
+      .nullable()
+      .refine(
+        (val) => val === null || !val || !isNaN(Number(val)),
+        t('formValidation.cardItem.invalidPrice')
+      ),
+    reservedBy: z.string().optional().or(z.literal('')),
+  })
 
-export type AddCardItemFormData = z.infer<typeof addCardItemSchema>
+export type AddCardItemFormData = z.infer<ReturnType<typeof addCardItemSchema>>
 
-export type EditCardItemFormData = z.infer<typeof editCardItemSchema>
+export type EditCardItemFormData = z.infer<
+  ReturnType<typeof editCardItemSchema>
+>

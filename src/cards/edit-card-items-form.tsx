@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { cn } from '@/lib/utils'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { Card } from '@/lib/types/Cards'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { EditCardFormData, editCardSchema } from '@/cards/schemas/card.schema'
@@ -21,10 +22,11 @@ export const EditCardItemsForm = ({
   card,
   onClose,
 }: EditCardItemsFormProps) => {
+  const { t } = useTranslation()
   const { editCard } = useCardsContext()
 
   const form = useForm<EditCardFormData>({
-    resolver: zodResolver(editCardSchema),
+    resolver: zodResolver(editCardSchema(t)),
     defaultValues: {
       title: card?.title || '',
       description: card?.description || '',
@@ -80,7 +82,7 @@ export const EditCardItemsForm = ({
           >
             <div>
               <Input
-                placeholder="Enter Name"
+                placeholder={t('editWishes.namePlaceholder')}
                 {...register(`items.${index}.name`)}
                 error={!!errors.items?.[index]?.name}
               />
@@ -91,7 +93,7 @@ export const EditCardItemsForm = ({
 
             <div>
               <Input
-                placeholder="Enter Link"
+                placeholder={t('editWishes.linkPlaceholder')}
                 {...register(`items.${index}.link`)}
                 error={!!errors.items?.[index]?.link}
               />
@@ -103,7 +105,7 @@ export const EditCardItemsForm = ({
               <Input
                 type="number"
                 step="0.01"
-                placeholder="Enter Price"
+                placeholder={t('editWishes.pricePlaceholder')}
                 {...register(`items.${index}.price`)}
                 error={!!errors.items?.[index]?.price}
               />
@@ -146,7 +148,7 @@ export const EditCardItemsForm = ({
             icon={faPlus}
             className="mr-2"
           />
-          Add Wish
+          {t('editWishes.addWish')}
         </Button>
 
         <div className="flex gap-2 justify-between sm:justify-end">
@@ -156,14 +158,14 @@ export const EditCardItemsForm = ({
               variant="outline"
               size="sm"
             >
-              Cancel
+              {t('common.cancel')}
             </Button>
           </DialogClose>
           <Button
             type="submit"
             size="sm"
           >
-            Save
+            {t('common.save')}
           </Button>
         </div>
       </form>

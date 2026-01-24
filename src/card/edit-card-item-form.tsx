@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { Card, CardItem } from '@/lib/types/Cards'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { Button } from '@/components/ui/button'
@@ -31,10 +32,11 @@ export const EditCardItemForm = ({
   item,
   onClose,
 }: EditCardItemFormProps) => {
+  const { t } = useTranslation()
   const { updateCardItem } = useCardsContext()
 
   const form = useForm<EditCardItemFormData>({
-    resolver: zodResolver(editCardItemSchema),
+    resolver: zodResolver(editCardItemSchema(t)),
     defaultValues: {
       name: item?.name || '',
       link: item?.link || '',
@@ -71,13 +73,13 @@ export const EditCardItemForm = ({
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Wish Title
+                      {t('editWishes.nameLabel')}
                     </Text>
                   </div>
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter Title"
+                    placeholder={t('editWishes.namePlaceholder')}
                     error={!!errors.name}
                     {...field}
                   />
@@ -99,13 +101,13 @@ export const EditCardItemForm = ({
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Wish Link
+                      {t('editWishes.linkLabel')}
                     </Text>
                   </div>
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter Link"
+                    placeholder={t('editWishes.linkPlaceholder')}
                     error={!!errors.link}
                     {...field}
                   />
@@ -127,14 +129,14 @@ export const EditCardItemForm = ({
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Wish Price
+                      {t('editWishes.priceLabel')}
                     </Text>
                   </div>
                 </FormLabel>
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="Enter Price"
+                    placeholder={t('editWishes.pricePlaceholder')}
                     error={!!errors.price}
                     {...field}
                     value={field.value ?? ''}
@@ -152,14 +154,14 @@ export const EditCardItemForm = ({
                 variant="outline"
                 size="sm"
               >
-                Cancel
+                {t('common.cancel')}
               </Button>
             </DialogClose>
             <Button
               type="submit"
               size="sm"
             >
-              Save
+              {t('common.save')}
             </Button>
           </div>
         </div>

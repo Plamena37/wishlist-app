@@ -4,6 +4,7 @@ import { faPaperPlane, faXmark } from '@fortawesome/free-solid-svg-icons'
 import Markdown from 'react-markdown'
 import { cn } from '@/lib/utils'
 import useBreakpoints from '@/lib/hooks/useBreakpoints'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Input } from '@/components/ui/input'
@@ -17,6 +18,7 @@ interface AIChatPanelProps {
 
 export const AIChatPanel = ({ onClose }: AIChatPanelProps) => {
   const { isXs } = useBreakpoints()
+  const { t } = useTranslation()
   const { messages, sendMessage, isTyping, disableChat } = useChatbot()
 
   const [input, setInput] = useState('')
@@ -58,7 +60,7 @@ export const AIChatPanel = ({ onClose }: AIChatPanelProps) => {
           variant="h5"
           className="font-semibold"
         >
-          Wishlist Assistant ✨
+          Wishlist {t('aiAssistant.title')} ✨
         </Text>
         <Button
           size="icon"
@@ -99,7 +101,7 @@ export const AIChatPanel = ({ onClose }: AIChatPanelProps) => {
       {/* Input */}
       <div className="border-t border-t-gray-300 p-3 flex gap-2">
         <Input
-          placeholder="Ask me anything…"
+          placeholder={t('aiAssistant.placeholder')}
           value={input}
           onChange={handleInputChange}
           onKeyDown={handleInputKeyDown}

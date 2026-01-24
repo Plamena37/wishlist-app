@@ -6,8 +6,9 @@ import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import {
   SignInWithEmailFormData,
   signInWithEmailSchema,
-} from './schemas/auth.schema'
-import { useAuth } from './hooks/useAuth'
+} from '@/auth/schemas/auth.schema'
+import { useTranslation } from '@/lib/hooks/useTranslation'
+import { useAuth } from '@/auth/hooks/useAuth'
 import Loading from '@/assets/loading-purple.svg'
 import {
   Form,
@@ -27,11 +28,12 @@ interface SignInWithEmailFormProps {
 }
 
 export const SignInWithEmailForm = ({ onClose }: SignInWithEmailFormProps) => {
+  const { t } = useTranslation()
   const { signInWithEmail, authActionLoading, authError } = useAuth()
   const [hidePassword, setHidePassword] = useState(true)
 
   const form = useForm<SignInWithEmailFormData>({
-    resolver: zodResolver(signInWithEmailSchema),
+    resolver: zodResolver(signInWithEmailSchema(t)),
     defaultValues: {
       email: '',
       password: '',
@@ -88,12 +90,12 @@ export const SignInWithEmailForm = ({ onClose }: SignInWithEmailFormProps) => {
                     variant="body"
                     className="font-semibold text-purple-900 mb-1"
                   >
-                    Email
+                    {t('auth.form.emailLabel')}
                   </Text>
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter Email"
+                    placeholder={t('auth.form.emailPlaceholder')}
                     error={!!errors.email}
                     {...field}
                   />
@@ -114,14 +116,14 @@ export const SignInWithEmailForm = ({ onClose }: SignInWithEmailFormProps) => {
                     variant="body"
                     className="font-semibold text-purple-900 mb-1"
                   >
-                    Password
+                    {t('auth.form.passwordLabel')}
                   </Text>
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       {...field}
-                      placeholder="Enter Password"
+                      placeholder={t('auth.form.passwordPlaceholder')}
                       error={!!errors.password}
                       onChange={(e) =>
                         handlePasswordChange(e.target.value, field.onChange)
@@ -157,7 +159,7 @@ export const SignInWithEmailForm = ({ onClose }: SignInWithEmailFormProps) => {
               />
             )}
 
-            {authActionLoading ? 'Signing in…' : 'Sign in'}
+            {authActionLoading ? t('auth.signingIn') : t('auth.signIn')}
           </Button>
 
           {authError && (

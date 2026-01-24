@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { useAuth } from '@/auth/hooks/useAuth'
+import { Language } from '@/i18n/constants'
 
 const RATE_LIMIT_MS = 2000
 const DAILY_LIMIT = 15
@@ -12,7 +14,8 @@ export interface ChatMessage {
   sender: 'user' | 'assistant'
 }
 
-const WELCOME_MESSAGE: ChatMessage = {
+// ********************************** ENGLISH MESSAGES **********************************
+const WELCOME_MESSAGE_EN: ChatMessage = {
   sender: 'assistant',
   text: `
 Hi! 👋 I'm your **Wishlist Assistant** ✨
@@ -27,11 +30,53 @@ Tell me about yourself or ask me anything 👇
 `,
 }
 
-const SIGN_IN_MESSAGE: ChatMessage = {
+const SIGN_IN_MESSAGE_EN: ChatMessage = {
   sender: 'assistant',
   text: 'Hi! 👋 To chat with me, please log in first. I’m excited to help you with your wishlist! 🎁',
 }
 
+const DAILY_LIMIT_MESSAGE_EN: ChatMessage = {
+  sender: 'assistant',
+  text: 'That’s all for today 😴 You’ve hit your daily chat limit. See you tomorrow! 👋',
+}
+
+const SOMETHING_WENT_WRONG_MESSAGE_EN: ChatMessage = {
+  sender: 'assistant',
+  text: 'Something went wrong 😕 Please try again.',
+}
+
+// ********************************** BULGARIAN MESSAGES **********************************
+const WELCOME_MESSAGE_BG: ChatMessage = {
+  sender: 'assistant',
+  text: `
+Здрасти! 👋 Аз съм твоят **Wishlist асистент** ✨
+
+Мога да ти помогна да:
+- 🎁 откриеш страхотни идеи за подаръци (кажи ми какво харесваш!)
+- 🧠 измислиш *какво* да си пожелаеш — дори когато не си сигурен
+- 🧭 разбереш как работи всичко в приложението
+- 🌍 си говорим на **езика, който ти е удобен**
+
+Разкажи ми за себе си или ме попитай нещо 👇
+`,
+}
+
+const SIGN_IN_MESSAGE_BG: ChatMessage = {
+  sender: 'assistant',
+  text: 'Здрасти! 👋 За да си говорим, първо влез в профила си. С удоволствие ще ти помогна с Wishlist! 🎁',
+}
+
+const DAILY_LIMIT_MESSAGE_BG: ChatMessage = {
+  sender: 'assistant',
+  text: 'Това е всичко за днес 😴 Изчерпа дневния си лимит за чат. До утре! 👋',
+}
+
+const SOMETHING_WENT_WRONG_MESSAGE_BG: ChatMessage = {
+  sender: 'assistant',
+  text: 'Упс… нещо се обърка 😕 Моля опитай отново.',
+}
+
+// ********************************** SYSTEM PROMPTS **********************************
 const SYSTEM_PROMPT = `
 You are **Wishlist Assistant** — friendly, funny, and very useful.
 
@@ -80,7 +125,7 @@ Context:
 - Users can create wishlists and share them via a link
 - Friends and family can reserve gifts from a wishlist
 `
-
+// ********************************** SHOT EXAMPLES **********************************
 const FEW_SHOT_MESSAGES = [
   {
     role: 'user',
@@ -232,11 +277,23 @@ const saveDailyUsage = (count: number) => {
 }
 
 export const useChatbot = () => {
+  const { lang } = useTranslation()
   const { user } = useAuth()
   const [isTyping, setIsTyping] = useState<boolean>(false)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [lastSentAt, setLastSentAt] = useState<number>(0)
   const [disableChat, setDisableChat] = useState<boolean>(false)
+
+  const SIGN_IN_MESSAGE =
+    lang === Language.EN ? SIGN_IN_MESSAGE_EN : SIGN_IN_MESSAGE_BG
+  const WELCOME_MESSAGE =
+    lang === Language.EN ? WELCOME_MESSAGE_EN : WELCOME_MESSAGE_BG
+  const DAILY_LIMIT_MESSAGE =
+    lang === Language.EN ? DAILY_LIMIT_MESSAGE_EN : DAILY_LIMIT_MESSAGE_BG
+  const SOMETHING_WENT_WRONG_MESSAGE =
+    lang === Language.EN
+      ? SOMETHING_WENT_WRONG_MESSAGE_EN
+      : SOMETHING_WENT_WRONG_MESSAGE_BG
 
   useEffect(() => {
     const saved = sessionStorage.getItem(CHAT_MESSAGES_KEY)
@@ -262,6 +319,7 @@ export const useChatbot = () => {
   useEffect(() => {
     if (!user?.displayName) {
       sessionStorage.removeItem(CHAT_MESSAGES_KEY)
+
       setMessages([WELCOME_MESSAGE, SIGN_IN_MESSAGE])
       setDisableChat(true)
     }
@@ -323,23 +381,11 @@ export const useChatbot = () => {
 
       // 🚨 show limit message immediately AFTER last allowed response
       if (newCount >= DAILY_LIMIT) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            sender: 'assistant',
-            text: 'That’s all for today 😴 You’ve hit your daily chat limit. See you tomorrow! 👋',
-          },
-        ])
+        setMessages((prev) => [...prev, DAILY_LIMIT_MESSAGE])
         setDisableChat(true)
       }
     } catch (error) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: 'assistant',
-          text: 'Something went wrong 😕 Please try again.',
-        },
-      ])
+      setMessages((prev) => [...prev, SOMETHING_WENT_WRONG_MESSAGE])
       console.error('Error sending message to AI:', error)
     } finally {
       setIsTyping(false)

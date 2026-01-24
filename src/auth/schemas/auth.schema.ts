@@ -9,36 +9,44 @@ import { z } from 'zod'
 //     'Password must contain a letter, a number, and a symbol'
 //   ),
 
-export const signInWithEmailSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z
-    .string()
-    .min(8, 'At least 8 characters')
-    .regex(/[A-Za-z]/, 'Must contain a letter')
-    .regex(/\d/, 'Must contain a number')
-    .regex(/[^\w\s]/, 'Must contain a symbol'),
-})
-
-export const signUpWithEmailSchema = z
-  .object({
-    email: z.string().email('Invalid email address'),
-    displayName: z
-      .string()
-      .min(2, 'Display name must be at least 2 characters')
-      .max(50, 'Display name is too long'),
+export const signInWithEmailSchema = (t: (key: string) => string) =>
+  z.object({
+    email: z.string().email(t('formValidation.auth.invalidEmail')),
     password: z
       .string()
-      .min(8, 'At least 8 characters')
-      .regex(/[A-Za-z]/, 'Must contain a letter')
-      .regex(/\d/, 'Must contain a number')
-      .regex(/[^\w\s]/, 'Must contain a symbol'),
-    confirmPassword: z.string().min(1, 'Please confirm your password'),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ['confirmPassword'],
-    message: 'Passwords do not match',
+      .min(8, t('formValidation.auth.passwordMin'))
+      .regex(/[A-Za-z]/, t('formValidation.auth.passwordLetter'))
+      .regex(/\d/, t('formValidation.auth.passwordNumber'))
+      .regex(/[^\w\s]/, t('formValidation.auth.passwordSymbol')),
   })
 
-export type SignInWithEmailFormData = z.infer<typeof signInWithEmailSchema>
+export const signUpWithEmailSchema = (t: (key: string) => string) =>
+  z
+    .object({
+      email: z.string().email(t('formValidation.auth.invalidEmail')),
+      displayName: z
+        .string()
+        .min(2, t('formValidation.auth.displayNameMin'))
+        .max(50, t('formValidation.auth.displayNameMax')),
+      password: z
+        .string()
+        .min(8, t('formValidation.auth.passwordMin'))
+        .regex(/[A-Za-z]/, t('formValidation.auth.passwordLetter'))
+        .regex(/\d/, t('formValidation.auth.passwordNumber'))
+        .regex(/[^\w\s]/, t('formValidation.auth.passwordSymbol')),
+      confirmPassword: z
+        .string()
+        .min(1, t('formValidation.auth.confirmPasswordRequired')),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      path: ['confirmPassword'],
+      message: t('formValidation.auth.passwordsDoNotMatch'),
+    })
 
-export type SignUpWithEmailFormData = z.infer<typeof signUpWithEmailSchema>
+export type SignInWithEmailFormData = z.infer<
+  ReturnType<typeof signInWithEmailSchema>
+>
+
+export type SignUpWithEmailFormData = z.infer<
+  ReturnType<typeof signUpWithEmailSchema>
+>

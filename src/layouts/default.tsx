@@ -1,22 +1,21 @@
 import { Outlet } from 'react-router'
 import { RouterHistoryProvider } from '@/router/context/router-history.context'
-import { authMessages, loadingMessages } from '@/lib/constants/messages'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { useAuth } from '@/auth/hooks/useAuth'
-import useBreakpoints from '@/lib/hooks/useBreakpoints'
-import { AppHeader } from '@/components/app-header/app-header'
-import { Text } from '@/components/ui/text'
+import { AppHeader } from '@/components/navigation/app-header'
 import { LoadingOverlay } from '@/components/overlay/loading-overlay'
 import { AIAssistant } from '@/components/ai-assistant/ai-assistant'
+import { AppFooter } from '@/components/navigation/app-footer'
 
 export default function DefaultLayout() {
+  const { t } = useTranslation()
   const { loading } = useAuth()
-  const { isSm } = useBreakpoints()
 
   return (
     <RouterHistoryProvider>
       <div
-        className="grid h-full grid-cols-[1fr] grid-rows-[56px_auto_32px]
-                 [grid-template-areas:'header''main''footer'] bg-gray-20 overflow-y-auto"
+        className="grid h-full grid-cols-[1fr] 
+        grid-rows-[56px_auto_120px] sm:grid-rows-[56px_auto_94px]               [grid-template-areas:'header''main''footer'] bg-gray-200 overflow-y-auto"
       >
         {/* <div className="min-h-screen flex flex-col bg-gray-200"> */}
         <AppHeader />
@@ -25,30 +24,12 @@ export default function DefaultLayout() {
           <Outlet />
           <AIAssistant />
         </main>
-        <footer className="w-full px-8 py-2 bg-gray-200 h-8">
-          {isSm ? (
-            <Text
-              as="p"
-              variant="body-sm"
-              className="text-gray-600"
-            >
-              Copyright &copy; {new Date().getFullYear()} Whishlist. All Rights
-              Reserved
-            </Text>
-          ) : (
-            <Text
-              as="p"
-              variant="body-sm"
-              className="text-gray-600 text-center"
-            >
-              Copyright &copy; {new Date().getFullYear()} Whishlist.
-            </Text>
-          )}
-        </footer>
+        <AppFooter />
+
         {loading && (
           <LoadingOverlay
-            title={authMessages.logging_in}
-            subtitle={loadingMessages.loading_subtitle}
+            title={t('auth.loggingIn')}
+            subtitle={t('loading.loadingRequest')}
           />
         )}
       </div>

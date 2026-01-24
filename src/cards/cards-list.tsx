@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { ROUTES } from '@/router/constants/app-routes'
 import { Card } from '@/lib/types/Cards'
 import { useAuth } from '@/auth/hooks/useAuth'
@@ -13,6 +14,7 @@ interface CardsListProps {
 
 export const CardsList = ({ cards }: CardsListProps) => {
   const { user } = useAuth()
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const navigateTo = (card: Card) => {
@@ -26,12 +28,12 @@ export const CardsList = ({ cards }: CardsListProps) => {
           key={card.id}
           className="relative flex flex-col justify-start items-center gap-4 bg-white shadow-sm rounded-sm p-4 w-[250px] h-[300px] hover:shadow-lg transition-shadow duration-200"
         >
-          {card.ownerId === user?.uid && (
-            <CardsActionsDropdown
-              card={card}
-              className="absolute top-4 right-4"
-            />
-          )}
+          <CardsActionsDropdown
+            card={card}
+            className="absolute top-4 right-4"
+            isCardMine={user?.uid === card.ownerId}
+          />
+
           <img
             src={card.image}
             alt="Card decoration"
@@ -59,7 +61,7 @@ export const CardsList = ({ cards }: CardsListProps) => {
               variant="primary"
               onClick={() => navigateTo(card)}
             >
-              View Details
+              {t('wishlistActions.viewDetails')}
             </Button>
           </div>
         </div>

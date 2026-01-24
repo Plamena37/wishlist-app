@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { Button } from '@/components/ui/button'
@@ -12,9 +13,11 @@ import { SignUpWithEmailForm } from '@/auth/sign-up-with-email-form'
 
 interface SignInOverlay {
   title?: string
+  onClose?: () => void
 }
 
-export const SignInOverlayDialog = ({ title }: SignInOverlay) => {
+export const SignInOverlayDialog = ({ title, onClose }: SignInOverlay) => {
+  const { t } = useTranslation()
   const { signInWithGoogle, signInWithFacebook, clearAuthError } = useAuth()
   const { setShowSignInDialog } = useCardsContext()
   const [open, setOpen] = useState(true)
@@ -25,6 +28,7 @@ export const SignInOverlayDialog = ({ title }: SignInOverlay) => {
   const handleClose = () => {
     setOpen(false)
     setShowSignInDialog(false)
+    onClose?.()
     clearAuthError()
   }
 
@@ -46,7 +50,9 @@ export const SignInOverlayDialog = ({ title }: SignInOverlay) => {
   return (
     <>
       <Text className="text-base sm:text-lg font-semibold text-center sm:text-left px-5 sm:px-0 leading-4 w-full">
-        {title ?? `Sign ${showSignInWithEmail ? 'in' : 'up'} to continue ✨`}
+        {(title ?? showSignInWithEmail)
+          ? t('auth.signInToContinue')
+          : t('auth.signUpToContinue')}
       </Text>
 
       <div className="w-full flex flex-col items-center">
@@ -62,13 +68,15 @@ export const SignInOverlayDialog = ({ title }: SignInOverlay) => {
           className="text-xs sm:py-0"
         >
           {showSignInWithEmail
-            ? 'Don\'t have an account? Sign up'
-            : 'Have an account? Sign In'}
+            ? t('auth.dontHaveAccount')
+            : t('auth.haveAccount')}
         </Button>
 
         <div className="flex gap-2 justify-center items-center w-full pt-2">
           <div className="border-b-2 border-b-gray-300 w-full"></div>
-          <Text className="text-xs text-gray-800 font-medium">OR</Text>
+          <Text className="text-xs text-gray-800 font-medium">
+            {t('auth.or')}
+          </Text>
           <div className="border-b-2 border-b-gray-300 w-full"></div>
         </div>
       </div>
@@ -93,7 +101,7 @@ export const SignInOverlayDialog = ({ title }: SignInOverlay) => {
           variant="body"
           className="text-purple-900 font-semibold"
         >
-          Continue with Google
+          {t('auth.continueWithGoogle')}
         </Text>
       </Button>
 
@@ -117,7 +125,7 @@ export const SignInOverlayDialog = ({ title }: SignInOverlay) => {
           variant="body"
           className="text-purple-900 font-semibold"
         >
-          Continue with Facebook
+          {t('auth.continueWithFacebook')}
         </Text>
       </Button>
     </>

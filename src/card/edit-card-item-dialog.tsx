@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { Card, CardItem } from '@/lib/types/Cards'
 import {
   Dialog,
@@ -24,6 +25,7 @@ export const EditCardItemDialog = ({
   item,
   onMenuClose,
 }: EditCardItemDialogProps) => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
 
   const handleOpenChange = (nextOpen: boolean) => {
@@ -49,7 +51,7 @@ export const EditCardItemDialog = ({
             variant="body"
             className="text-purple-900 font-medium"
           >
-            Edit
+            {t('common.edit')}
           </Text>
         </Button>
       </DialogTrigger>
@@ -59,7 +61,9 @@ export const EditCardItemDialog = ({
         onClick={(e) => e.stopPropagation()}
       >
         <DialogHeader>
-          <DialogTitle>Edit {card.title}</DialogTitle>
+          <DialogTitle>
+            {t('common.edit')} {card.title}
+          </DialogTitle>
         </DialogHeader>
         <EditCardItemForm
           card={card}

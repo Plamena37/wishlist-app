@@ -1,11 +1,10 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { Card } from '@/lib/types/Cards'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-// import { Label } from '@/components/ui/label'
-// import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { EditCardFormData, editCardSchema } from '@/cards/schemas/card.schema'
 import {
@@ -25,10 +24,11 @@ interface EditCardInfoFormProps {
 }
 
 export const EditCardInfoForm = ({ card, onClose }: EditCardInfoFormProps) => {
+  const { t } = useTranslation()
   const { editCard } = useCardsContext()
 
   const form = useForm<EditCardFormData>({
-    resolver: zodResolver(editCardSchema),
+    resolver: zodResolver(editCardSchema(t)),
     defaultValues: {
       title: card?.title || '',
       description: card?.description || '',
@@ -70,13 +70,13 @@ export const EditCardInfoForm = ({ card, onClose }: EditCardInfoFormProps) => {
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Wishlist Title
+                      {t('editWishlist.titleLabel')}
                     </Text>
                   </div>
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter Wishlist Title"
+                    placeholder={t('editWishlist.titlePlaceholder')}
                     error={!!errors.title}
                     {...field}
                   />
@@ -98,13 +98,13 @@ export const EditCardInfoForm = ({ card, onClose }: EditCardInfoFormProps) => {
                       variant="body"
                       className="font-semibold text-purple-900"
                     >
-                      Wishlist Description
+                      {t('editWishlist.descriptionLabel')}
                     </Text>
                   </div>
                 </FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Enter Wishlist Description"
+                    placeholder={t('editWishlist.descriptionPlaceholder')}
                     error={!!errors.description}
                     {...field}
                   />
@@ -151,14 +151,14 @@ export const EditCardInfoForm = ({ card, onClose }: EditCardInfoFormProps) => {
                 variant="outline"
                 size="sm"
               >
-                Close
+                {t('common.cancel')}
               </Button>
             </DialogClose>
             <Button
               type="submit"
               size="sm"
             >
-              Save Changes
+              {t('common.save')}
             </Button>
           </div>
         </div>

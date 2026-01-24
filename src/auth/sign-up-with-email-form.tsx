@@ -6,8 +6,9 @@ import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import {
   SignUpWithEmailFormData,
   signUpWithEmailSchema,
-} from './schemas/auth.schema'
-import { useAuth } from './hooks/useAuth'
+} from '@/auth/schemas/auth.schema'
+import { useTranslation } from '@/lib/hooks/useTranslation'
+import { useAuth } from '@/auth/hooks/useAuth'
 import Loading from '@/assets/loading-purple.svg'
 import {
   Form,
@@ -27,12 +28,13 @@ interface SignUpWithEmailFormProps {
 }
 
 export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
+  const { t } = useTranslation()
   const { signUpWithEmail, authError, authActionLoading } = useAuth()
   const [hidePassword, setHidePassword] = useState(true)
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true)
 
   const form = useForm<SignUpWithEmailFormData>({
-    resolver: zodResolver(signUpWithEmailSchema),
+    resolver: zodResolver(signUpWithEmailSchema(t)),
     defaultValues: {
       email: '',
       displayName: '',
@@ -100,12 +102,12 @@ export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
                     variant="body"
                     className="font-semibold text-purple-900 mb-1"
                   >
-                    Email
+                    {t('auth.form.emailLabel')}
                   </Text>
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter Email"
+                    placeholder={t('auth.form.emailPlaceholder')}
                     error={!!errors.email}
                     {...field}
                   />
@@ -126,12 +128,12 @@ export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
                     variant="body"
                     className="font-semibold text-purple-900 mb-1"
                   >
-                    Display Name
+                    {t('auth.form.displayNameLabel')}
                   </Text>
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter Name"
+                    placeholder={t('auth.form.displayNamePlaceholder')}
                     error={!!errors.displayName}
                     {...field}
                   />
@@ -152,14 +154,14 @@ export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
                     variant="body"
                     className="font-semibold text-purple-900 mb-1"
                   >
-                    Password
+                    {t('auth.form.passwordLabel')}
                   </Text>
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       {...field}
-                      placeholder="Enter Password"
+                      placeholder={t('auth.form.passwordPlaceholder')}
                       error={!!errors.password}
                       onChange={(e) =>
                         handlePasswordChange(e.target.value, field.onChange)
@@ -191,14 +193,14 @@ export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
                     variant="body"
                     className="font-semibold text-purple-900 mb-1"
                   >
-                    Confirm Password
+                    {t('auth.form.passwordLabelConfirm')}
                   </Text>
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       {...field}
-                      placeholder="Confirm Password"
+                      placeholder={t('auth.form.passwordPlaceholderConfirm')}
                       error={!!errors.confirmPassword}
                       onChange={(e) =>
                         handlePasswordChange(e.target.value, field.onChange)
@@ -222,7 +224,7 @@ export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
           <Button
             type="submit"
             variant="primary"
-            className="mt-2 w-full"
+            className="mt-1 sm:mt-2 w-full"
             size="lg"
             disabled={authActionLoading}
           >
@@ -233,7 +235,7 @@ export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
                 className="animate-spin"
               />
             )}
-            {authActionLoading ? 'Signing up…' : 'Sign up'}
+            {authActionLoading ? t('auth.signingUp') : t('auth.signUp')}
           </Button>
 
           {authError && (

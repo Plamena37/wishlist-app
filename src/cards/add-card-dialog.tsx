@@ -1,5 +1,6 @@
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import {
   Dialog,
   DialogContent,
@@ -19,6 +20,7 @@ interface AddCardDialogProps {
 export const AddCardDialog = ({ onClose }: AddCardDialogProps) => {
   const { isCreateCardDialogOpen, toggleCreateCardDialog } = useCardsContext()
   const { user } = useAuth()
+  const { t } = useTranslation()
 
   const handleOpenChange = (nextOpen: boolean) => {
     if (!user || !user.displayName) {
@@ -46,7 +48,7 @@ export const AddCardDialog = ({ onClose }: AddCardDialogProps) => {
             variant="body"
             className="font-medium"
           >
-            Create Wishlist
+            {t('wishlistActions.createWishlist')}
           </Text>
         </Button>
       </DialogTrigger>
@@ -56,7 +58,7 @@ export const AddCardDialog = ({ onClose }: AddCardDialogProps) => {
         onClick={(e) => e.stopPropagation()}
       >
         <DialogHeader>
-          <DialogTitle>Create Wishlist</DialogTitle>
+          <DialogTitle> {t('wishlistActions.createWishlist')}</DialogTitle>
         </DialogHeader>
         {isAuthenticated ? (
           <AddCardForm onClose={handleOpenChange} />

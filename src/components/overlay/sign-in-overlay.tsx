@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { cn } from '@/lib/utils'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import { Button } from '@/components/ui/button'
@@ -14,9 +15,11 @@ import { SignUpWithEmailForm } from '@/auth/sign-up-with-email-form'
 
 interface SignInOverlay {
   title?: string
+  onClose?: () => void
 }
 
-export const SignInOverlay = ({ title }: SignInOverlay) => {
+export const SignInOverlay = ({ title, onClose }: SignInOverlay) => {
+  const { t } = useTranslation()
   const { signInWithGoogle, signInWithFacebook, clearAuthError } = useAuth()
   const { setShowSignInDialog } = useCardsContext()
   const [open, setOpen] = useState(true)
@@ -27,6 +30,7 @@ export const SignInOverlay = ({ title }: SignInOverlay) => {
   const handleClose = () => {
     setOpen(false)
     setShowSignInDialog(false)
+    onClose?.()
     clearAuthError()
   }
 
@@ -45,11 +49,17 @@ export const SignInOverlay = ({ title }: SignInOverlay) => {
     clearAuthError()
   }
 
+  const titleCheck =
+    title ??
+    (showSignInWithEmail
+      ? t('auth.signInToContinue')
+      : t('auth.signUpToContinue'))
+
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-lg z-999">
-      <div className="bg-gray-200 fixed top-[50%] left-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg sm:p-6 p-4 shadow-lg justify-center items-center flex flex-col sm:max-w-96">
+      <div className="bg-gray-200 fixed top-[50%] left-[50%] z-50 w-full max-w-[calc(100%-1.5rem)] translate-x-[-50%] translate-y-[-50%] gap-2 sm:gap-4 rounded-lg sm:p-6 p-4 shadow-lg justify-center items-center flex flex-col sm:max-w-104">
         <Text className="text-base sm:text-lg font-semibold text-center sm:text-left px-5 sm:px-0 leading-4 w-full">
-          {title ?? `Sign ${showSignInWithEmail ? 'in' : 'up'} to continue ✨`}
+          {titleCheck}
         </Text>
 
         <FontAwesomeIcon
@@ -71,13 +81,15 @@ export const SignInOverlay = ({ title }: SignInOverlay) => {
             className="text-xs sm:py-0"
           >
             {showSignInWithEmail
-              ? 'Don\'t have an account? Sign up'
-              : 'Have an account? Sign In'}
+              ? t('auth.dontHaveAccount')
+              : t('auth.haveAccount')}
           </Button>
 
           <div className="flex gap-2 justify-center items-center w-full pt-2">
             <div className="border-b-2 border-b-gray-300 w-full"></div>
-            <Text className="text-xs text-gray-800 font-medium">OR</Text>
+            <Text className="text-xs text-gray-800 font-medium">
+              {t('auth.or')}
+            </Text>
             <div className="border-b-2 border-b-gray-300 w-full"></div>
           </div>
         </div>
@@ -102,7 +114,7 @@ export const SignInOverlay = ({ title }: SignInOverlay) => {
             variant="body"
             className="text-purple-900 font-semibold"
           >
-            Continue with Google
+            {t('auth.continueWithGoogle')}
           </Text>
         </Button>
 
@@ -126,7 +138,7 @@ export const SignInOverlay = ({ title }: SignInOverlay) => {
             variant="body"
             className="text-purple-900 font-semibold"
           >
-            Continue with Facebook
+            {t('auth.continueWithFacebook')}
           </Text>
         </Button>
       </div>

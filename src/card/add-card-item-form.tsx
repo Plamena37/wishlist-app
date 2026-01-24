@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import {
   AddCardItemFormData,
@@ -22,10 +23,11 @@ interface AddCardItemFormProps {
 }
 
 export const AddCardItemForm = ({ onClose }: AddCardItemFormProps) => {
+  const { t } = useTranslation()
   const { card, addCardItem, loadingCardItem } = useCardsContext()
 
   const form = useForm<AddCardItemFormData>({
-    resolver: zodResolver(addCardItemSchema),
+    resolver: zodResolver(addCardItemSchema(t)),
     defaultValues: {
       itemName: '',
       itemLink: '',

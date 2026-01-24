@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { Card } from '@/lib/types/Cards'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import {
@@ -23,6 +24,7 @@ export const DeleteCardDialog = ({
   card,
   onMenuClose,
 }: DeleteCardDialogProps) => {
+  const { t } = useTranslation()
   const { removeCard } = useCardsContext()
   const { cardId } = useParams<{ cardId: string }>()
   const navigate = useNavigate()
@@ -51,26 +53,34 @@ export const DeleteCardDialog = ({
             variant="body"
             className="text-red-600 font-medium"
           >
-            Delete Wishlist
+            {t('wishlistActions.deleteWishlist')}
           </Text>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Wishlist</DialogTitle>
+          <DialogTitle>{t('common.delete')} Wishlist</DialogTitle>
         </DialogHeader>
+
         <Text variant="h5">
-          Are you sure you want to delete "{card.title}"?
+          {t('editWishes.deleteConf')}
+          <Text
+            variant="h5"
+            weight="semibold"
+          >
+            “{card.title}”
+          </Text>{' '}
+          ?
         </Text>
         <div className="flex justify-center sm:justify-end gap-2 sm:mt-4 mt-1">
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline">{t('common.cancel')}</Button>
           </DialogClose>
           <Button
             variant="dark"
             onClick={handleDeleteCard}
           >
-            Delete
+            {t('common.delete')}
           </Button>
         </div>
       </DialogContent>

@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { cn } from '@/lib/utils'
-import { authMessages, loadingMessages } from '@/lib/constants/messages'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import { useAuth } from '@/auth/hooks/useAuth'
 import useBreakpoints from '@/lib/hooks/useBreakpoints'
 import { ROUTES } from '@/router/constants/app-routes'
@@ -15,17 +15,24 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
+  SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
-import { SignInOverlayDialog } from '@/components/overlay/sign-in-overlay-dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { LoadingOverlay } from '@/components/overlay/loading-overlay'
-
-const navLinks = [
-  { to: ROUTES.HOME, label: 'Home' },
-  { to: ROUTES.CARDS, label: 'My Cards' },
-  { to: ROUTES.FAQ, label: 'FAQ' },
-]
+import {
+  LanguageSwitcher,
+  MobileLanguageSwitcher,
+} from '@/components/language-switcher/language-switcher'
+import { SignInOverlay } from '@/components/overlay/sign-in-overlay'
+import { SignInOverlayDialog } from '@/components/overlay/sign-in-overlay-dialog'
 
 const getActiveParent = (pathname: string): string | null => {
   if (pathname === '/') return ROUTES.HOME
@@ -35,18 +42,34 @@ const getActiveParent = (pathname: string): string | null => {
 }
 
 export const AppHeader = () => {
+  const { t } = useTranslation()
   const { user, signOut, isUserSignedIn, authProviderActionLoading } = useAuth()
   const { pathname } = useLocation()
   const links = AccountDropdownLinks()
   const { isSm } = useBreakpoints()
+
   const [sheetOpen, setSheetOpen] = useState(false)
   const [openSignInOverlay, setOpenSignInOverlay] = useState(false)
+
+  const navLinks = [
+    { to: ROUTES.HOME, label: t('navigation.home') },
+    { to: ROUTES.CARDS, label: t('navigation.myCards') },
+    { to: ROUTES.FAQ, label: t('navigation.faq') },
+  ]
 
   const hideNavButtons = !user || !user.displayName
   const activeParent = getActiveParent(pathname)
 
-  const toggleSignInOverlay = () => {
+  const handleOpenSignInOverlay = () => {
     setOpenSignInOverlay((prev) => !prev)
+  }
+
+  const handleCloseSignInOverlay = () => {
+    setOpenSignInOverlay(false)
+  }
+
+  const handleCloseSheet = () => {
+    setSheetOpen(false)
   }
 
   useEffect(() => {
@@ -64,8 +87,8 @@ export const AppHeader = () => {
   if (authProviderActionLoading) {
     return (
       <LoadingOverlay
-        title={authMessages.logging_in}
-        subtitle={loadingMessages.loading_subtitle}
+        title={t('auth.loggingIn')}
+        subtitle={t('loading.loadingRequest')}
       />
     )
   }
@@ -74,7 +97,7 @@ export const AppHeader = () => {
     <>
       <header
         className={cn(
-          'bg-purple-800 text-white flex items-center justify-between h-14 shrink-0 w-full shadow-sm z-50',
+          'sticky top-0 left-0 bg-purple-800 text-white flex items-center justify-between h-14 shrink-0 w-full shadow-sm z-50',
           isSm ? 'px-4' : 'px-2'
         )}
       >
@@ -112,11 +135,15 @@ export const AppHeader = () => {
                     'hover:text-purple-900 hover:border-purple-900 border-b-1 border-b-transparent transition w-fit p-0 sm:p-0',
                     isSm ? 'text-md' : 'text-sm'
                   )}
-                  onClick={toggleSignInOverlay}
+                  onClick={handleOpenSignInOverlay}
                 >
-                  Sign In
+                  {t('navigation.signIn')}
                 </Button>
               )}
+
+              <li>
+                <LanguageSwitcher />
+              </li>
             </ul>
           ) : (
             <Sheet
@@ -130,6 +157,9 @@ export const AppHeader = () => {
                 />
               </SheetTrigger>
               <SheetContent>
+                <SheetDescription className="sr-only">
+                  <SheetTitle />
+                </SheetDescription>
                 <ul className="flex flex-col gap-3 p-6 justify-center items-center h-full">
                   {navLinks.map(({ to, label }) => (
                     <li key={to}>
@@ -154,7 +184,7 @@ export const AppHeader = () => {
                         className="hover:text-purple-900 hover:border-purple-900 text-black font-normal border-b-1 border-b-transparent transition w-fit p-0 text-lg"
                         onClick={signOut}
                       >
-                        Sign Out
+                        {t('navigation.signOut')}
                       </Button>
                     </SheetClose>
                   )}
@@ -162,31 +192,43 @@ export const AppHeader = () => {
                   {hideNavButtons && (
                     <Dialog
                       open={openSignInOverlay}
-                      onOpenChange={toggleSignInOverlay}
+                      onOpenChange={handleOpenSignInOverlay}
                     >
-                      <DialogTrigger>
+                      <DialogTrigger asChild>
                         <Button
                           variant="link"
                           className="hover:text-purple-900 hover:border-purple-900 text-black font-normal border-b-1 border-b-transparent transition w-fit p-0 text-lg"
                         >
-                          Sign In
+                          {t('navigation.signIn')}
                         </Button>
                       </DialogTrigger>
                       <DialogContent
                         onKeyDown={(e) => e.stopPropagation()}
                         onKeyUp={(e) => e.stopPropagation()}
                         onClick={(e) => e.stopPropagation()}
+                        className="gap-2 sm:gap-4"
                       >
+                        <DialogHeader className="sr-only">
+                          <DialogTitle />
+                        </DialogHeader>
                         <SignInOverlayDialog />
                       </DialogContent>
                     </Dialog>
                   )}
+
+                  <li>
+                    <MobileLanguageSwitcher onClose={handleCloseSheet} />
+                  </li>
                 </ul>
               </SheetContent>
             </Sheet>
           )}
         </nav>
       </header>
+
+      {openSignInOverlay && isSm && (
+        <SignInOverlay onClose={handleCloseSignInOverlay} />
+      )}
     </>
   )
 }

@@ -2,13 +2,14 @@ import { useNavigate } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { ROUTES } from '@/router/constants/app-routes'
-import { errorMessages } from '@/lib/constants/messages'
+import { useTranslation } from '@/lib/hooks/useTranslation'
 import NotFound from '@/assets/not-found.svg'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
 import { Button } from '@/components/ui/button'
 
 const GeneralErrorPage = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const navigateToHomePage = () => {
@@ -30,14 +31,14 @@ const GeneralErrorPage = () => {
         variant="h3"
         className="font-semibold text-gray-400 "
       >
-        {errorMessages.page_not_found}
+        {t('errorPage.title')}
       </Text>
       <Button
         variant="link"
         onClick={navigateToHomePage}
       >
         <FontAwesomeIcon icon={faArrowLeft} />
-        {errorMessages.go_to_home_page}
+        {t('errorPage.subtitle')}
       </Button>
     </div>
   )
