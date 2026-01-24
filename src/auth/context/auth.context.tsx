@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
 import {
-  signInAnonymously,
   onAuthStateChanged,
   User,
   signOut,
@@ -94,8 +93,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (firebaseUser) {
         setUser(firebaseUser)
       } else {
-        await signInAnonymously(auth)
+        setUser(null)
       }
+
       setLoading(false)
     })
 
@@ -210,7 +210,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // }
 
   const handleSignOut = async () => {
-    await signOut(auth)
+    setLoading(true)
+    setAuthError(null)
+
+    try {
+      await signOut(auth)
+      setIsUserSignedIn(false)
+    } catch (error) {
+      const message = getAuthErrorMessage(error as FirebaseError)
+      setAuthError(message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

@@ -51,13 +51,24 @@ export const getCard = async (cardId: string): Promise<Card | null> => {
 }
 
 export const createCard = async (data: NewCard & { ownerId: string }) => {
-  const docRef = await addDoc(collection(db, CARDS_COLLECTION), data)
-  return { id: docRef.id, ...data }
+  const updatedData = {
+    ...data,
+    createdAt: new Date().toISOString(),
+    lastUpdatedAt: new Date().toISOString(),
+  }
+
+  const docRef = await addDoc(collection(db, CARDS_COLLECTION), updatedData)
+  return { id: docRef.id, ...updatedData }
 }
 
 export const updateCard = async (cardId: string, data: Partial<Card>) => {
+  const updatedData = {
+    ...data,
+    lastUpdatedAt: new Date().toISOString(),
+  }
+
   const cardRef = doc(db, CARDS_COLLECTION, cardId)
-  await updateDoc(cardRef, data)
+  await updateDoc(cardRef, updatedData)
 
   const snap = await getDoc(cardRef)
   if (!snap.exists()) throw new Error('Wishlist not found')

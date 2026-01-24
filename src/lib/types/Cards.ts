@@ -6,6 +6,8 @@ export interface Card {
   isPublic: boolean
   image: string
   items: CardItem[]
+  createdAt?: Date | string
+  lastUpdatedAt?: Date | string
 }
 
 export interface CardItem {
@@ -14,6 +16,8 @@ export interface CardItem {
   link?: string | null
   price?: string | null
   reservedBy: string
+  createdAt?: Date | string
+  lastUpdatedAt?: Date | string
 }
 
 export type NewCard = Omit<Card, 'id' | 'ownerId'> & {

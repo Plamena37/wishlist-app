@@ -263,6 +263,8 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
       ...item,
       id: nanoid(),
       reservedBy: '',
+      createdAt: new Date().toISOString(),
+      lastUpdatedAt: new Date().toISOString(),
     }))
 
     try {
@@ -300,6 +302,9 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
           ...item,
           id: item?.id ?? nanoid(),
           reservedBy: item?.reservedBy ?? '',
+          lastUpdatedAt: new Date().toISOString(),
+          // @ts-expect-error wrong ts type
+          createdAt: item?.createdAt ?? new Date().toISOString(),
         }))
       }
 

@@ -17,6 +17,8 @@ export const addItem = async (
   const newItem = {
     id: nanoid(),
     reservedBy: '',
+    createdAt: new Date().toISOString(),
+    lastUpdatedAt: new Date().toISOString(),
     ...newItemData,
   }
 
@@ -80,7 +82,11 @@ export const updateItem = async (
     const idx = items.findIndex((i) => i.id === itemId)
     if (idx === -1) throw new Error('Wish not found')
 
-    const updatedItem = { ...items[idx], ...updatedFields }
+    const updatedItem = {
+      ...items[idx],
+      ...updatedFields,
+      lastUpdatedAt: new Date().toISOString(),
+    }
     const newItems = [...items]
     newItems[idx] = updatedItem
 
@@ -112,7 +118,10 @@ export const reserveItem = async (
       throw new Error('Wish already reserved')
     }
 
-    const updated = { ...current, reservedBy: userId }
+    const updated = {
+      ...current,
+      reservedBy: userId,
+    }
     const newItems = [...items]
     newItems[idx] = updated
 
@@ -147,7 +156,10 @@ export const unreserveItem = async (
       throw new Error('You cannot unreserve an item reserved by another user')
     }
 
-    const updated = { ...current, reservedBy: '' }
+    const updated = {
+      ...current,
+      reservedBy: '',
+    }
     const newItems = [...items]
     newItems[idx] = updated
 

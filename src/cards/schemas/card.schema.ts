@@ -14,6 +14,8 @@ export const addCardSchema = (t: (key: string) => string) =>
         })
       )
       .optional(),
+    createdAt: z.string().optional(),
+    lastUpdatedAt: z.string().optional(),
   })
 
 export const editCardSchema = (t: (key: string) => string) =>
@@ -32,6 +34,8 @@ export const editCardSchema = (t: (key: string) => string) =>
         })
       )
       .optional(),
+    createdAt: z.string().optional(),
+    lastUpdatedAt: z.string().optional(),
   })
 
 export type AddCardFormData = z.infer<ReturnType<typeof addCardSchema>>
