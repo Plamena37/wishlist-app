@@ -39,7 +39,7 @@ export const AppFooter = () => {
           <li>
             <a
               href="mailto:plamivanova37@gmail.com?subject=Whishlist%20Support&body=Hi%20Plamena,"
-              className="hover:text-gray-900 transition"
+              className="hover:text-black transition"
             >
               <Text
                 as="p"

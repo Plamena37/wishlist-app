@@ -33,6 +33,7 @@ import {
 } from '@/components/language-switcher/language-switcher'
 import { SignInOverlay } from '@/components/overlay/sign-in-overlay'
 import { SignInOverlayDialog } from '@/components/overlay/sign-in-overlay-dialog'
+import { ThemeSwitcher } from '@/components/theme-switch/theme-switcher'
 
 const getActiveParent = (pathname: string): string | null => {
   if (pathname === '/') return ROUTES.HOME
@@ -68,9 +69,9 @@ export const AppHeader = () => {
     setOpenSignInOverlay(false)
   }
 
-  const handleCloseSheet = () => {
-    setSheetOpen(false)
-  }
+  // const handleCloseSheet = () => {
+  //   setSheetOpen(false)
+  // }
 
   useEffect(() => {
     if (!sheetOpen) {
@@ -144,6 +145,14 @@ export const AppHeader = () => {
               <li>
                 <LanguageSwitcher />
               </li>
+
+              <li>
+                <ThemeSwitcher
+                  className="bg-purple-900"
+                  toggleGroupItemBg="bg-purple-900 data-[state=on]:bg-purple-800"
+                  iconBg="text-white"
+                />
+              </li>
             </ul>
           ) : (
             <Sheet
@@ -160,7 +169,7 @@ export const AppHeader = () => {
                 <SheetDescription className="sr-only">
                   <SheetTitle />
                 </SheetDescription>
-                <ul className="flex flex-col gap-3 p-6 justify-center items-center h-full">
+                <ul className="relative flex flex-col gap-3 p-6 justify-center items-center h-full w-full">
                   {navLinks.map(({ to, label }) => (
                     <li key={to}>
                       <SheetClose asChild>
@@ -216,8 +225,13 @@ export const AppHeader = () => {
                     </Dialog>
                   )}
 
-                  <li>
-                    <MobileLanguageSwitcher onClose={handleCloseSheet} />
+                  <li className="absolute bottom-5 left-2">
+                    <MobileLanguageSwitcher />
+                    {/* <MobileLanguageSwitcher onClose={handleCloseSheet} /> */}
+                  </li>
+
+                  <li className="absolute bottom-3 right-2">
+                    <ThemeSwitcher />
                   </li>
                 </ul>
               </SheetContent>

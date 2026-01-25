@@ -14,6 +14,7 @@ import step2ImageBG from '@/assets/bg_2.png'
 import step3ImageBG from '@/assets/bg_3.png'
 import { Text } from '@/components/ui/text'
 import { Button } from '@/components/ui/button'
+import { TransText } from '@/components/trans-text/trans-text'
 
 const HomePage = () => {
   const { t, lang } = useTranslation()
@@ -46,18 +47,12 @@ const HomePage = () => {
         ></div>
 
         <div className="relative z-10 max-w-2xl flex flex-col gap-4 items-center">
-          <Text
-            variant="h1"
-            className="font-bold text-gray-800 drop-shadow-lg"
-          >
-            <span className="text-balloon-red-200">
-              {t('homePage.hero.titleStop')}
-            </span>
-            {t('homePage.hero.title')}
-            <span className="text-balloon-red-200">
-              {t('homePage.hero.titleWhishlist')}
-            </span>
-          </Text>
+          <TransText
+            tKey={t('homePage.hero.title')}
+            textVariant="h1"
+            textClassName="font-bold text-gray-800 drop-shadow-lg"
+            className="text-balloon-red-200"
+          />
 
           <Text
             variant="body"
@@ -127,28 +122,22 @@ const HomePage = () => {
 
           <ul className="flex flex-col gap-2 items-start">
             <li className="text-left">
-              <Text variant="body">
-                <span className="font-semibold">
-                  {t('homePage.threeSteps.step1')}
-                </span>
-                {t('homePage.threeSteps.step1Title')}
-              </Text>
+              <TransText
+                tKey={t('homePage.threeSteps.step1')}
+                className="text-purple-900 font-semibold"
+              />
             </li>
             <li className="text-left">
-              <Text variant="body">
-                <span className="font-semibold">
-                  {t('homePage.threeSteps.step2')}
-                </span>
-                {t('homePage.threeSteps.step2Title')}
-              </Text>
+              <TransText
+                tKey={t('homePage.threeSteps.step2')}
+                className="text-purple-900 font-semibold"
+              />
             </li>
             <li className="text-left">
-              <Text variant="body">
-                <span className="font-semibold">
-                  {t('homePage.threeSteps.step3')}
-                </span>
-                {t('homePage.threeSteps.step3Title')}
-              </Text>
+              <TransText
+                tKey={t('homePage.threeSteps.step3')}
+                className="text-purple-900 font-semibold"
+              />
             </li>
           </ul>
           {/* <Text variant="body">Easy as a piece of 🎂</Text> */}
@@ -265,7 +254,7 @@ const HomePage = () => {
             <div className="text-4xl mb-3">😌</div>
             <Text
               as="h2"
-              className="font-semibold text-gray-900 mb-2"
+              className="font-semibold text-black mb-2"
             >
               {t('homePage.overview.card2Title')}
             </Text>

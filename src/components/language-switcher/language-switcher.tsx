@@ -13,57 +13,59 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Icon } from '@/components/ui/icon'
 
-interface MobileLanguageSwitcherProps {
-  onClose?: () => void
-}
+// interface MobileLanguageSwitcherProps {
+//   onClose?: () => void
+// }
 
-export const MobileLanguageSwitcher = ({
-  onClose,
-}: MobileLanguageSwitcherProps) => {
-  const { lang, setLang } = useTranslation()
+export const MobileLanguageSwitcher = () =>
+  // {
+  // onClose,
+  // }: MobileLanguageSwitcherProps
+  {
+    const { lang, setLang } = useTranslation()
 
-  const handleSwitchToEn = () => {
-    setLang(Language.EN)
-    onClose?.()
+    const handleSwitchToEn = () => {
+      setLang(Language.EN)
+      // onClose?.()
+    }
+
+    const handleSwitchToBg = () => {
+      setLang(Language.BG)
+      // onClose?.()
+    }
+
+    return (
+      <div className="flex items-center gap-1">
+        <Button
+          variant={lang === Language.EN ? 'alternate' : 'ghost'}
+          className="w-auto"
+          onClick={handleSwitchToEn}
+        >
+          <Icon
+            src={USAFlag}
+            style={{
+              width: '24px',
+              height: '16px',
+            }}
+          />
+        </Button>
+        |
+        <Button
+          variant={lang === Language.BG ? 'alternate' : 'ghost'}
+          className="w-auto"
+          onClick={handleSwitchToBg}
+        >
+          <Icon
+            src={BGFlag}
+            style={{
+              width: '24px',
+              height: '16px',
+            }}
+          />
+        </Button>
+      </div>
+    )
   }
-
-  const handleSwitchToBg = () => {
-    setLang(Language.BG)
-    onClose?.()
-  }
-
-  return (
-    <div className="flex items-center gap-1">
-      <Button
-        variant={lang === Language.EN ? 'alternate' : 'ghost'}
-        className="w-auto"
-        onClick={handleSwitchToEn}
-      >
-        <Icon
-          src={USAFlag}
-          style={{
-            width: '24px',
-            height: '16px',
-          }}
-        />
-      </Button>
-      |
-      <Button
-        variant={lang === Language.BG ? 'alternate' : 'ghost'}
-        className="w-auto"
-        onClick={handleSwitchToBg}
-      >
-        <Icon
-          src={BGFlag}
-          style={{
-            width: '24px',
-            height: '16px',
-          }}
-        />
-      </Button>
-    </div>
-  )
-}
 
 export const LanguageSwitcher = () => {
   const { lang, setLang } = useTranslation()

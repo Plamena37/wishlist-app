@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/accordion'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
+import { TransText } from '@/components/trans-text/trans-text'
 
 const FAQPage = () => {
   const { t } = useTranslation()
@@ -49,69 +50,34 @@ const FAQPage = () => {
           <AccordionItem value="left-1">
             <AccordionTrigger>{t('faqPage.faq1.title')}</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
-              <Text
-                variant="body"
-                as="p"
-              >
-                {t('faqPage.faq1.description1')}
-                <strong>{t('faqPage.faq1.description2')}</strong>
-                {t('faqPage.faq1.description3')}
-              </Text>
-              <Text variant="body">{t('faqPage.faq1.description4')}</Text>
+              <TransText tKey={t('faqPage.faq1.description1')} />
+              <TransText tKey={t('faqPage.faq1.description2')} />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="left-2">
             <AccordionTrigger>{t('faqPage.faq2.title')}</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
-              <Text
-                variant="body"
-                as="p"
-              >
-                {t('faqPage.faq2.description1')}
-              </Text>
-              <Text variant="body">
-                {t('faqPage.faq2.description2')}
-                <strong> {t('faqPage.faq2.description3')}</strong>
-                {t('faqPage.faq2.description4')}
-                <strong> {t('faqPage.faq2.description5')}</strong>
-                {t('faqPage.faq2.description6')}
-              </Text>
+              <TransText tKey={t('faqPage.faq2.description1')} />
+              <TransText tKey={t('faqPage.faq2.description2')} />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="left-3">
             <AccordionTrigger>{t('faqPage.faq3.title')}</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
-              <Text
-                variant="body"
-                as="p"
-              >
-                {t('faqPage.faq3.description1')}
-              </Text>
-              <Text variant="body">
-                {t('faqPage.faq3.description2')}
-                <strong> {t('faqPage.faq3.description3')}</strong>
-              </Text>
+              <TransText tKey={t('faqPage.faq3.description1')} />
+              <TransText tKey={t('faqPage.faq3.description2')} />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="left-4">
             <AccordionTrigger>{t('faqPage.faq4.title')}</AccordionTrigger>
             <AccordionContent>
-              <Text variant="body">
-                {t('faqPage.faq4.description1')}
-                <strong>{t('faqPage.faq4.description2')}</strong>
-                {t('faqPage.faq4.description3')}
-                <strong>{t('faqPage.faq4.description4')}</strong>
-                {t('faqPage.faq4.description5')}
-              </Text>
+              <TransText tKey={t('faqPage.faq4.description')} />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="left-5">
             <AccordionTrigger>{t('faqPage.faq5.title')}</AccordionTrigger>
             <AccordionContent>
-              <Text variant="body">
-                {t('faqPage.faq5.description1')}
-                <strong>{t('faqPage.faq5.description2')}</strong>
-              </Text>
+              <TransText tKey={t('faqPage.faq5.description')} />
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -133,65 +99,29 @@ const FAQPage = () => {
           <AccordionItem value="right-1">
             <AccordionTrigger>{t('faqPage.faq6.title')}</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
-              <Text
-                variant="body"
-                as="p"
-              >
-                {t('faqPage.faq6.description1')}
-              </Text>
-              <Text variant="body">
-                {t('faqPage.faq6.description2')}
-                <strong>{t('faqPage.faq6.description3')}</strong>
-                {t('faqPage.faq6.description4')}
-              </Text>
+              <TransText tKey={t('faqPage.faq6.description1')} />
+              <TransText tKey={t('faqPage.faq6.description2')} />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="right-2">
             <AccordionTrigger>{t('faqPage.faq7.title')}</AccordionTrigger>
             <AccordionContent>
-              <Text
-                variant="body"
-                as="p"
-              >
-                {t('faqPage.faq7.description1')}
-                <strong>{t('faqPage.faq7.description2')}</strong>
-                {t('faqPage.faq7.description3')}
-              </Text>
+              <TransText tKey={t('faqPage.faq7.description')} />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="right-3">
             <AccordionTrigger>{t('faqPage.faq8.title')}</AccordionTrigger>
             <AccordionContent>
-              <Text variant="body">{t('faqPage.faq8.description1')}</Text>
+              <TransText tKey={t('faqPage.faq8.description1')} />
               <ul className="list-disc pl-5 mt-2 space-y-1">
                 <li>
-                  <Text
-                    variant="body"
-                    as="p"
-                  >
-                    {t('faqPage.faq8.description2')}{' '}
-                    <strong>{t('faqPage.faq8.description3')}</strong>
-                    {t('faqPage.faq8.description4')}
-                  </Text>
+                  <TransText tKey={t('faqPage.faq8.description2')} />
                 </li>
                 <li>
-                  <Text
-                    variant="body"
-                    as="p"
-                  >
-                    {t('faqPage.faq8.description5')}
-                    <strong>{t('faqPage.faq8.description6')}</strong>
-                    {t('faqPage.faq8.description7')}
-                  </Text>
+                  <TransText tKey={t('faqPage.faq8.description3')} />
                 </li>
                 <li>
-                  <Text
-                    variant="body"
-                    as="p"
-                  >
-                    {t('faqPage.faq8.description8')}
-                    <strong>{t('faqPage.faq8.description9')}</strong>
-                  </Text>
+                  <TransText tKey={t('faqPage.faq8.description4')} />
                 </li>
               </ul>
             </AccordionContent>
@@ -199,42 +129,19 @@ const FAQPage = () => {
           <AccordionItem value="right-4">
             <AccordionTrigger>{t('faqPage.faq9.title')}</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
-              <Text
-                variant="body"
-                as="p"
-              >
-                <strong>{t('faqPage.faq9.description1')}</strong>
-              </Text>
-              <Text
-                variant="body"
-                as="p"
-              >
-                {t('faqPage.faq9.description2')}
-              </Text>
+              <TransText tKey={t('faqPage.faq9.description1')} />
+              <TransText tKey={t('faqPage.faq9.description2')} />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="right-5">
             <AccordionTrigger>{t('faqPage.faq10.title')}</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
-              <Text
-                variant="body"
-                as="p"
-              >
-                {t('faqPage.faq10.description1')}
-              </Text>
-              <Text
-                variant="body"
-                as="p"
-              >
-                {t('faqPage.faq10.description2')}
-              </Text>
-              <Text
-                variant="body"
-                as="p"
-              >
-                <i>{t('faqPage.faq10.description3')}</i>{' '}
-                {t('faqPage.faq10.description4')}
-              </Text>
+              <TransText tKey={t('faqPage.faq10.description1')} />
+              <TransText tKey={t('faqPage.faq10.description2')} />
+              <TransText
+                tKey={t('faqPage.faq10.description3')}
+                className="font-normal italic"
+              />
             </AccordionContent>
           </AccordionItem>
         </Accordion>

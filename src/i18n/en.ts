@@ -137,9 +137,8 @@ export const en = {
   },
   homePage: {
     hero: {
-      titleStop: 'Stop ',
-      title: 'Explaining What You Want — Just Share Your',
-      titleWhishlist: ' Wishlist.',
+      title:
+        '<highlight>Stop</highlight> Explaining What You Want — Just Share Your <highlight>Wishlist</highlight>',
       subTitle:
         'Create a card for your birthday, wedding, or any occasion — list what you want, add prices and links, and share it with friends.',
       description: 'Easy as a piece of 🎂',
@@ -155,13 +154,12 @@ export const en = {
     threeSteps: {
       title: '✨ Three easy steps to peace and presents',
       description:
-        'Create a card for your birthday, or any occasion — list what you want, add prices and links, and share it with friends.',
-      step1: 'Step 1: ',
-      step1Title: 'Create your card — from My Cards page.',
-      step2: 'Step 2: ',
-      step2Title: 'Add your wishes — as you create or edit your card.',
-      step3: 'Step 3: ',
-      step3Title: 'Share the link',
+        'Create a card for your birthday, or any occasion — list what you want, add prices and links, and share it with friends',
+      step1:
+        '<highlight>Step 1:</highlight> Create your card — from My Cards page',
+      step2:
+        '<highlight>Step 2:</highlight> Add your wishes — as you create or edit your card.',
+      step3: '<highlight>Step 3:</highlight> Share the link',
       cta: 'Create My Wishlist',
       learnMore: 'Learn More',
     },
@@ -185,75 +183,58 @@ export const en = {
       'Below you will find answers to the most common questions you may have on Whishlist.',
     faq1: {
       title: 'What is the app about?',
-      description1: 'This app lets you create a ',
-      description2: 'wishlist',
-      description3:
-        ', add your wishes, and share a link with friends so they can get you exactly what you want — no extra effort!',
-      description4:
+      description1:
+        'This app lets you create a <highlight>wishlist</highlight>, add your wishes, and share a link with friends so they can get you exactly what you want — no extra effort!',
+      description2:
         'You can reserve wishes, sort them, chat with our AI assistant for gift ideas, and much more. 🎁',
     },
     faq2: {
       title: 'How do I create a wishlist?',
       description1: 'First, make sure you’re logged in 🔐.',
-      description2: 'From the "Home" page: Click',
-      description3: ' “Create my wishlist”',
-      description4: ' or go to "My Cards" page → click ',
-      description5: '“Create wishlist”',
-      description6:
-        ' (top right). Fill in your occasion, add a description, and start adding wishes ✨',
+      description2:
+        'From the "Home" page: Click <highlight>“Create my wishlist”</highlight> or go to "My Cards" page → click <highlight>“Create wishlist”</highlight> (top right). Fill in your occasion, add a description, and start adding wishes ✨',
     },
     faq3: {
       title: 'How do I add gifts to my wishlist?',
       description1:
         'You can add wishes anytime: While creating your wishlist ✨',
       description2:
-        'Or later: Open your wishlist → click the three dots → choose',
-      description3: ' Edit Wishes',
+        'Or later: Open your wishlist → click the three dots → choose <highlight>Edit Wishes</highlight>',
     },
     faq4: {
       title: 'How do I edit a wishlist or a wish?',
-      description1: 'Easy! 👍 Use ',
-      description2: 'Edit Wishes',
-      description3: ' to update your gifts or use ',
-      description4: 'Edit Wishlist',
-      description5: ' to change the title or description',
+      description:
+        'Easy! 👍 Use <highlight>Edit Wishes</highlight> to update your gifts or use <highlight>Edit Wishlist</highlight> to change the title or description',
     },
     faq5: {
       title: 'Can I delete a wishlist or a gift?',
-      description1:
-        'Yes! Just open your wishlist → click the three dots → select',
-      description2: ' Delete Wishlist',
+      description:
+        'Yes! Just open your wishlist → click the three dots → select <highlight>Delete Wishlist</highlight>',
     },
     faq6: {
       title: 'I have no idea what gifts to add',
       description1: 'Don’t worry! 😄',
-      description2: ' Open our ',
-      description3: 'Wishlist AI Chatbot ',
-      description4:
-        '(bottom right), tell it what you like or your hobbies, and it will suggest gift ideas tailored just for you.',
+      description2:
+        'Open our <highlight>Wishlist AI Chatbot</highlight> (bottom right), tell it what you like or your hobbies, and it will suggest gift ideas tailored just for you.',
     },
     faq7: {
       title: 'How do I share my wishlist with friends?',
-      description1:
-        'Super simple 😊 Open your wishlist → click the three dots → choose ',
-      description2: ' Copy Link',
-      description3: ' → send it to anyone you like!',
+      description:
+        'Super simple 😊 Open your wishlist → click the three dots → choose <highlight>Copy Link</highlight> → send it to anyone you like!',
     },
     faq8: {
       title: 'How do I reserve a gift?',
       description1: 'First, make sure you’re logged in 🔐',
-      description2: 'Look for gifts marked ',
-      description3: '“Free 💝”',
-      description4: 'and click to reserve',
-      description5: 'If it says ',
-      description6: '“Reserved 🙄”',
-      description7: ', someone else already took it',
-      description8: 'Gifts you reserve yourself will show as ',
-      description9: '“Reserved by you 💪”',
+      description2:
+        'Look for gifts marked <highlight>“Free 💝”</highlight> and click to reserve',
+      description3:
+        'If it says <highlight>“Reserved 🙄”</highlight>, someone else already took it',
+      description4:
+        'Gifts you reserve yourself will show as <highlight>“Reserved by you 💪”</highlight>',
     },
     faq9: {
       title: 'Can more than one person reserve the same gift by accident?',
-      description1: 'Nope! ❌',
+      description1: '<highlight>Nope! ❌</highlight>',
       description2:
         'Reservations update in real time, so once someone reserves a  gift, it’s immediately marked and no one else can reserve it.',
     },
@@ -261,9 +242,9 @@ export const en = {
       title: 'Why do I need to sign in?',
       description1: 'Signing in mostly helps with reserving gifts safely. 🎁',
       description2:
-        ' Without logging in, the app can’t tell if you’re the same user across different browsers, which could create conflicts.',
-      description3: 'Don’t worry — we’re not collecting your personal data.',
-      description4: 'We just want everything to work smoothly! ✅',
+        'Without logging in, the app can’t tell if you’re the same user across different browsers, which could create conflicts.',
+      description3:
+        '<highlight>Don’t worry — we’re not collecting your personal data.</highlight> We just want everything to work smoothly! ✅',
     },
   },
   cardPage: {

@@ -22,7 +22,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     const saved = localStorage.getItem('lang')
     if (saved === Language.EN || saved === Language.BG)
       return saved as LanguageType
-    return Language.EN
+    return Language.BG
   })
 
   useEffect(() => {
