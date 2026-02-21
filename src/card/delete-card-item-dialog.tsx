@@ -42,6 +42,7 @@ export const DeleteCardItemDialog = ({
         <Button
           variant="ghost"
           className="sm:px-0 text-red-600 border-red-600 hover:text-red-600 justify-start"
+          aria-label="Delete wish"
         >
           <FontAwesomeIcon icon={faTrash} />
           <Text
@@ -68,11 +69,17 @@ export const DeleteCardItemDialog = ({
         </Text>
         <div className="flex justify-center sm:justify-end gap-2 sm:mt-4 mt-1">
           <DialogClose asChild>
-            <Button variant="outline">{t('common.cancel')}</Button>
+            <Button
+              variant="outline"
+              aria-label="Cancel deletion"
+            >
+              {t('common.cancel')}
+            </Button>
           </DialogClose>
           <Button
             variant="dark"
             onClick={handleDeleteCardItem}
+            aria-label="Confirm deletion of wish"
           >
             {t('common.delete')}
           </Button>

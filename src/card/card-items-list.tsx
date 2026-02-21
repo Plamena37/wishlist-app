@@ -63,6 +63,7 @@ export const CardItemsList = ({ items }: CardItemsList) => {
             width: '150px',
             height: '150px',
           }}
+          alt="Page Eaten Icon"
         />
         <Text
           as="p"
@@ -117,6 +118,7 @@ export const CardItemsList = ({ items }: CardItemsList) => {
                   <Button
                     variant="link"
                     className="p-0 w-auto"
+                    aria-label="Wish Link"
                   >
                     <Link
                       to={item.link}

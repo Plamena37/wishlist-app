@@ -64,6 +64,7 @@ export const CardsActionsDropdown = ({
         <Button
           variant="ghost"
           className={`w-auto sm:px-1.5 sm:py-3.5 rounded-full hover:${btnBgColor}`}
+          aria-label="Card actions menu"
         >
           <FontAwesomeIcon
             icon={faEllipsisV}
@@ -88,6 +89,7 @@ export const CardsActionsDropdown = ({
             variant="ghost"
             className="sm:px-0 justify-start"
             onClick={handleCopyLink}
+            aria-label="Copy wishlist link"
           >
             <FontAwesomeIcon
               icon={faShare}

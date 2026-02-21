@@ -24,6 +24,7 @@ export const AIAssistant = () => {
       <Button
         onClick={toggleOpen}
         className="fixed bottom-5 right-5 z-50 h-12 w-12 rounded-full shadow-lg"
+        aria-label="Chatbot button"
       >
         <FontAwesomeIcon
           // icon={faMessage}

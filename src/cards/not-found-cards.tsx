@@ -14,6 +14,7 @@ export const NotFoundCards = () => {
           width: '150px',
           height: '150px',
         }}
+        alt="Taken Icon"
       />
       <Text
         as="h5"

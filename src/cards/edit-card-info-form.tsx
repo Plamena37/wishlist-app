@@ -150,6 +150,7 @@ export const EditCardInfoForm = ({ card, onClose }: EditCardInfoFormProps) => {
                 type="button"
                 variant="outline"
                 size="sm"
+                aria-label="Cancel editing wishlist"
               >
                 {t('common.cancel')}
               </Button>
@@ -157,6 +158,7 @@ export const EditCardInfoForm = ({ card, onClose }: EditCardInfoFormProps) => {
             <Button
               type="submit"
               size="sm"
+              aria-label="Save wishlist changes"
             >
               {t('common.save')}
             </Button>

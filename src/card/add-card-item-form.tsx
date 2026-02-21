@@ -170,6 +170,7 @@ export const AddCardItemForm = ({ onClose }: AddCardItemFormProps) => {
               type="button"
               disabled={loadingCardItem}
               onClick={closeForm}
+              aria-label="Close add item form"
             >
               Close
             </Button>
@@ -178,6 +179,7 @@ export const AddCardItemForm = ({ onClose }: AddCardItemFormProps) => {
               variant="primary"
               size="lg"
               disabled={loadingCardItem}
+              aria-label="Add item to card"
             >
               Add Wish
             </Button>

@@ -40,6 +40,7 @@ export const MobileLanguageSwitcher = () =>
           variant={lang === Language.EN ? 'alternate' : 'ghost'}
           className="w-auto"
           onClick={handleSwitchToEn}
+          aria-label="Switch to English language"
         >
           <Icon
             src={USAFlag}
@@ -47,6 +48,7 @@ export const MobileLanguageSwitcher = () =>
               width: '24px',
               height: '16px',
             }}
+            alt="USA Flag Icon"
           />
         </Button>
         |
@@ -54,6 +56,7 @@ export const MobileLanguageSwitcher = () =>
           variant={lang === Language.BG ? 'alternate' : 'ghost'}
           className="w-auto"
           onClick={handleSwitchToBg}
+          aria-label="Switch to Bulgarian language"
         >
           <Icon
             src={BGFlag}
@@ -61,6 +64,7 @@ export const MobileLanguageSwitcher = () =>
               width: '24px',
               height: '16px',
             }}
+            alt="BG Flag Icon"
           />
         </Button>
       </div>
@@ -85,6 +89,7 @@ export const LanguageSwitcher = () => {
           <Button
             variant="primary"
             className="w-auto sm:p-0"
+            aria-label="Switch Language button"
           >
             <Icon
               src={lang === Language.EN ? USAFlag : BGFlag}
@@ -92,6 +97,7 @@ export const LanguageSwitcher = () => {
                 width: '24px',
                 height: '16px',
               }}
+              alt="Current Language Flag Icon"
             />
           </Button>
         </DropdownMenuTrigger>
@@ -106,6 +112,7 @@ export const LanguageSwitcher = () => {
                     width: '24px',
                     height: '16px',
                   }}
+                  alt="USA Flag Icon"
                 />
               </DropdownMenuShortcut>
             </DropdownMenuItem>
@@ -119,6 +126,7 @@ export const LanguageSwitcher = () => {
                     width: '24px',
                     height: '16px',
                   }}
+                  alt="BG Flag Icon"
                 />
               </DropdownMenuShortcut>
             </DropdownMenuItem>

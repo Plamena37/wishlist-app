@@ -40,6 +40,7 @@ export const EditCardItemsDialog = ({
         <Button
           variant="ghost"
           className="sm:px-0 justify-start"
+          aria-label="Edit wishes"
         >
           <FontAwesomeIcon
             icon={faGift}

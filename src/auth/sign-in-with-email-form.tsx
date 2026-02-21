@@ -150,12 +150,14 @@ export const SignInWithEmailForm = ({ onClose }: SignInWithEmailFormProps) => {
             className="mt-2 w-full"
             size="lg"
             disabled={authActionLoading}
+            aria-label="Sign in with Email"
           >
             {authActionLoading && (
               <Icon
                 src={Loading}
                 size="sm"
                 className="animate-spin"
+                alt="Loading Icon"
               />
             )}
 

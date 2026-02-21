@@ -79,6 +79,7 @@ export const SignInOverlay = ({ title, onClose }: SignInOverlay) => {
             onClick={toggleShowSignInWithEmail}
             variant="link"
             className="text-xs sm:py-0"
+            aria-label="Toggle Sign in or up form"
           >
             {showSignInWithEmail
               ? t('auth.dontHaveAccount')
@@ -100,6 +101,7 @@ export const SignInOverlay = ({ title, onClose }: SignInOverlay) => {
             'p-4 rounded-full bg-gray-50 w-full hover:bg-gray-300 justify-center'
           )}
           onClick={handleSignInWithGoogle}
+          aria-label="Continue with Google button"
         >
           <Icon
             src={GoogleColorfull}
@@ -107,6 +109,7 @@ export const SignInOverlay = ({ title, onClose }: SignInOverlay) => {
               width: '20px',
               height: '20px',
             }}
+            alt="Google Icon"
           />
 
           <Text
@@ -124,6 +127,7 @@ export const SignInOverlay = ({ title, onClose }: SignInOverlay) => {
             'p-4 rounded-full bg-gray-50 w-full hover:bg-gray-300  justify-center'
           )}
           onClick={handleSignInWithFacebook}
+          aria-label="Continue with Facebook button"
         >
           <Icon
             src={Facebook}
@@ -131,6 +135,7 @@ export const SignInOverlay = ({ title, onClose }: SignInOverlay) => {
               width: '20px',
               height: '20px',
             }}
+            alt="Facebook Icon"
           />
 
           <Text

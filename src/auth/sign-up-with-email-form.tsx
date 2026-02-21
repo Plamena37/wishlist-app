@@ -227,12 +227,14 @@ export const SignUpWithEmailForm = ({ onClose }: SignUpWithEmailFormProps) => {
             className="mt-1 sm:mt-2 w-full"
             size="lg"
             disabled={authActionLoading}
+            aria-label="Sign up with Email"
           >
             {authActionLoading && (
               <Icon
                 src={Loading}
                 size="sm"
                 className="animate-spin"
+                alt="Loading Icon"
               />
             )}
             {authActionLoading ? t('auth.signingUp') : t('auth.signUp')}

@@ -50,6 +50,7 @@ const CardActionsDropdown = ({
         <Button
           variant="ghost"
           className={`w-auto sm:px-1.5 sm:py-3.5 rounded-full hover:${btnBgColor}`}
+          aria-label="Open card actions menu"
         >
           <FontAwesomeIcon
             icon={faEllipsisV}

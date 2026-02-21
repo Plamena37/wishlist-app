@@ -89,6 +89,7 @@ const FAQPage = () => {
             height: '42px',
           }}
           className="mx-auto sm:hidden opacity-55"
+          alt="Dots Icon"
         />
 
         <Accordion

@@ -24,7 +24,7 @@ export const CardsList = ({ cards }: CardsListProps) => {
   return (
     <ul className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 p-4 justify-items-center max-w-[1240px] mx-auto">
       {cards.map((card) => (
-        <div
+        <li
           key={card.id}
           className="relative flex flex-col justify-start items-center gap-4 bg-white shadow-sm rounded-sm p-4 w-[250px] h-[300px] hover:shadow-lg transition-shadow duration-200"
         >
@@ -60,11 +60,12 @@ export const CardsList = ({ cards }: CardsListProps) => {
             <Button
               variant="primary"
               onClick={() => navigateTo(card)}
+              aria-label="View wishlist details"
             >
               {t('wishlistActions.viewDetails')}
             </Button>
           </div>
-        </div>
+        </li>
       ))}
     </ul>
   )

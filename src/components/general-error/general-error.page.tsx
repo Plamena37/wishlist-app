@@ -25,6 +25,7 @@ const GeneralErrorPage = () => {
           height: 'auto',
           maxWidth: '400px',
         }}
+        alt="Not Found Icon"
       />
       <Text
         as="h3"
@@ -36,6 +37,7 @@ const GeneralErrorPage = () => {
       <Button
         variant="link"
         onClick={navigateToHomePage}
+        aria-label="Go back to home page"
       >
         <FontAwesomeIcon icon={faArrowLeft} />
         {t('errorPage.subtitle')}

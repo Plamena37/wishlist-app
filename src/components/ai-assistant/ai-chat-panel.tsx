@@ -66,6 +66,7 @@ export const AIChatPanel = ({ onClose }: AIChatPanelProps) => {
           size="icon"
           variant="ghost"
           onClick={onClose}
+          aria-label="Close AI assistant chat panel"
         >
           <FontAwesomeIcon
             icon={faXmark}
@@ -111,6 +112,7 @@ export const AIChatPanel = ({ onClose }: AIChatPanelProps) => {
           onClick={handleSend}
           className="w-auto h-8"
           disabled={disableChat}
+          aria-label="Send message to AI assistant"
         >
           <FontAwesomeIcon icon={faPaperPlane} />
         </Button>

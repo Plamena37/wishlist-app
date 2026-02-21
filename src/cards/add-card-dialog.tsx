@@ -43,6 +43,7 @@ export const AddCardDialog = ({ onClose }: AddCardDialogProps) => {
         <Button
           variant="outline"
           className="ml-auto mt-4 mr-4"
+          aria-label="Add new wishlist"
         >
           <Text
             variant="body"

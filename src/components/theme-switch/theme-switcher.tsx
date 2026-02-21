@@ -39,6 +39,7 @@ export const ThemeSwitcher = ({
           'hover:bg-transparent',
           toggleGroupItemBg
         )}
+        aria-label="Light Mode button"
       >
         <FontAwesomeIcon
           icon={faSun}
@@ -56,6 +57,7 @@ export const ThemeSwitcher = ({
           'hover:bg-transparent',
           toggleGroupItemBg
         )}
+        aria-label="Dark Mode button"
       >
         <FontAwesomeIcon
           icon={faMoon}

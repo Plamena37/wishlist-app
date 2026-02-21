@@ -14,6 +14,7 @@ export const LoadingOverlay = ({ title, subtitle }: LoadingOverlayProps) => {
         src={Loading}
         size={'lg'}
         className="animate-spin"
+        alt="Loading Icon"
       />
 
       <Text

@@ -57,6 +57,7 @@ const Collapse = ({
             variant="ghost"
             className="w-full hover:bg-transparent px-0"
             data-testid="collapsible-trigger-button"
+            aria-label={isOpen ? expandedText : collapsedText}
           >
             <Text
               className="font-semibold text-purple-800"

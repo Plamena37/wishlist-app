@@ -121,6 +121,7 @@ export const EditCardItemsForm = ({
               size="sm"
               className="text-purple-900 self-start w-full"
               onClick={() => remove(index)}
+              aria-label="Delete wish"
             >
               <FontAwesomeIcon icon={faTrash} />
             </Button>
@@ -143,6 +144,7 @@ export const EditCardItemsForm = ({
           disabled={
             fields.length > 0 && !watch(`items.${fields.length - 1}.name`)
           }
+          aria-label="Add new wish"
         >
           <FontAwesomeIcon
             icon={faPlus}
@@ -157,6 +159,7 @@ export const EditCardItemsForm = ({
               type="button"
               variant="outline"
               size="sm"
+              aria-label="Cancel editing wishlist"
             >
               {t('common.cancel')}
             </Button>
@@ -164,6 +167,7 @@ export const EditCardItemsForm = ({
           <Button
             type="submit"
             size="sm"
+            aria-label="Save wishlist changes"
           >
             {t('common.save')}
           </Button>

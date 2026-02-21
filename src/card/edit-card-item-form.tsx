@@ -153,6 +153,7 @@ export const EditCardItemForm = ({
                 type="button"
                 variant="outline"
                 size="sm"
+                aria-label="Cancel editing"
               >
                 {t('common.cancel')}
               </Button>
@@ -160,6 +161,7 @@ export const EditCardItemForm = ({
             <Button
               type="submit"
               size="sm"
+              aria-label="Save changes to wish"
             >
               {t('common.save')}
             </Button>

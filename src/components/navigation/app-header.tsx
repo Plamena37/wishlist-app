@@ -137,6 +137,7 @@ export const AppHeader = () => {
                     isSm ? 'text-md' : 'text-sm'
                   )}
                   onClick={handleOpenSignInOverlay}
+                  aria-label="Sign in button"
                 >
                   {t('navigation.signIn')}
                 </Button>
@@ -192,6 +193,7 @@ export const AppHeader = () => {
                         variant="link"
                         className="hover:text-purple-900 hover:border-purple-900 text-black font-normal border-b-1 border-b-transparent transition w-fit p-0 text-lg"
                         onClick={signOut}
+                        aria-label="Sign out button"
                       >
                         {t('navigation.signOut')}
                       </Button>
@@ -207,6 +209,7 @@ export const AppHeader = () => {
                         <Button
                           variant="link"
                           className="hover:text-purple-900 hover:border-purple-900 text-black font-normal border-b-1 border-b-transparent transition w-fit p-0 text-lg"
+                          aria-label="Open sign in dialog"
                         >
                           {t('navigation.signIn')}
                         </Button>

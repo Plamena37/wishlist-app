@@ -15,11 +15,11 @@ export default function DefaultLayout() {
     <RouterHistoryProvider>
       <div
         className="grid h-full grid-cols-[1fr] 
-        grid-rows-[56px_auto_120px] sm:grid-rows-[56px_auto_94px]               [grid-template-areas:'header''main''footer'] bg-gray-200 overflow-y-auto"
+        grid-rows-[auto_1fr_auto] [grid-template-areas:'header''main''footer'] bg-gray-200 overflow-y-auto"
       >
         {/* <div className="min-h-screen flex flex-col bg-gray-200"> */}
         <AppHeader />
-        <main className="[grid-area:main] flex flex-1 flex-col bg-gray-200">
+        <main className="[grid-area:main] flex flex-1 flex-col bg-background-muted">
           {/* <main className="flex-1 min-h-0 flex flex-col items-center justify-center overflow-y-auto"> */}
           <Outlet />
           <AIAssistant />

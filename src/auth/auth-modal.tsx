@@ -49,6 +49,7 @@ export const AuthModal = ({ onCloseSheet }: AuthModalProps) => {
           onClick={toggleShowSignInWithEmail}
           variant="link"
           className="text-xs sm:py-0"
+          aria-label="Toggle Sign in or up form"
         >
           {showSignInWithEmail
             ? t('auth.dontHaveAccount')
@@ -70,6 +71,7 @@ export const AuthModal = ({ onCloseSheet }: AuthModalProps) => {
           'p-4 rounded-full bg-gray-50 w-full max-w-56 hover:bg-gray-300 justify-start'
         )}
         onClick={handleGoogleSignIn}
+        aria-label="Sign in with Google"
       >
         <Icon
           src={GoogleColorfull}
@@ -77,6 +79,7 @@ export const AuthModal = ({ onCloseSheet }: AuthModalProps) => {
             width: '20px',
             height: '20px',
           }}
+          alt="Google Icon"
         />
 
         <Text
@@ -94,6 +97,7 @@ export const AuthModal = ({ onCloseSheet }: AuthModalProps) => {
           'p-4 rounded-full bg-gray-50 w-full max-w-56 hover:bg-gray-300 justify-start'
         )}
         onClick={handleFacebookSignIn}
+        aria-label="Sign in with Facebook"
       >
         <Icon
           src={Facebook}
@@ -101,6 +105,7 @@ export const AuthModal = ({ onCloseSheet }: AuthModalProps) => {
             width: '20px',
             height: '20px',
           }}
+          alt="Facebook Icon"
         />
 
         <Text

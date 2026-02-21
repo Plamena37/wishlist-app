@@ -25,6 +25,7 @@ export const LoadingToast = ({
         src={Loading}
         size={'sm'}
         className="animate-spin-reverse mr-2 h-[19px] leading-[19px]"
+        alt="Loading Icon"
       />
       <p className="text-sm text-white">{children}</p>
     </div>

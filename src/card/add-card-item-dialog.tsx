@@ -31,6 +31,7 @@ export const AddCardItemDialog = ({ onClose }: AddCardItemDialogProps) => {
         <Button
           variant="outline"
           className="ml-auto mt-4 mr-4"
+          aria-label="Add item to card"
         >
           <Text
             variant="body"

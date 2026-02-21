@@ -307,6 +307,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
                     size="sm"
                     className="text-purple-900 self-center w-full"
                     onClick={() => remove(index)}
+                    aria-label="Delete wish"
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </Button>
@@ -329,6 +330,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
                 fields.length > 0 && !watch(`items.${fields.length - 1}.name`)
               }
               className="w-full"
+              aria-label="Add new wish"
             >
               <FontAwesomeIcon
                 icon={faPlus}
@@ -345,6 +347,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
               type="button"
               disabled={loadingCardItem}
               onClick={closeForm}
+              aria-label="Close add item form"
             >
               {t('common.cancel')}
             </Button>
@@ -353,6 +356,7 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
               variant="primary"
               size="lg"
               disabled={loadingCardItem}
+              aria-label="Add item to card"
             >
               {t('wishlistActions.createWishlist')}
             </Button>

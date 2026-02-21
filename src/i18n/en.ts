@@ -12,14 +12,14 @@ export const en = {
   },
   loading: {
     loadingRequest: 'Please wait while we process your request.',
-    loadingCardTitle: 'Loading card...',
-    loadingCardSubtitle: 'Please wait while we fetch the card details.',
-    loadingCardsTitle: 'Loading your cards...',
-    loadingCardsSubtitle: 'Please wait while we fetch your cards.',
+    loadingCardTitle: 'Loading wishlist...',
+    loadingCardSubtitle: 'Please wait while we fetch the wishlist details.',
+    loadingCardsTitle: 'Loading your wishlists...',
+    loadingCardsSubtitle: 'Please wait while we fetch your wishlists.',
   },
   navigation: {
     home: 'Home',
-    myCards: 'My Cards',
+    myCards: 'My Wishlists',
     faq: 'FAQ',
     signIn: 'Sign In',
     signUp: 'Sign Up',
@@ -62,9 +62,9 @@ export const en = {
     placeholder: 'Ask me anything...',
   },
   noCardsFound: {
-    title: 'No cards available.',
+    title: 'No wishlists available.',
     description:
-      'You have not created any cards yet. Start by adding a new card!',
+      'You have not created any wishlists yet. Start by adding a new wishlist!',
   },
   wishlistActions: {
     createWishlist: 'Create Wishlist',
@@ -140,7 +140,7 @@ export const en = {
       title:
         '<highlight>Stop</highlight> Explaining What You Want — Just Share Your <highlight>Wishlist</highlight>',
       subTitle:
-        'Create a card for your birthday, wedding, or any occasion — list what you want, add prices and links, and share it with friends.',
+        'Create a wishlist for your birthday, wedding, or any occasion — list what you want, add prices and links, and share it with friends.',
       description: 'Easy as a piece of 🎂',
       cta: 'Create My Wishlist',
     },
@@ -154,11 +154,11 @@ export const en = {
     threeSteps: {
       title: '✨ Three easy steps to peace and presents',
       description:
-        'Create a card for your birthday, or any occasion — list what you want, add prices and links, and share it with friends',
+        'Create a wishlist for your birthday, or any occasion — list what you want, add prices and links, and share it with friends',
       step1:
-        '<highlight>Step 1:</highlight> Create your card — from My Cards page',
+        '<highlight>Step 1:</highlight> Create your wishlist — from My Wishlists page',
       step2:
-        '<highlight>Step 2:</highlight> Add your wishes — as you create or edit your card.',
+        '<highlight>Step 2:</highlight> Add your wishes — as you create or edit your wishlist.',
       step3: '<highlight>Step 3:</highlight> Share the link',
       cta: 'Create My Wishlist',
       learnMore: 'Learn More',
@@ -192,7 +192,7 @@ export const en = {
       title: 'How do I create a wishlist?',
       description1: 'First, make sure you’re logged in 🔐.',
       description2:
-        'From the "Home" page: Click <highlight>“Create my wishlist”</highlight> or go to "My Cards" page → click <highlight>“Create wishlist”</highlight> (top right). Fill in your occasion, add a description, and start adding wishes ✨',
+        'From the "Home" page: Click <highlight>“Create my wishlist”</highlight> or go to "My Wishlists" page → click <highlight>“Create wishlist”</highlight> (top right). Fill in your occasion, add a description, and start adding wishes ✨',
     },
     faq3: {
       title: 'How do I add gifts to my wishlist?',

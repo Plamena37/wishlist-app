@@ -170,6 +170,7 @@ export const CardItemsSortDropdown = ({
         <Button
           variant="outline"
           className="outline-none"
+          aria-label="Sorting button"
         >
           {currentLabel}
         </Button>

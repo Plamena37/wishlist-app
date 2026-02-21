@@ -119,6 +119,7 @@ export default function CardPage() {
           variant="link"
           onClick={handleGoBack}
           className="w-auto px-0"
+          aria-label="Go back to previous page"
         >
           <FontAwesomeIcon icon={faArrowLeft} />
           {t('common.goBack')}

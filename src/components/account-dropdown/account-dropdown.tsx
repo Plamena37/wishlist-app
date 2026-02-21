@@ -83,6 +83,7 @@ const AccountDropdown = ({ links }: AccountDropdownProps) => {
               onClick={(e) => handleLinkClick(e, link)}
               disabled={link.disabled}
               className="disabled:opacity-100 flex text-blue-900 text-sm font-normal items-center justify-start gap-0 h-[35px] px-4 w-full"
+              aria-label={link.label}
             >
               <FontAwesomeIcon
                 icon={link.icon}

@@ -166,7 +166,7 @@ From the home page:
 - Click **“Create my wishlist”**
 
 Or:
-- Go to **My Cards**
+- Go to **My Wishlists**
 - Click **“Create wishlist”** (top right)
 
 You’ll also find details in the **FAQ**.

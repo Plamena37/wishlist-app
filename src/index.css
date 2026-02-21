@@ -88,6 +88,9 @@
   --balloon-red-100: #ff4440;
   --present-yellow: #ffc73b;
 
+  /** BACKGROUNDS */
+  --color-background-muted: var(--gray-200);
+
   /** FONTS */
   --font-sans: 'Open Sans', sans-serif, system-ui;
 
@@ -183,7 +186,9 @@
   --color-balloon-red-100: var(--balloon-red-100);
   --color-present-yellow: var(--present-yellow);
 
-  /* common colors */
+  /* backgrounds */
+  --color-background-muted: var(--gray-200);
+
   --color-background: var(--gray-800);
   --color-text-primary: var(--purple-900);
   --color-text-secondary: var(--gray-600);
@@ -290,6 +295,9 @@
   --color-balloon-red-200: var(--balloon-red-200);
   --color-balloon-red-100: var(--balloon-red-100);
   --color-present-yellow: var(--present-yellow);
+
+  /* backgrounds */
+  --color-background-muted: var(--gray-200);
 
   /* common colors */
   --color-text-primary: var(--purple-900);
