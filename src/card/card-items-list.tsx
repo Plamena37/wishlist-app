@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 import { Link } from 'react-router'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import PageEaten from '@/assets/page-eaten.svg'
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/lib/hooks/useTranslation'
@@ -8,7 +10,7 @@ import { useAuth } from '@/auth/hooks/useAuth'
 import { useCardsContext } from '@/cards/hooks/useCards'
 import CardActionsDropdown from '@/card/card-actions-dropdown'
 import { Text } from '@/components/ui/text'
-import { Checkbox } from '@/components/ui/checkbox'
+// import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
@@ -100,6 +102,7 @@ export const CardItemsList = ({ items }: CardItemsList) => {
                 className="absolute top-0 right-0"
               />
             )}
+
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
               <Text
                 as="h5"
@@ -161,19 +164,48 @@ export const CardItemsList = ({ items }: CardItemsList) => {
               </Text>
 
               <div className="flex items-center gap-2">
-                <Checkbox
-                  checked={!!item.reservedBy}
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    id={`reserved-${item.id}`}
+                    checked={Boolean(item.reservedBy)}
+                    onChange={(e) => {
+                      toggleSignInOverlay(item.reservedBy)
+                      handleToggleReservedBy(card, item, e.target.checked)
+                    }}
+                    disabled={
+                      (item.id === updatingCardItemId && loadingCardItem) ||
+                      canReserveCardItem
+                    }
+                    className="h-4.5 w-4.5 rounded-sm border-2 border-gray-400 appearance-none    cursor-pointer checked:bg-purple-800 checked:border-purple-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                  />
+                  {Boolean(item.reservedBy) && (
+                    <FontAwesomeIcon
+                      icon={faCheck}
+                      className="absolute text-white"
+                      style={{
+                        width: '12px',
+                        height: '12px',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                      }}
+                    />
+                  )}
+                </label>
+                {/* <Checkbox
+                  checked={Boolean(item.reservedBy)}
                   id={`reserved-${item.id}`}
                   className="cursor-pointer"
                   onCheckedChange={(val) => {
                     toggleSignInOverlay(item.reservedBy)
-                    handleToggleReservedBy(card, item, !!val)
+                    handleToggleReservedBy(card, item, Boolean(val))
                   }}
                   disabled={
                     (item.id === updatingCardItemId && loadingCardItem) ||
                     canReserveCardItem
                   }
-                />
+                /> */}
                 <Label
                   htmlFor={`reserved-${item.id}`}
                   className="cursor-pointer"

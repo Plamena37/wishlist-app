@@ -79,6 +79,10 @@ export const bg = {
     titlePlaceholder: 'Въведи заглавие на Wishlist',
     descriptionLabel: 'Описание',
     descriptionPlaceholder: 'Въведи описание на Wishlist',
+    timeLabel: 'Време',
+    dateLabel: 'Дата',
+    locationLabel: 'Място',
+    locationPlaceholder: 'Въведи място',
   },
   editWishes: {
     title: 'Редактирай Подаръци 🎁',
@@ -128,6 +132,8 @@ export const bg = {
     },
     card: {
       cardNameMin: 'Името е твърде кратко',
+      dateRequired: 'Датата е задължителна',
+      invalidDate: 'Невалидна дата',
     },
     cardItem: {
       nameMin: 'Името е твърде кратко',

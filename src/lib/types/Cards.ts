@@ -3,6 +3,9 @@ export interface Card {
   ownerId: string
   title: string
   description?: string
+  date: string | Date
+  time?: string
+  location?: string
   isPublic: boolean
   image: string
   items: CardItem[]

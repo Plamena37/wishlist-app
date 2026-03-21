@@ -107,6 +107,7 @@ export const CardsActionsDropdown = ({
         {isCardMine && (
           <>
             <DropdownMenuItem
+              asChild
               className="hover:bg-muted"
               onSelect={(e) => e.preventDefault()}
             >

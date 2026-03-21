@@ -323,6 +323,7 @@
   .scrollbar-regular::-webkit-scrollbar {
     width: 6px;
     border-radius: 3px;
+    padding-right: -8px;
   }
   .scrollbar-regular::-webkit-scrollbar:horizontal {
     height: 6px;

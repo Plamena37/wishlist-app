@@ -296,6 +296,9 @@ export const CardsProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       if (data.title) updatedCard.title = data.title
       if (data.description) updatedCard.description = data.description
+      if (data.date) updatedCard.date = data.date
+      if (data.time) updatedCard.time = data.time
+      if (data.location) updatedCard.location = data.location
       if (isBoolean(data.isPublic)) updatedCard.isPublic = data.isPublic
       if (data?.items) {
         updatedCard.items = data.items.map((item) => ({

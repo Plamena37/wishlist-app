@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import {
+  faArrowLeft,
+  faCalendar,
+  faClock,
+  faEllipsisV,
+  faLocationDot,
+} from '@fortawesome/free-solid-svg-icons'
 import { db } from '@/firebase.config'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { cn } from '@/lib/utils'
@@ -147,8 +153,55 @@ export default function CardPage() {
           variant="h2"
           className="text-center font-semibold text-gray-800"
         >
-          {lang === Language.EN ? 'It\'s...' : ''} {card.title}
+          {lang === Language.EN ? "It's..." : ''} {card.title}
         </Text>
+
+        {(card?.date || card?.time || card?.location) && (
+          <div className="flex items-center gap-4 border-b border-gray-300 pb-2 sm:pb-6 w-full justify-center">
+            {card?.date && (
+              <Text
+                variant="body"
+                className="flex items-center gap-1"
+              >
+                <FontAwesomeIcon
+                  icon={faCalendar}
+                  className="text-purple-800"
+                  style={{ width: '16px', height: '16px' }}
+                />
+                {card.date as string}
+              </Text>
+            )}
+
+            {card?.time && (
+              <Text
+                variant="body"
+                className="flex items-center gap-1"
+              >
+                <FontAwesomeIcon
+                  icon={faClock}
+                  className="text-purple-800"
+                  style={{ width: '16px', height: '16px' }}
+                />
+                {card.time}
+              </Text>
+            )}
+
+            {card?.location && (
+              <Text
+                variant="body"
+                className="flex items-center gap-1"
+              >
+                <FontAwesomeIcon
+                  icon={faLocationDot}
+                  className="text-purple-800"
+                  style={{ width: '16px', height: '16px' }}
+                />
+                {card.location}
+              </Text>
+            )}
+          </div>
+        )}
+
         {card.description && (
           <Text
             as="p"

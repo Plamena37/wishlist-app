@@ -4,6 +4,14 @@ export const addCardSchema = (t: (key: string) => string) =>
   z.object({
     title: z.string().min(2, t('formValidation.card.cardNameMin')),
     description: z.string().optional(),
+    date: z
+      .string()
+      .min(1, t('formValidation.card.dateRequired'))
+      .refine((val) => !isNaN(Date.parse(val)), {
+        message: t('formValidation.card.invalidDate'),
+      }),
+    time: z.string().optional(),
+    location: z.string().optional(),
     isPublic: z.boolean(),
     items: z
       .array(
@@ -22,6 +30,9 @@ export const editCardSchema = (t: (key: string) => string) =>
   z.object({
     title: z.string().min(2, t('formValidation.card.cardNameMin')),
     description: z.string().optional(),
+    date: z.string().optional(),
+    time: z.string().optional(),
+    location: z.string().optional(),
     isPublic: z.boolean(),
     items: z
       .array(

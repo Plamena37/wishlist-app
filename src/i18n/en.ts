@@ -36,7 +36,7 @@ export const en = {
     holdUpSignInFirst: 'Hold up! Sign in first 😉',
     continueWithGoogle: 'Continue with Google',
     continueWithFacebook: 'Continue with Facebook',
-    dontHaveAccount: 'Don\'t have an account? Sign up',
+    dontHaveAccount: "Don't have an account? Sign up",
     haveAccount: 'Have an account? Sign In',
     signUpHere: 'Sign up here',
     signInHere: 'Sign in here',
@@ -79,6 +79,10 @@ export const en = {
     titlePlaceholder: 'Enter Wishlist Title',
     descriptionLabel: 'Wishlist Description',
     descriptionPlaceholder: 'Enter Wishlist Description',
+    timeLabel: 'Time',
+    dateLabel: 'Date',
+    locationLabel: 'Location',
+    locationPlaceholder: 'Enter Location',
   },
   editWishes: {
     title: 'Edit Wishes 🎁',
@@ -128,6 +132,8 @@ export const en = {
     },
     card: {
       cardNameMin: 'Name is too short (min 2 characters)',
+      dateRequired: 'Date is required',
+      invalidDate: 'Invalid date',
     },
     cardItem: {
       nameMin: 'Name is too short (min 2 characters)',
@@ -259,7 +265,7 @@ export const en = {
     sortWishes: 'Sort Wishes',
     sortTitle: 'Title',
     sortPrice: 'Price',
-    sortFree: 'Status',
+    sortFree: 'Free',
     sortReserved: 'Reserved',
     noItems: 'No items have been added to this wishlist yet.',
   },

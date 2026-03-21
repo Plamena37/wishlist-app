@@ -39,7 +39,7 @@ export const EditCardInfoDialog = ({
       <DialogTrigger asChild>
         <Button
           variant="ghost"
-          className="sm:px-0 justify-start"
+          className="pl-3 sm:pl-3 py-2 pr-2 justify-start w-full h-full"
           aria-label="Edit wishlist"
         >
           <FontAwesomeIcon

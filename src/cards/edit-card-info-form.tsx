@@ -17,6 +17,7 @@ import {
 } from '@/components/form/form'
 import { Text } from '@/components/ui/text'
 import { DialogClose } from '@/components/ui/dialog'
+import { DatePicker } from '@/components/date-time-picker/date-picker'
 
 interface EditCardInfoFormProps {
   card: Card
@@ -32,6 +33,9 @@ export const EditCardInfoForm = ({ card, onClose }: EditCardInfoFormProps) => {
     defaultValues: {
       title: card?.title || '',
       description: card?.description || '',
+      date: (card?.date || '') as string,
+      time: card?.time || '',
+      location: card?.location || '',
       isPublic: card?.isPublic ?? true,
       items: card?.items || [],
     },
@@ -58,62 +62,150 @@ export const EditCardInfoForm = ({ card, onClose }: EditCardInfoFormProps) => {
         className="max-h-[80dvh] overflow-y-auto"
       >
         <div className="grid grid-cols-[1fr] gap-y-2">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  <div className="mb-1 flex items-center gap-x-2">
-                    <Text
-                      as="p"
-                      variant="body"
-                      className="font-semibold text-purple-900"
-                    >
-                      {t('editWishlist.titleLabel')}
-                    </Text>
-                  </div>
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder={t('editWishlist.titlePlaceholder')}
-                    error={!!errors.title}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-red-600 text-sm font-normal" />
-              </FormItem>
-            )}
-          />
+          <div className="grid grid-cols-[1fr] h-full max-h-[70dvh] gap-y-2 overflow-y-scroll scrollbar-regular">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <div className="mb-1 flex items-center gap-x-2">
+                      <Text
+                        as="p"
+                        variant="body"
+                        className="font-semibold text-purple-900"
+                      >
+                        {t('editWishlist.titleLabel')}
+                      </Text>
+                    </div>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t('editWishlist.titlePlaceholder')}
+                      error={!!errors.title}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-600 text-sm font-normal" />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  <div className="mb-1 flex items-center gap-x-2">
-                    <Text
-                      as="p"
-                      variant="body"
-                      className="font-semibold text-purple-900"
-                    >
-                      {t('editWishlist.descriptionLabel')}
-                    </Text>
-                  </div>
-                </FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder={t('editWishlist.descriptionPlaceholder')}
-                    error={!!errors.description}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-red-600 text-sm font-normal" />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <div className="mb-1 flex items-center gap-x-2">
+                      <Text
+                        as="p"
+                        variant="body"
+                        className="font-semibold text-purple-900"
+                      >
+                        {t('editWishlist.descriptionLabel')}
+                      </Text>
+                    </div>
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder={t('editWishlist.descriptionPlaceholder')}
+                      error={!!errors.description}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-600 text-sm font-normal" />
+                </FormItem>
+              )}
+            />
 
+            <div className="flex gap-2">
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>
+                      <div className="mb-1 flex items-center gap-x-2">
+                        <Text
+                          as="p"
+                          variant="body"
+                          className="font-semibold text-purple-900"
+                        >
+                          {t('editWishlist.dateLabel')}
+                        </Text>
+                      </div>
+                    </FormLabel>
+                    <FormControl>
+                      <DatePicker
+                        error={!!errors.date}
+                        className="max-w-full w-full h-[32px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-600 text-sm font-normal" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="time"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      <div className="mb-1 flex items-center gap-x-2">
+                        <Text
+                          as="p"
+                          variant="body"
+                          className="font-semibold text-purple-900"
+                        >
+                          {t('editWishlist.timeLabel')}
+                        </Text>
+                      </div>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        step={60}
+                        placeholder="HH:MM"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-600 text-sm font-normal" />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <div className="mb-1 flex items-center gap-x-2">
+                      <Text
+                        as="p"
+                        variant="body"
+                        className="font-semibold text-purple-900"
+                      >
+                        {t('editWishlist.locationLabel')}
+                      </Text>
+                    </div>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t('editWishlist.locationPlaceholder')}
+                      error={!!errors.location}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-600 text-sm font-normal" />
+                </FormItem>
+              )}
+            />
+          </div>
           {/* <FormItem className="flex items-center gap-4">
             <FormLabel>
               <div className="flex items-center gap-1">

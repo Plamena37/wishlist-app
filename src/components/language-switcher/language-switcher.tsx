@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Icon } from '@/components/ui/icon'
+import { Text } from '@/components/ui/text'
 
 // interface MobileLanguageSwitcherProps {
 //   onClose?: () => void
@@ -91,14 +92,20 @@ export const LanguageSwitcher = () => {
             className="w-auto sm:p-0"
             aria-label="Switch Language button"
           >
-            <Icon
+            <Text
+              variant="h5"
+              className="text-white"
+            >
+              {lang === Language.EN ? 'EN' : 'BG'}
+            </Text>
+            {/* <Icon
               src={lang === Language.EN ? USAFlag : BGFlag}
               style={{
                 width: '24px',
                 height: '16px',
               }}
               alt="Current Language Flag Icon"
-            />
+            /> */}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>

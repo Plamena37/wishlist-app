@@ -21,6 +21,7 @@ import {
   FormMessage,
 } from '@/components/form/form'
 import { Text } from '@/components/ui/text'
+import { DatePicker } from '@/components/date-time-picker/date-picker'
 
 const cardImages = [
   import.meta.env.VITE_CLOUDINARY_FOLDER_URL + '/balloon_ume1we.png',
@@ -48,6 +49,9 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
     defaultValues: {
       title: '',
       description: '',
+      date: '',
+      time: '',
+      location: '',
       isPublic: true,
       items: [],
     },
@@ -87,81 +91,161 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
           clearErrors()
         }}
         onSubmit={handleSubmit(onSubmit)}
-        className="py-2"
+        className="max-h-[80dvh]"
       >
         <div className="grid grid-cols-[1fr]">
-          {/* <Text
-            as="h4"
-            variant="h4"
-            className="mb-4 font-semibold text-purple-900"
-          >
-            What do I want?
-          </Text> */}
+          <div className="grid grid-cols-[1fr] h-full max-h-[70dvh] gap-y-2 overflow-y-scroll scrollbar-regular">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <div className="mb-1 flex items-center gap-x-2">
+                      <Text
+                        as="p"
+                        variant="body"
+                        className="font-semibold text-purple-900"
+                      >
+                        {t('editWishlist.titleLabel')}
+                      </Text>
+                      <Text
+                        as="p"
+                        variant="body"
+                        className="text-gray-600"
+                      >
+                        ({t('common.required')})
+                      </Text>
+                    </div>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t('editWishlist.titlePlaceholder')}
+                      error={!!errors.title}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-600 text-sm font-normal" />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  <div className="mb-1 flex items-center gap-x-2">
-                    <Text
-                      as="p"
-                      variant="body"
-                      className="font-semibold text-purple-900"
-                    >
-                      {t('editWishlist.titleLabel')}
-                    </Text>
-                    <Text
-                      as="p"
-                      variant="body"
-                      className="text-gray-600"
-                    >
-                      ({t('common.required')})
-                    </Text>
-                  </div>
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder={t('editWishlist.titlePlaceholder')}
-                    error={!!errors.title}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-red-600 text-sm font-normal" />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <div className="mb-1 flex items-center gap-x-2">
+                      <Text
+                        as="p"
+                        variant="body"
+                        className="font-semibold text-purple-900"
+                      >
+                        {t('editWishlist.descriptionLabel')}
+                      </Text>
+                    </div>
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder={t('editWishlist.descriptionPlaceholder')}
+                      error={!!errors.description}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-600 text-sm font-normal" />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  <div className="mb-1 flex items-center gap-x-2">
-                    <Text
-                      as="p"
-                      variant="body"
-                      className="font-semibold text-purple-900"
-                    >
-                      {t('editWishlist.descriptionLabel')}
-                    </Text>
-                  </div>
-                </FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder={t('editWishlist.descriptionPlaceholder')}
-                    error={!!errors.description}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-red-600 text-sm font-normal" />
-              </FormItem>
-            )}
-          />
+            <div className="flex gap-2">
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>
+                      <div className="mb-1 flex items-center gap-x-2">
+                        <Text
+                          as="p"
+                          variant="body"
+                          className="font-semibold text-purple-900"
+                        >
+                          {t('editWishlist.dateLabel')}
+                        </Text>
+                      </div>
+                    </FormLabel>
+                    <FormControl>
+                      <DatePicker
+                        error={!!errors.date}
+                        className="max-w-full w-full h-[32px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-600 text-sm font-normal" />
+                  </FormItem>
+                )}
+              />
 
-          {/* <FormItem className="flex items-center gap-4">
+              <FormField
+                control={form.control}
+                name="time"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      <div className="mb-1 flex items-center gap-x-2">
+                        <Text
+                          as="p"
+                          variant="body"
+                          className="font-semibold text-purple-900"
+                        >
+                          {t('editWishlist.timeLabel')}
+                        </Text>
+                      </div>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        step={60}
+                        placeholder="HH:MM"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-600 text-sm font-normal" />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <div className="mb-1 flex items-center gap-x-2">
+                      <Text
+                        as="p"
+                        variant="body"
+                        className="font-semibold text-purple-900"
+                      >
+                        {t('editWishlist.locationLabel')}
+                      </Text>
+                    </div>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t('editWishlist.locationPlaceholder')}
+                      error={!!errors.location}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-600 text-sm font-normal" />
+                </FormItem>
+              )}
+            />
+
+            {/* <FormItem className="flex items-center gap-4">
             <FormLabel>
               <div className="flex items-center gap-1">
                 <Text
@@ -190,154 +274,155 @@ export const AddCardForm = ({ onClose }: AddCardFormProps) => {
             <FormMessage className="text-red-600 text-sm font-normal" />
           </FormItem> */}
 
-          <Text
-            as="h5"
-            variant="h5"
-            className="font-semibold mt-2"
-          >
-            {t('editWishes.addWishes')}:
-          </Text>
-          <div
-            className={cn(
-              'border border-gray-200 rounded-sm',
-              isSm ? 'py-4' : 'py-2'
-            )}
-          >
-            {fields.map((field, index) => (
-              <div
-                key={field.id}
-                className={cn(
-                  'grid grid-cols-1 sm:grid-cols-4 sm:gap-4 gap-2 mb-2',
-                  index !== fields.length - 1
-                    ? 'border-b border-dashed border-b-gray-400 pb-2'
-                    : ''
-                )}
-              >
-                <div>
-                  {isSm && (
-                    <FormLabel>
-                      <div className="mb-1 flex items-center gap-x-2">
-                        <Text
-                          as="p"
-                          variant="body"
-                          className="font-semibold text-purple-900"
-                        >
-                          {t('editWishes.nameLabel')}
-                        </Text>
-                      </div>
-                    </FormLabel>
-                  )}
-                  <Input
-                    placeholder={t('editWishes.namePlaceholder')}
-                    {...register(`items.${index}.name`)}
-                    error={!!errors.items?.[index]?.name}
-                  />
-                  <FormMessage className="text-red-600 text-sm font-normal">
-                    {errors.items?.[index]?.name?.message ?? ''}
-                  </FormMessage>
-                </div>
-
-                <div>
-                  {isSm && (
-                    <FormLabel>
-                      <div className="mb-1 flex items-center gap-x-2">
-                        <Text
-                          as="p"
-                          variant="body"
-                          className="font-semibold text-purple-900"
-                        >
-                          {t('editWishes.linkLabel')}
-                        </Text>
-                      </div>
-                    </FormLabel>
-                  )}
-                  <Input
-                    placeholder={t('editWishes.linkPlaceholder')}
-                    {...register(`items.${index}.link`)}
-                    error={!!errors.items?.[index]?.link}
-                  />
-                  <FormMessage className="text-red-600 text-sm font-normal">
-                    {errors.items?.[index]?.link?.message ?? ''}
-                  </FormMessage>
-                </div>
-
-                <div>
-                  {isSm && (
-                    <FormLabel>
-                      <div className="mb-1 flex items-center gap-x-2">
-                        <Text
-                          as="p"
-                          variant="body"
-                          className="font-semibold text-purple-900"
-                        >
-                          {t('editWishes.priceLabel')}
-                        </Text>
-                      </div>
-                    </FormLabel>
-                  )}
-                  <Input
-                    type="number"
-                    step="0.01"
-                    placeholder={t('editWishes.pricePlaceholder')}
-                    {...register(`items.${index}.price`)}
-                    error={!!errors.items?.[index]?.price}
-                  />
-                  <FormMessage className="text-red-600 text-sm font-normal">
-                    {errors.items?.[index]?.price?.message ?? ''}
-                  </FormMessage>
-                </div>
-
-                <div>
-                  {isSm && (
-                    <FormLabel>
-                      <div className="mb-1 flex items-center gap-x-2">
-                        <Text
-                          as="p"
-                          variant="body"
-                          className="opacity-0"
-                        >
-                          {t('common.delete')}
-                        </Text>
-                      </div>
-                    </FormLabel>
-                  )}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="text-purple-900 self-center w-full"
-                    onClick={() => remove(index)}
-                    aria-label="Delete wish"
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </Button>
-                </div>
-              </div>
-            ))}
-
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                append({
-                  name: '',
-                  link: '',
-                  price: null,
-                })
-              }
-              disabled={
-                fields.length > 0 && !watch(`items.${fields.length - 1}.name`)
-              }
-              className="w-full"
-              aria-label="Add new wish"
+            <Text
+              as="h5"
+              variant="h5"
+              className="font-semibold mt-2"
             >
-              <FontAwesomeIcon
-                icon={faPlus}
-                className="text-purple-900"
-              />
-              {t('editWishes.addWish')}
-            </Button>
+              {t('editWishes.addWishes')}:
+            </Text>
+            <div
+              className={cn(
+                'border border-gray-200 rounded-sm',
+                isSm ? 'py-4' : 'py-2'
+              )}
+            >
+              {fields.map((field, index) => (
+                <div
+                  key={field.id}
+                  className={cn(
+                    'grid grid-cols-1 sm:grid-cols-4 sm:gap-4 gap-2 mb-2',
+                    index !== fields.length - 1
+                      ? 'border-b border-dashed border-b-gray-400 pb-2'
+                      : ''
+                  )}
+                >
+                  <div>
+                    {isSm && (
+                      <FormLabel>
+                        <div className="mb-1 flex items-center gap-x-2">
+                          <Text
+                            as="p"
+                            variant="body"
+                            className="font-semibold text-purple-900"
+                          >
+                            {t('editWishes.nameLabel')}
+                          </Text>
+                        </div>
+                      </FormLabel>
+                    )}
+                    <Input
+                      placeholder={t('editWishes.namePlaceholder')}
+                      {...register(`items.${index}.name`)}
+                      error={!!errors.items?.[index]?.name}
+                    />
+                    <FormMessage className="text-red-600 text-sm font-normal">
+                      {errors.items?.[index]?.name?.message ?? ''}
+                    </FormMessage>
+                  </div>
+
+                  <div>
+                    {isSm && (
+                      <FormLabel>
+                        <div className="mb-1 flex items-center gap-x-2">
+                          <Text
+                            as="p"
+                            variant="body"
+                            className="font-semibold text-purple-900"
+                          >
+                            {t('editWishes.linkLabel')}
+                          </Text>
+                        </div>
+                      </FormLabel>
+                    )}
+                    <Input
+                      placeholder={t('editWishes.linkPlaceholder')}
+                      {...register(`items.${index}.link`)}
+                      error={!!errors.items?.[index]?.link}
+                    />
+                    <FormMessage className="text-red-600 text-sm font-normal">
+                      {errors.items?.[index]?.link?.message ?? ''}
+                    </FormMessage>
+                  </div>
+
+                  <div>
+                    {isSm && (
+                      <FormLabel>
+                        <div className="mb-1 flex items-center gap-x-2">
+                          <Text
+                            as="p"
+                            variant="body"
+                            className="font-semibold text-purple-900"
+                          >
+                            {t('editWishes.priceLabel')}
+                          </Text>
+                        </div>
+                      </FormLabel>
+                    )}
+                    <Input
+                      type="number"
+                      step="0.01"
+                      placeholder={t('editWishes.pricePlaceholder')}
+                      {...register(`items.${index}.price`)}
+                      error={!!errors.items?.[index]?.price}
+                    />
+                    <FormMessage className="text-red-600 text-sm font-normal">
+                      {errors.items?.[index]?.price?.message ?? ''}
+                    </FormMessage>
+                  </div>
+
+                  <div>
+                    {isSm && (
+                      <FormLabel>
+                        <div className="mb-1 flex items-center gap-x-2">
+                          <Text
+                            as="p"
+                            variant="body"
+                            className="opacity-0"
+                          >
+                            {t('common.delete')}
+                          </Text>
+                        </div>
+                      </FormLabel>
+                    )}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="text-purple-900 self-center w-full"
+                      onClick={() => remove(index)}
+                      aria-label="Delete wish"
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  append({
+                    name: '',
+                    link: '',
+                    price: null,
+                  })
+                }
+                disabled={
+                  fields.length > 0 && !watch(`items.${fields.length - 1}.name`)
+                }
+                className="w-full"
+                aria-label="Add new wish"
+              >
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  className="text-purple-900"
+                />
+                {t('editWishes.addWish')}
+              </Button>
+            </div>
           </div>
 
           <div className="flex sm:gap-6 gap-2 justify-between sm:justify-end">
