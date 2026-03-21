@@ -5,7 +5,6 @@ import {
   faArrowLeft,
   faCalendar,
   faClock,
-  faEllipsisV,
   faLocationDot,
 } from '@fortawesome/free-solid-svg-icons'
 import { db } from '@/firebase.config'
@@ -153,7 +152,7 @@ export default function CardPage() {
           variant="h2"
           className="text-center font-semibold text-gray-800"
         >
-          {lang === Language.EN ? "It's..." : ''} {card.title}
+          {lang === Language.EN ? 'It\'s...' : ''} {card.title}
         </Text>
 
         {(card?.date || card?.time || card?.location) && (

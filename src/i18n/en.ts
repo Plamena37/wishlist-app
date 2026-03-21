@@ -36,7 +36,7 @@ export const en = {
     holdUpSignInFirst: 'Hold up! Sign in first 😉',
     continueWithGoogle: 'Continue with Google',
     continueWithFacebook: 'Continue with Facebook',
-    dontHaveAccount: "Don't have an account? Sign up",
+    dontHaveAccount: 'Don\'t have an account? Sign up',
     haveAccount: 'Have an account? Sign In',
     signUpHere: 'Sign up here',
     signInHere: 'Sign in here',
