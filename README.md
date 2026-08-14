@@ -10,6 +10,7 @@ Users can **create and share wishlists for special occasions**, while friends an
 * Share wishlists with friends and family
 * Reserve gifts in real time
 * View and manage wishlist items
+* Built-in AI assistant to help users with gift ideas and wishlist inspiration
 * Designed with a responsive, user-friendly interface
 
 ## 🛠️ Tech Stack
@@ -24,7 +25,19 @@ Users can **create and share wishlists for special occasions**, while friends an
 
 ## 📸 Preview
 
-*TBD*
+![Main](https://i.imgur.com/WaBaCm4.png)
+
+![Main](https://i.imgur.com/3IJD5bQ.png)
+
+![Main](https://i.imgur.com/7ZOekgU.png)
+
+![Main](https://i.imgur.com/LJruRp3.png)
+
+![Main](https://i.imgur.com/PpozVGm.png)
+
+![Main](https://i.imgur.com/MIX86s3.png)
+
+![Main](https://i.imgur.com/dDUZ4rP.png)
 
 ## 🚀 Live Demo
 
